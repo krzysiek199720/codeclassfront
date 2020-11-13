@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import axios from '../../../axios/axios'
+
 export default {
   name: 'login',
   data () {
@@ -30,10 +32,13 @@ export default {
     login () {
       const data = {
         email: this.email,
-        passwod: this.password
+        password: this.password
       }
-      console.log(data)
-    //  todo: send login
+      axios.post('/auth/login', data)
+      axios.post('/auth/login', data)
+        .then(res => {
+          this.$store.dispatch('authSet', res)
+        })
     }
   }
 }

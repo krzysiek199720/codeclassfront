@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import axios from '../../../axios/axios'
+
 export default {
   name: 'signup',
   data () {
@@ -39,13 +41,19 @@ export default {
   methods: {
     login () {
       const data = {
-        firstname: this.firstname,
-        lastname: this.lastname,
+        firstName: this.firstname,
+        lastName: this.lastname,
         email: this.email,
-        passwod: this.password
+        password: this.password
       }
-      console.log(data)
-    //  todo: send signup
+      axios.post('/user/', data)
+        .then(res => {
+          this.$router.push({ name: 'login' })
+        })
+        .catch(error => {
+          // resolve error
+          console.log(error)
+        })
     }
   }
 }
