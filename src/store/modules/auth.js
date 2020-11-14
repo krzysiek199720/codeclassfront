@@ -37,6 +37,8 @@ const mutations = {
     state.lastName = null
     state.roleId = null
     state.roleName = null
+
+    axios.defaults.headers.common.Authorization = ''
   }
 }
 
