@@ -1,11 +1,10 @@
 <template>
   <div class="code">
-    <div class="line"
-         v-for="(line,index) in data.courseDataLineList"
-         :key="line.id">
-<!--      todo indent-->
-      <data-element :data="data" :index="index"></data-element>
-    </div>
+    <template v-for="line in data.courseDataLineList">
+      <div class="line" :key="line.id">
+        <data-element :data="line.courseDataElementList" :index="0"></data-element>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -21,6 +20,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
+.line{
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+}
 
 </style>

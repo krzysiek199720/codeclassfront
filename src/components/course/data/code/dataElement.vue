@@ -1,9 +1,11 @@
 <template>
   <div class="filler">
-    <div class="element" :v-if="depthBigger"> <!-- todo desc -->
-      <span class="data">{{elem.data}}</span>
+    <div class="element" :v-if="isDepthBigger">
+      <span class="desc-tooltip" v-if="elem.description !== null">{{elem.description}}</span>
+      <template>{{elem.data}}</template>
+      <dataElement v-if="(index + 1) < data.length" :data="data" :index="index+1"></dataElement>
     </div>
-    <span v-if="!depthBigger">{{elem.data}}</span>
+    <template v-if="!isDepthBigger">{{elem.data}}</template>
   </div>
 </template>
 
@@ -15,13 +17,30 @@ export default {
     elem () {
       return this.data[this.index]
     },
-    depthBigger () {
-      return this.data[this.index - 1].depth < this.elem.depth
+    isDepthBigger () {
+      if (this.index === 0) { return true }
+      return this.data[this.index - 1].depth < this.data[this.index].depth
     }
+  },
+  mounted () {
+    if (this.index === 1) {
+      console.log(this.elem)
+    }
+  },
+  components: {
+
   }
 }
 </script>
 
 <style scoped>
+
+.element{
+  display: flex;
+}
+
+.desc-tooltip {
+  color: cyan
+}
 
 </style>

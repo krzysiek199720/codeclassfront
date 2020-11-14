@@ -2,7 +2,7 @@
   <div class="course-data">
     <div class="data-section" >
       <component
-        v-for="(fordata, index) in this.data"
+        v-for="(fordata, index) in data"
         :key="fordata.id"
         :is="fordata.type === 'CODE' ? 'dataCode' : 'dataText'"
         :data="data[index]"></component>
