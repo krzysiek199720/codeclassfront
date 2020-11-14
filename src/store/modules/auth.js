@@ -1,3 +1,5 @@
+import axios from '../../axios/axios'
+
 const state = {
   token: null,
   expires: null,
@@ -19,6 +21,12 @@ const mutations = {
     state.lastName = loginData.lastName
     state.roleId = loginData.roleId
     state.roleName = loginData.roleName
+
+    if (state.token !== undefined && state.token !== null) {
+      axios.defaults.headers.common.Authorization = state.token
+    } else {
+      axios.defaults.headers.common.Authorization = ''
+    }
   },
   authRem: state => {
     state.token = null
@@ -34,13 +42,13 @@ const mutations = {
 
 const actions = {
   authSet: ({ commit }, loginData) => {
-    localStorage.setItem('auth', JSON.stringify(loginData))
-    commit('authSet', loginData)
+    localStorage.setItem('auth', JSON.stringify(loginData.data))
+    commit('authSet', loginData.data)
   },
   tryLogin: ({ commit }) => {
     const auth = JSON.parse(localStorage.getItem('auth'))
     const date = new Date()
-    if (date >= auth.expires) { return }
+    if (date >= auth.expires) { commit('authRem') }
     commit('authSet', auth)
   },
   authLogout: ({ commit }) => {
@@ -49,7 +57,7 @@ const actions = {
 }
 
 const getters = {
-  authToken: state => state.token,
+  authToken: state => { return state.token },
   authExpires: state => state.expires,
   authUserId: state => state.userId,
   authEmail: state => state.email,
