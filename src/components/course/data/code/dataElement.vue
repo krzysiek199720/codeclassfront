@@ -1,6 +1,6 @@
 <template>
   <div class="filler">
-    <div class="element" :v-if="isDepthBigger">
+    <div class="element" :v-if="isDepthBigger"> <!-- @mouseover.stop="hovering = !hovering" :class="{klasaHover: hovering}" -->
       <span class="desc-tooltip" v-if="elem.description !== null">{{elem.description}}</span>
       <template>{{elem.data}}</template>
       <dataElement v-if="(index + 1) < data.length" :data="data" :index="index+1"></dataElement>
@@ -13,6 +13,11 @@
 export default {
   name: 'dataElement',
   props: ['data', 'index'],
+  data () {
+    return {
+      hovering: false
+    }
+  },
   computed: {
     elem () {
       return this.data[this.index]

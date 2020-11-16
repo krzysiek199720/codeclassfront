@@ -1,7 +1,8 @@
 <template>
   <div class="code">
     <template v-for="line in data.courseDataLineList">
-      <div class="line" :key="line.id" :style="{paddingLeft: line.indent + 'em'}">
+      <div class="line" :key="line.id"> <!-- :style="{paddingLeft: line.indent + 'em'}" -->
+        <pre v-for="n in line.indent" :key="line.id + '_' + n">  </pre>
         <data-element :data="line.courseDataElementList.sort(sortElements)" :index="0"></data-element>
       </div>
     </template>
@@ -35,4 +36,7 @@ export default {
   flex-direction: row;
 }
 
+pre{
+  margin:0
+}
 </style>

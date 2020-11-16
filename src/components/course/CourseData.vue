@@ -1,5 +1,5 @@
 <template>
-  <div class="course-data">
+  <div class="course-data" v-if="loaded">
     <div class="data-section" >
       <component
         v-for="(fordata, index) in data"
@@ -20,7 +20,8 @@ export default {
   name: 'CourseData',
   data () {
     return {
-      data: null
+      data: null,
+      loaded: false
     }
   },
   props: ['courseId'], // maybe add comments to show there on click, dunno yet
@@ -32,6 +33,7 @@ export default {
     axios.get('/course/' + this.courseId + '/data')
       .then(res => {
         this.data = res.data.sort((first, second) => { if (first.order < second.order) return -1; if (first.order > second.order) return 1; return 0 })
+        this.loaded = true
       })
   }
 }
