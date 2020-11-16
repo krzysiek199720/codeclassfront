@@ -23,11 +23,6 @@ export default {
     }
   },
   mounted () {
-    if (this.index === 1) {
-      console.log(this.elem)
-    }
-  },
-  components: {
 
   }
 }

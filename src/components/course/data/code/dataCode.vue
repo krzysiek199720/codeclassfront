@@ -1,8 +1,8 @@
 <template>
   <div class="code">
     <template v-for="line in data.courseDataLineList">
-      <div class="line" :key="line.id">
-        <data-element :data="line.courseDataElementList" :index="0"></data-element>
+      <div class="line" :key="line.id" :style="{paddingLeft: line.indent + 'em'}">
+        <data-element :data="line.courseDataElementList.sort(sortElements)" :index="0"></data-element>
       </div>
     </template>
   </div>
@@ -16,6 +16,13 @@ export default {
   props: ['data'],
   components: {
     dataElement
+  },
+  methods: {
+    sortElements (first, second) {
+      if (first.order < second.order) return -1
+      if (first.order > second.order) return 1
+      return 0
+    }
   }
 }
 </script>

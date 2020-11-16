@@ -31,7 +31,7 @@ export default {
   created () {
     axios.get('/course/' + this.courseId + '/data')
       .then(res => {
-        this.data = res.data
+        this.data = res.data.sort((first, second) => { if (first.order < second.order) return -1; if (first.order > second.order) return 1; return 0 })
       })
   }
 }
