@@ -37,7 +37,11 @@ export default {
       return 0
     },
     selectLine (line) {
-      this.$store.dispatch('dataLineSet', line)
+      if (this.$store.getters.dataLineGet === line) {
+        this.$store.dispatch('dataLineSet', null)
+      } else {
+        this.$store.dispatch('dataLineSet', line)
+      }
     }
   }
 }
