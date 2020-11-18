@@ -2,8 +2,9 @@
   <div id="app">
     <div id="nav">
       <router-link :to="'/'">Home</router-link>
-      <router-link :to="{name: 'login'}">Login</router-link>
-      <router-link :to="{name: 'signup'}">Signup</router-link>
+      <router-link v-if="!$store.getters.authIsAuthenticated" :to="{name: 'login'}">Login</router-link>
+      <router-link v-else :to="{ name: 'logout'}">Logout</router-link>
+      <router-link :to="{ name: 'signup'}">Signup</router-link>
       <router-link :to="{ name: 'course', params: { id: 1 } } ">Course-1</router-link>
     </div>
     <router-view/>

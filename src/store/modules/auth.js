@@ -55,6 +55,7 @@ const actions = {
     commit('authSet', auth)
   },
   authLogout: ({ commit }) => {
+    localStorage.removeItem('auth')
     commit('authRem')
   }
 }

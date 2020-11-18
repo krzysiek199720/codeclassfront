@@ -16,6 +16,11 @@ const routes = [
     component: () => import('../views/auth/access/Login')
   },
   {
+    path: '/logout',
+    name: 'logout',
+    component: () => import('../views/auth/access/Logout')
+  },
+  {
     path: '/signup',
     name: 'signup',
     component: () => import('../views/auth/user/Signup')

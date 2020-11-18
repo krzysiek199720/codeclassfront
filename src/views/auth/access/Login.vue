@@ -38,6 +38,7 @@ export default {
       axios.post('/auth/login', data)
         .then(res => {
           this.$store.dispatch('authSet', res)
+          this.$router.push({ name: 'home' })
         })
     }
   }
