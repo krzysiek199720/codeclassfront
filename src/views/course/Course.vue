@@ -17,7 +17,7 @@
         <button class="follow unfollow" v-else>Unfollow</button>
       </template>
       <template v-else>
-        <button class="publish" v-if="isPublishedComputed" @click="publish(true)">Publish</button>
+        <button class="publish" v-if="course.isPublished === null" @click="publish(true)">Publish</button>
         <button class="publish unpublish" v-else @click="publish(false)">Make private</button>
 
         <router-link tag="button" :to="{name: 'courseEdit', params: { id: this.$route.params.id}}" class="edit-button">Edit</router-link>
@@ -42,11 +42,6 @@ export default {
       loaded: false
     }
   },
-  computed: {
-    isPublishedComputed () {
-      return this.course.isPublished !== null
-    }
-  },
   components: {
     courseData,
     courseComment
@@ -59,7 +54,8 @@ export default {
         }
       })
         .then(res => {
-          this.course.isPublished = doPublish
+          this.course.isPublished = res.data === '' ? null : res.data
+          console.log(this.course.isPublished)
         })
         .catch(err => {
           //  no luck, show info
