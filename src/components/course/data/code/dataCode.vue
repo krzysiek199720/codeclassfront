@@ -51,9 +51,14 @@ export default {
 <style scoped lang="scss">
 
 .line{
-  margin: 20px;
+  padding: 8px;
   display: flex;
   flex-direction: row;
+}
+
+.line+.line{
+
+  border-top:1px darkcyan solid;
 }
 
 pre{

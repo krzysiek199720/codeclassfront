@@ -5,7 +5,7 @@
     </div>
     <div class="script-data">
 <!--      todo-->
-      script-data
+      single_comment: script-data
     </div>
     <div class="comment-content">{{data.data}}</div>
   </div>
@@ -19,5 +19,9 @@ export default {
 </script>
 
 <style scoped>
+
+.comment {
+  border: 1px black solid;
+}
 
 </style>

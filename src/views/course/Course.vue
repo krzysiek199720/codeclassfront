@@ -87,6 +87,26 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
+.coursedata {
+  border: 1px black solid;
+  margin: 10px 0;
+}
+
+.courseinfo {
+  border: 1px black solid;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  .info{
+    margin-left: 5px;
+  }
+}
+
+.comments {
+  border: 1px black solid;
+  margin: 10px 0;
+}
 
 </style>
