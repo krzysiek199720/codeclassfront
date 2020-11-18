@@ -5,16 +5,19 @@
       <span class="info"><span class="author">
         {{course.courseGroupResponse.authorFirstname}} {{course.courseGroupResponse.authorLastname}}
       </span></span>
-      <span class="info"><span id="coursegroup">{{course.courseGroupResponse.name}}</span></span>
-      <span class="info"><span id="complexity">{{course.complexity}}</span></span>
-      <span class="info"><span id="language">{{course.language.name}}</span></span>
-      <span class="info"><span id="category">{{course.category.name}}</span></span>
-      <span class="info"><span id="published">{{course.isPublished | formatDate}}</span></span>
+      <span class="info" id="coursegroup">Course Group: <span>{{course.courseGroupResponse.name}}</span></span>
+      <span class="info" id="complexity">Complexity: <span>{{course.complexity}}</span></span>
+      <span class="info" id="language">Language: <span>{{course.language.name}}</span></span>
+      <span class="info" id="category">Category: <span>{{course.category.name}}</span></span>
+      <span class="info" id="published">Published: <span>{{course.isPublished | formatDate}}</span></span>
     </div>
     <div class="manage">
       <template v-if="!course.isAuthor">
         <button class="follow" v-if="!course.isFollowing">Follow</button>
         <button class="follow unfollow" v-else>Unfollow</button>
+        <select name="assimilation" id="assimilation" class="assimilation" v-model="assimilation" @change="changeAssimilation">
+          <option v-for="ass in assimilationValues" :key="ass" class="assimilation-option">{{ass}}</option>
+        </select>
       </template>
       <template v-else>
         <button class="publish" v-if="course.isPublished === null" @click="publish(true)">Publish</button>
@@ -39,7 +42,9 @@ export default {
   data () {
     return {
       course: null,
-      loaded: false
+      loaded: false,
+      assimilationValues: ['NO', 'TLDR', 'READ', 'KNOW'],
+      assimilation: 'NO'
     }
   },
   components: {
@@ -75,6 +80,9 @@ export default {
           //  no luck, show info
           console.log(err)
         })
+    },
+    changeAssimilation () {
+      axios.put('/course/' + this.$route.params.id + '/assimilation', { value: this.assimilation })
     }
   },
   created () {
@@ -82,6 +90,10 @@ export default {
       .then(res => {
         this.course = res.data
         this.loaded = true
+      })
+    axios.get('/course/' + this.$route.params.id + '/assimilation')
+      .then(res => {
+        if (res.data !== null) { this.assimilation = res.data }
       })
   }
 }
