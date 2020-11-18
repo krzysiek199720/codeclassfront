@@ -12,9 +12,16 @@
       <span class="info"><span id="published">{{course.isPublished | formatDate}}</span></span>
     </div>
     <div class="manage">
-      <button class="follow"></button>
-      <button class="publish"></button>
-      <button class="edit"></button>
+      <template v-if="!course.isAuthor">
+        <button class="follow" v-if="!course.isFollowing">Follow</button>
+        <button class="follow unfollow" v-else>Unfollow</button>
+      </template>
+      <template v-else>
+        <button class="publish" v-if="isPublishedComputed" @click="publish(true)">Publish</button>
+        <button class="publish unpublish" v-else @click="publish(false)">Make private</button>
+
+        <router-link tag="button" :to="{name: 'courseEdit', params: { id: this.$route.params.id}}" class="edit-button">Edit</router-link>
+      </template>
     </div>
     <courseData class="coursedata" :courseId="course.id"></courseData>
     <courseComment class="comments" :courseId="course.id"></courseComment>
@@ -35,9 +42,44 @@ export default {
       loaded: false
     }
   },
+  computed: {
+    isPublishedComputed () {
+      return this.course.isPublished !== null
+    }
+  },
   components: {
     courseData,
     courseComment
+  },
+  methods: {
+    publish (doPublish) {
+      axios.put('/course/' + this.$route.params.id + '/publish', null, {
+        params: {
+          isPublished: doPublish
+        }
+      })
+        .then(res => {
+          this.course.isPublished = doPublish
+        })
+        .catch(err => {
+          //  no luck, show info
+          console.log(err)
+        })
+    },
+    follow (doFollow) {
+      axios.put('/course/' + this.$route.params.id + '/follow', null, {
+        params: {
+          doFollow: doFollow
+        }
+      })
+        .then(res => {
+          this.course.isFollowing = doFollow
+        })
+        .catch(err => {
+          //  no luck, show info
+          console.log(err)
+        })
+    }
   },
   created () {
     axios.get('/course/' + this.$route.params.id)
