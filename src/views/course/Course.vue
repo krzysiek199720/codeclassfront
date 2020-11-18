@@ -11,20 +11,23 @@
       <span class="info" id="category">Category: <span>{{course.category.name}}</span></span>
       <span class="info" id="published">Published: <span>{{course.isPublished | formatDate}}</span></span>
     </div>
-    <div class="manage">
-      <template v-if="!course.isAuthor">
-        <button class="follow" v-if="!course.isFollowing">Follow</button>
-        <button class="follow unfollow" v-else>Unfollow</button>
-        <select name="assimilation" id="assimilation" class="assimilation" v-model="assimilation" @change="changeAssimilation">
-          <option v-for="ass in assimilationValues" :key="ass" class="assimilation-option">{{ass}}</option>
-        </select>
-      </template>
-      <template v-else>
-        <button class="publish" v-if="course.isPublished === null" @click="publish(true)">Publish</button>
-        <button class="publish unpublish" v-else @click="publish(false)">Make private</button>
+    <div class="manage"> <!-- prop better to v-if on next template then here -->
+      <tamplate v-if="$store.getters.authIsAuthenticated">
+        <template v-if="!course.isAuthor">
+          <button class="follow" v-if="!course.isFollowing">Follow</button>
+          <button class="follow unfollow" v-else>Unfollow</button>
+          <select name="assimilation" id="assimilation" class="assimilation" v-model="assimilation" @change="changeAssimilation">
+            <option v-for="ass in assimilationValues" :key="ass" class="assimilation-option">{{ass}}</option>
+          </select>
+        </template>
+        <template v-else>
+          <button class="publish" v-if="course.isPublished === null" @click="publish(true)">Publish</button>
+          <button class="publish unpublish" v-else @click="publish(false)">Make private</button>
 
-        <router-link tag="button" :to="{name: 'courseEdit', params: { id: this.$route.params.id}}" class="edit-button">Edit</router-link>
-      </template>
+          <router-link tag="button" :to="{name: 'courseEdit', params: { id: this.$route.params.id}}" class="edit-button">Edit</router-link>
+        </template>
+      </tamplate>
+      <router-link tag="button" :to="{name:'quiz', params: {id: this.$route.params.id}}"></router-link>
     </div>
     <courseData class="coursedata" :courseId="course.id"></courseData>
     <courseComment class="comments" :courseId="course.id"></courseComment>
@@ -44,7 +47,15 @@ export default {
       course: null,
       loaded: false,
       assimilationValues: ['NO', 'TLDR', 'READ', 'KNOW'],
-      assimilation: 'NO'
+      assimilation: 'NO',
+      quizScore: null
+    }
+  },
+  computed: {
+    quizString () {
+      if (this.quizScore === null) { return 'Quiz' }
+      if (this.quizScore.points === 0) { return 'Quiz' }
+      return '' + this.quizScore.points + ' / ' + this.quizScore.max
     }
   },
   components: {
@@ -94,6 +105,10 @@ export default {
     axios.get('/course/' + this.$route.params.id + '/assimilation')
       .then(res => {
         if (res.data !== null) { this.assimilation = res.data }
+      })
+    axios.get('/course/' + this.$route.params.id + '/quiz/score')
+      .then(res => {
+        this.quizScore = res.data
       })
   }
 }

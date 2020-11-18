@@ -35,8 +35,12 @@ export default {
 
 <style scoped>
 
+.filler, .element{
+  display: inline;
+}
+
 .element{
-  display: flex;
+  /*display: inline;*/
 }
 
 .desc-tooltip {
