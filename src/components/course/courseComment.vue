@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="loaded">
       <div class="comment-base" v-for="main_com in rootComments" :key="main_com.id">
         <single-comment :data="main_com"></single-comment>
         <div class="comment-children" v-for="com in commentMap.get(main_com.id)" :key="com.id">
@@ -17,11 +17,10 @@ import singleComment from '@/components/course/comment/singleComment'
 export default {
   name: 'courseComment',
   props: ['courseId'],
-  data () {
-    return {
-      rootComments: [],
-      commentMap: new Map()
-    }
+  computed: {
+    rootComments () { return this.$store.getters.getRootComments },
+    commentMap () { return this.$store.getters.getCommentMap },
+    loaded () { return this.$store.getters.commentIsLoaded }
   },
   methods: {
     sortComment (first, second) {
@@ -36,27 +35,32 @@ export default {
   created () {
     axios.get('/course/' + this.courseId + '/comment')
       .then(res => {
+        const newRoots = []
+        const newComMap = new Map()
+
         for (const com of res.data) {
           if (com.rootId === null) {
-            this.rootComments.push(com)
+            newRoots.push(com)
             continue
           }
-          if (this.commentMap.has(com.rootId)) {
-            this.commentMap.get(com.rootId).push(com)
+          if (newComMap.has(com.rootId)) {
+            newComMap.get(com.rootId).push(com)
           } else {
-            this.commentMap.set(com.rootId, [com])
+            newComMap.set(com.rootId, [com])
           }
         }
 
-        for (const coms of this.commentMap.values()) {
+        for (const coms of newComMap.values()) {
           coms.sort(this.sortComment)
         }
 
-        this.rootComments.sort(this.sortComment)
+        newRoots.sort(this.sortComment)
+
+        this.$store.dispatch('setComments', { rootComments: newRoots, commentMap: newComMap })
       })
   },
   beforeDestroy () {
-  //  remove store comment values
+    this.$store.dispatch('removeComments')
   }
 }
 </script>
