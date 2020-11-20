@@ -13,7 +13,7 @@
       <template v-if="result.length > 0">
         <div class="result" v-for="item in result" :key="item.courseGroupId">
           <div class="data">
-            <router-link tag="span" :to="{name:'course', params:{id: item.courseGroupId}}" class="title">{{item.courseGroupName}}</router-link>
+            <router-link tag="span" :to="{name:'courseGroup', params:{id: item.courseGroupId}}" class="title">{{item.courseGroupName}}</router-link>
             <span class="author">{{item.authorFirstName}} {{item.authorLastName}}</span>
           </div>
           <div class="moreinfo">
@@ -59,12 +59,10 @@ export default {
         params: params,
         paramsSerializer: params => {
           const res = qs.stringify(params, { indices: false })
-          console.log(res)
           return res
         }
       })
         .then(res => {
-          console.log(res.data)
           this.result = res.data
           this.$router.replace({
             name: 'search',
