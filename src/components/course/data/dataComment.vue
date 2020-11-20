@@ -1,5 +1,5 @@
 <template>
-  <div :v-if="loaded">
+  <div :v-if="loaded"> <!-- TODO: show anyway - if empty no comments info. Add button to add comment to this coursedata -->
     <div class="comment-base" v-for="main_com in data.roots" :key="main_com.id">
       <single-comment :data="main_com"></single-comment>
       <div class="comment-children" v-for="com in data.commentMap.get(main_com.id)" :key="com.id">

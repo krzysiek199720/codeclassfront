@@ -1,5 +1,6 @@
 <template>
     <div v-if="loaded">
+      <commentForm add-code="false"></commentForm>
       <div class="comment-base" v-for="main_com in rootComments" :key="main_com.id">
         <single-comment :data="main_com"></single-comment>
         <div class="comment-children" v-for="com in commentMap.get(main_com.id)" :key="com.id">
@@ -13,6 +14,7 @@
 import axios from '@/axios/axios'
 
 import singleComment from '@/components/course/comment/singleComment'
+import commentForm from '@/components/course/comment/commentForm'
 
 export default {
   name: 'courseComment',
@@ -30,7 +32,8 @@ export default {
     }
   },
   components: {
-    singleComment
+    singleComment,
+    commentForm
   },
   created () {
     axios.get('/course/' + this.courseId + '/comment')

@@ -19,6 +19,13 @@ const mutations = {
   remCom: state => {
     state.rootComments = null
     state.commentMap = null
+  },
+  comAdd: (state, payload) => {
+    if (payload.rootId === null) {
+      state.rootComments.push(payload)
+    } else {
+      state.commentMap.get(payload.rootId).push(payload)
+    }
   }
 }
 
@@ -34,6 +41,9 @@ const actions = {
   },
   removeComments: ({ commit }) => {
     commit('remCom')
+  },
+  addComment: ({ commit }, payload) => {
+    commit('comAdd', payload)
   }
 }
 
@@ -57,7 +67,12 @@ const getters = {
     })
     return result
   },
-  commentIsLoaded (state) { return state.rootComments !== null }
+  commentIsLoaded (state) { return state.rootComments !== null },
+  commentGet: (state) => (commentId) => {
+    const result = this.getRoot(commentId)
+    if (result !== undefined) { return result }
+    return state.commentMap.values().find(el => el.id === commentId)
+  }
 }
 
 export default {
