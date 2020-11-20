@@ -6,6 +6,7 @@
       <router-link v-else :to="{ name: 'logout'}">Logout</router-link>
       <router-link :to="{ name: 'signup'}">Signup</router-link>
       <router-link :to="{ name: 'course', params: { id: 1 } } ">Course-1</router-link>
+      <router-link :to="{ name: 'search' } ">Search</router-link>
     </div>
     <router-view/>
   </div>
