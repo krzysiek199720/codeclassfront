@@ -5,8 +5,15 @@
       <div class="author">
         <span class="name">{{courseGroup.authorFirstname}} {{courseGroup.authorLastname}}</span>
         <span class="email">{{courseGroup.authorEmail}}</span>
-<!--        todo follow-->
-<!--        todo edit delete-->
+        <template v-if="$store.getters.authIsAuthenticated">
+          <template v-if="!courseGroup.isAuthor">
+            <button class="follow" v-if="!courseGroup.isFollowing">Follow</button>
+            <button class="follow unfollow" v-else>Unfollow</button>
+          </template>
+          <template v-else>
+            <router-link tag="button" :to="{name: 'courseGroupEdit', params: { id: this.$route.params.id}}" class="edit-button">Edit</router-link>
+          </template>
+        </template>
       </div>
     </div>
     <div class="course-list">
@@ -39,6 +46,22 @@ export default {
   },
   computed: {
     loaded () { return this.loadedGroup && this.loadedCourses }
+  },
+  methods: {
+    follow (doFollow) {
+      axios.put('/course/group/' + this.$route.params.id + '/follow', null, {
+        params: {
+          doFollow: doFollow
+        }
+      })
+        .then(res => {
+          this.courseGroup.isFollowing = doFollow
+        })
+        .catch(err => {
+          //  no luck, show info
+          console.log(err)
+        })
+    }
   },
   created () {
     axios.get('/course/group/' + this.$route.params.id)

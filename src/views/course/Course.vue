@@ -22,8 +22,8 @@
     <div class="manage"> <!-- prop better to v-if on next template then here -->
       <template v-if="$store.getters.authIsAuthenticated">
         <template v-if="!course.isAuthor">
-          <button class="follow" v-if="!course.isFollowing">Follow</button>
-          <button class="follow unfollow" v-else>Unfollow</button>
+          <button class="follow" v-if="!course.isFollowing" @click="follow(true)">Follow</button>
+          <button class="follow unfollow" v-else @click="follow(false)">Unfollow</button>
           <select name="assimilation" id="assimilation" class="assimilation" v-model="assimilation" @change="changeAssimilation">
             <option v-for="ass in assimilationValues" :key="ass" class="assimilation-option">{{ass}}</option>
           </select>
