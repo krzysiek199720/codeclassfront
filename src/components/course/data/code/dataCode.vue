@@ -31,11 +31,11 @@ export default {
         if (this.$store.getters.dataLineGet === line) {
           this.$store.dispatch('dataLineSet', null)
           this.$store.dispatch('dataCourseDataIdSet', null)
+          return
         }
-      } else {
-        this.$store.dispatch('dataLineSet', line)
-        this.$store.dispatch('dataCourseDataIdSet', this.data.id)
       }
+      this.$store.dispatch('dataLineSet', line)
+      this.$store.dispatch('dataCourseDataIdSet', this.data.id)
     }
   }
 }
