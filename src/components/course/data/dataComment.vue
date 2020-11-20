@@ -20,9 +20,6 @@ export default {
   computed: {
     data () { return this.$store.getters.getCommentsByCodeLine },
     loaded () { return this.$store.getters.commentIsLoaded }
-  },
-  mounted () {
-    console.log(this.data)
   }
 }
 </script>

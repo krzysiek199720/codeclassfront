@@ -11,6 +11,14 @@
       <span class="info" id="category">Category: <span>{{course.category.name}}</span></span>
       <span class="info" id="published">Published: <span>{{course.isPublished | formatDate}}</span></span>
     </div>
+    <div class="course-usefull">
+      <div class="links">
+        <a :href="link.link" class="link" v-for="link in links" :key="link.id">{{link.display}}</a>
+      </div>
+      <div class="files">
+        <span class="file" v-for="file in files" :key="file.id" @click="downloadFile(file.id)">{{file.display}}</span>
+      </div>
+    </div>
     <div class="manage"> <!-- prop better to v-if on next template then here -->
       <template v-if="$store.getters.authIsAuthenticated">
         <template v-if="!course.isAuthor">
@@ -48,14 +56,16 @@ export default {
       loaded: false,
       assimilationValues: ['NO', 'TLDR', 'READ', 'KNOW'],
       assimilation: 'NO',
-      quizScore: null
+      quizScore: null,
+      links: [],
+      files: []
     }
   },
   computed: {
     quizString () {
       if (this.quizScore === null) { return 'Quiz' }
       if (this.quizScore.points === 0) { return 'Quiz' }
-      return '' + this.quizScore.points + ' / ' + this.quizScore.max
+      return this.quizScore.points + ' / ' + this.quizScore.max
     }
   },
   components: {
@@ -71,7 +81,6 @@ export default {
       })
         .then(res => {
           this.course.isPublished = res.data === '' ? null : res.data
-          console.log(this.course.isPublished)
         })
         .catch(err => {
           //  no luck, show info
@@ -94,6 +103,31 @@ export default {
     },
     changeAssimilation () {
       axios.put('/course/' + this.$route.params.id + '/assimilation', { value: this.assimilation })
+    },
+    downloadFile (fileId) {
+      axios({
+        url: '/course/file/' + fileId,
+        method: 'GET',
+        responseType: 'blob' // important
+      }).then((response) => {
+        const condis = response.headers['content-disposition']
+
+        const filenameStartIndex = condis.indexOf('filename="')
+        let filename = 'file'
+        if (filenameStartIndex !== -1) {
+          const nameStart = filenameStartIndex + 10
+          const filenameEndIndex = condis.indexOf('"', nameStart)
+          filename = condis.substr(nameStart, filenameEndIndex - nameStart)
+        }
+
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', filename)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      })
     }
   },
   created () {
@@ -108,7 +142,15 @@ export default {
       })
     axios.get('/course/' + this.$route.params.id + '/quiz/score')
       .then(res => {
-        this.quizScore = res.data
+        this.quizScore = res.data === '' ? null : res.data
+      })
+    axios.get('/course/' + this.$route.params.id + '/link')
+      .then(res => {
+        this.links = res.data
+      })
+    axios.get('/course/' + this.$route.params.id + '/file')
+      .then(res => {
+        this.files = res.data
       })
   }
 }
