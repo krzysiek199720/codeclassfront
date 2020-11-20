@@ -7,6 +7,9 @@
         :is="fordata.type === 'CODE' ? 'dataCode' : 'dataText'"
         :data="data[index]"></component>
     </div>
+    <div class="code-comments">
+      <dataComment></dataComment>
+    </div>
   </div>
 </template>
 
@@ -15,6 +18,7 @@ import axios from '../../axios/axios'
 
 import dataText from '@/components/course/data/dataText'
 import dataCode from '@/components/course/data/code/dataCode'
+import dataComment from '@/components/course/data/dataComment'
 
 export default {
   name: 'CourseData',
@@ -27,7 +31,8 @@ export default {
   props: ['courseId'], // maybe add comments to show there on click, dunno yet
   components: {
     dataText,
-    dataCode
+    dataCode,
+    dataComment
   },
   created () {
     axios.get('/course/' + this.courseId + '/data')

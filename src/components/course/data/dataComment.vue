@@ -14,13 +14,15 @@ import singleComment from '@/components/course/comment/singleComment'
 
 export default {
   name: 'dataComment',
-  props: ['courseDataId'],
   components: {
     singleComment
   },
   computed: {
-    data () { return this.$store.getters.getCommentsByCodeLine(this.courseDataId) },
+    data () { return this.$store.getters.getCommentsByCodeLine },
     loaded () { return this.$store.getters.commentIsLoaded }
+  },
+  mounted () {
+    console.log(this.data)
   }
 }
 </script>

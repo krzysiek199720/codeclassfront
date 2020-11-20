@@ -1,7 +1,8 @@
 const state = {
   rootComments: null,
   commentMap: null,
-  dataLineSelection: null
+  dataLineSelection: null,
+  dataCourseDataId: null
 }
 
 const mutations = {
@@ -11,6 +12,9 @@ const mutations = {
   },
   dataLnSet: (state, payload) => {
     state.dataLineSelection = payload
+  },
+  dataCDISet: (state, payload) => {
+    state.dataCourseDataId = payload
   },
   remCom: state => {
     state.rootComments = null
@@ -25,6 +29,9 @@ const actions = {
   dataLineSet: ({ commit }, payload) => {
     commit('dataLnSet', payload)
   },
+  dataCourseDataIdSet: ({ commit }, payload) => {
+    commit('dataCDISet', payload)
+  },
   removeComments: ({ commit }) => {
     commit('remCom')
   }
@@ -34,14 +41,15 @@ const getters = {
   getRootComments (state) { return state.rootComments },
   getCommentMap (state) { return state.commentMap },
   dataLineGet (state) { return state.dataLineSelection },
+  dataCourseDataId (state) { return state.dataCourseDataId },
   getRoot: (state) => (commentId) => { return state.rootComments.find(el => el.id === commentId) },
   getChildren: (state) => (commentId) => { return state.commentMap.get(commentId) },
-  getCommentsByCodeLine: (state) => (courseDataId) => { // courseDataId
+  getCommentsByCodeLine (state) { // courseDataId
     const result = { roots: [], commentMap: state.commentMap }
     if (state.rootComments === null) { return result }
     if (state.dataLineSelection === null) { return result }
     result.roots = state.rootComments.filter(el => {
-      const goodcourseDataId = el.courseDataId === courseDataId
+      const goodcourseDataId = el.courseDataId === state.dataCourseDataId
       const goodlinesFrom = state.dataLineSelection >= el.linesFrom
       const goodlinesTo = state.dataLineSelection <= el.linesTo
 

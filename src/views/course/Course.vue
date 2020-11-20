@@ -12,7 +12,7 @@
       <span class="info" id="published">Published: <span>{{course.isPublished | formatDate}}</span></span>
     </div>
     <div class="manage"> <!-- prop better to v-if on next template then here -->
-      <tamplate v-if="$store.getters.authIsAuthenticated">
+      <template v-if="$store.getters.authIsAuthenticated">
         <template v-if="!course.isAuthor">
           <button class="follow" v-if="!course.isFollowing">Follow</button>
           <button class="follow unfollow" v-else>Unfollow</button>
@@ -26,8 +26,8 @@
 
           <router-link tag="button" :to="{name: 'courseEdit', params: { id: this.$route.params.id}}" class="edit-button">Edit</router-link>
         </template>
-      </tamplate>
-      <router-link tag="button" :to="{name:'quiz', params: {id: this.$route.params.id}}"></router-link>
+      </template>
+      <router-link tag="button" :to="{name:'quiz', params: {id: this.$route.params.id}}">{{quizString}}</router-link>
     </div>
     <courseData class="coursedata" :courseId="course.id"></courseData>
     <courseComment class="comments" :courseId="course.id"></courseComment>

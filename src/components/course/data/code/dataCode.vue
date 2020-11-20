@@ -8,27 +8,17 @@
         </div>
       </template>
     </div>
-    <div class="code-comments">
-      <dataComment :courseDataId="data.id"></dataComment>
-    </div>
   </div>
 </template>
 
 <script>
 import dataElement from '@/components/course/data/code/dataElement'
-import dataComment from '@/components/course/data/dataComment'
 
 export default {
   name: 'dataCode',
   props: ['data'],
-  computed: {
-    isLoaded () {
-      return this.$store.getters.commentIsLoaded
-    }
-  },
   components: {
-    dataElement,
-    dataComment
+    dataElement
   },
   methods: {
     sortElements (first, second) {
@@ -37,10 +27,14 @@ export default {
       return 0
     },
     selectLine (line) {
-      if (this.$store.getters.dataLineGet === line) {
-        this.$store.dispatch('dataLineSet', null)
+      if (this.$store.getters.dataCourseDataId === this.data.id) {
+        if (this.$store.getters.dataLineGet === line) {
+          this.$store.dispatch('dataLineSet', null)
+          this.$store.dispatch('dataCourseDataIdSet', null)
+        }
       } else {
         this.$store.dispatch('dataLineSet', line)
+        this.$store.dispatch('dataCourseDataIdSet', this.data.id)
       }
     }
   }
