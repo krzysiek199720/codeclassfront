@@ -36,6 +36,13 @@ export default {
     }
   },
   methods: {
+    clearInput () {
+      this.commentRootId = null
+      this.commentData = ''
+      this.scriptId = null
+      this.lineFrom = null
+      this.lineTo = null
+    },
     sendComment () {
       const comment = {
         data: this.commentData,
@@ -47,7 +54,12 @@ export default {
       axios.post('/course/' + this.$route.params.id + '/comment', comment)
         .then(res => {
           this.$store.dispatch('addComment', res.data)
-          this.$destroy()
+
+          if (this.addCode) {
+            this.$emit('removeCommentForm')
+          } else {
+            this.clearInput()
+          }
         })
         .catch(err => {
         // do error thingy

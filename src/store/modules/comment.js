@@ -72,7 +72,8 @@ const getters = {
     const result = this.getRoot(commentId)
     if (result !== undefined) { return result }
     return state.commentMap.values().find(el => el.id === commentId)
-  }
+  },
+  commentIsSelectedGet () { return state.dataCourseDataId !== null }
 }
 
 export default {
