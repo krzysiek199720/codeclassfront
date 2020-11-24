@@ -35,7 +35,7 @@
           <router-link tag="button" :to="{name: 'courseEdit', params: { id: this.$route.params.id}}" class="edit-button">Edit</router-link>
         </template>
       </template>
-      <router-link tag="button" :to="{name:'quiz', params: {id: this.$route.params.id}}">{{quizString}}</router-link>
+      <router-link v-if="quiz !== null" tag="button" :to="{name:'quiz', params: {id: this.$route.params.id}}">{{quizString}}</router-link>
     </div>
     <courseData class="coursedata" :courseId="course.id"></courseData>
     <courseComment class="comments" :courseId="course.id"></courseComment>
@@ -56,6 +56,7 @@ export default {
       loaded: false,
       assimilationValues: ['NO', 'TLDR', 'READ', 'KNOW'],
       assimilation: 'NO',
+      quiz: null,
       quizScore: null,
       links: [],
       files: []
@@ -63,6 +64,7 @@ export default {
   },
   computed: {
     quizString () {
+      if (this.quiz === null) { return '' }
       if (this.quizScore === null) { return 'Quiz' }
       if (this.quizScore.points === 0) { return 'Quiz' }
       return this.quizScore.points + ' / ' + this.quizScore.max
@@ -140,9 +142,13 @@ export default {
       .then(res => {
         if (res.data !== null) { this.assimilation = res.data }
       })
-    axios.get('/course/' + this.$route.params.id + '/quiz/score')
+    axios.get('/course/' + this.$route.params.id + '/quiz')
       .then(res => {
-        this.quizScore = res.data === '' ? null : res.data
+        this.quiz = res.data
+        axios.get('/course/' + this.$route.params.id + '/quiz/score')
+          .then(res => {
+            this.quizScore = res.data === '' ? null : res.data
+          })
       })
     axios.get('/course/' + this.$route.params.id + '/link')
       .then(res => {

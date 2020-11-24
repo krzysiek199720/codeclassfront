@@ -39,6 +39,11 @@ const routes = [
     path: '/course/group/:id',
     name: 'courseGroup',
     component: () => import('../views/course/CourseGroup')
+  },
+  {
+    path: '/course/:id/quiz',
+    name: 'quiz',
+    component: () => import('../views/course/quiz/Quiz')
   }
 ]
 
