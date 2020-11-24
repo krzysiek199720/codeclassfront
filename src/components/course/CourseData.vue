@@ -32,14 +32,28 @@ export default {
     showComments: {
       type: Boolean,
       default: true
+    },
+    usePropsData: {
+      type: Boolean,
+      default: false
+    },
+    propsData: {
+      default: null
     }
   }, // maybe add comments to show there on click, dunno yet
+  watch: {
+    propsData (value) {
+      this.data = value
+    }
+  },
   components: {
     dataText,
     dataCode,
     dataComment
   },
   created () {
+    if (this.usePropsData) return
+
     axios.get('/course/' + this.$route.params.id + '/data')
       .then(res => {
         this.data = res.data.sort((first, second) => { if (first.order < second.order) return -1; if (first.order > second.order) return 1; return 0 })
