@@ -37,15 +37,15 @@
       </template>
       <router-link v-if="quiz !== null" tag="button" :to="{name:'quiz', params: {id: this.$route.params.id}}">{{quizString}}</router-link>
     </div>
-    <courseData class="coursedata" :courseId="course.id"></courseData>
+    <courseData class="coursedata"></courseData>
     <courseComment class="comments" :courseId="course.id"></courseComment>
   </div>
 </template>
 
 <script>
-import axios from '../../axios/axios'
+import axios from '../../../axios/axios'
 
-import courseData from '../../components/course/CourseData'
+import courseData from '../../../components/course/CourseData'
 import courseComment from '@/components/course/courseComment'
 
 export default {

@@ -28,7 +28,12 @@ const routes = [
   {
     path: '/course/:id',
     name: 'course',
-    component: () => import('../views/course/Course')
+    component: () => import('../views/course/course/Course')
+  },
+  {
+    path: '/course/:id/edit',
+    name: 'courseEdit',
+    component: () => import('../views/course/course/CourseEdit')
   },
   {
     path: '/search',
@@ -44,6 +49,11 @@ const routes = [
     path: '/course/:id/quiz',
     name: 'quiz',
     component: () => import('../views/course/quiz/Quiz')
+  },
+  {
+    path: '/course/:id/quiz/edit',
+    name: 'quizEdit',
+    component: () => import('../views/course/quiz/QuizEdit')
   }
 ]
 

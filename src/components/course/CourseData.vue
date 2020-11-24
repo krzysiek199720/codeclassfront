@@ -7,7 +7,7 @@
         :is="fordata.type === 'CODE' ? 'dataCode' : 'dataText'"
         :data="data[index]"></component>
     </div>
-    <div class="code-comments">
+    <div class="code-comments" v-if="showComments">
       <dataComment></dataComment>
     </div>
   </div>
@@ -28,14 +28,19 @@ export default {
       loaded: false
     }
   },
-  props: ['courseId'], // maybe add comments to show there on click, dunno yet
+  props: {
+    showComments: {
+      type: Boolean,
+      default: true
+    }
+  }, // maybe add comments to show there on click, dunno yet
   components: {
     dataText,
     dataCode,
     dataComment
   },
   created () {
-    axios.get('/course/' + this.courseId + '/data')
+    axios.get('/course/' + this.$route.params.id + '/data')
       .then(res => {
         this.data = res.data.sort((first, second) => { if (first.order < second.order) return -1; if (first.order > second.order) return 1; return 0 })
         this.loaded = true
