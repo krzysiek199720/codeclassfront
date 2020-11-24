@@ -26,13 +26,13 @@
       <button @click="addQuestion">Add question</button>
     </div>
     <div class="questions">
-      <div class="question" v-for="(q, index) in questions" :key="q.question">
+      <div class="question" v-for="q in questions" :key="q.question">
         <span class="question-text">{{q.question}}</span>
         <span class="answer">{{q.answer0}}</span>
         <span class="answer">{{q.answer1}}</span>
         <span class="answer">{{q.answer2}}</span>
         <span class="answer">{{q.answer3}}</span>
-        <span class="answer">{{getAns(index)}}</span>
+        <span class="answer">{{q['answer' + (q.answer - 1)]}}</span>
         <button class="remove" @click="removeQuestion(q)">Remove</button>
       </div>
     </div>
@@ -61,10 +61,6 @@ export default {
     }
   },
   methods: {
-    getAns (index) {
-      const q = this.questions[index]
-      return q['answer' + (q.answer - 1)]
-    },
     addQuestion () {
       console.log(this.newQuestion.answer)
       const isDuplicate = this.questions.find(e => { return e.question === this.newQuestion.question })
