@@ -41,7 +41,6 @@ export default {
         .catch(_ => {})
     },
     preview () {
-      console.log(this.dataRaw)
       axios.post('/course/data/check', { data: this.dataRaw })
         .then(res => {
           this.data = res.data

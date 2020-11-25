@@ -76,12 +76,10 @@ export default {
   methods: {
     publish (doPublish) {
       const routerResolve = this.$router.resolve({ name: 'course', params: { id: this.course.id } })
-      console.log(routerResolve)
       const data = {
         isPublished: doPublish,
         slug: routerResolve.href
       }
-      console.log(data)
       axios.put('/course/' + this.$route.params.id + '/publish', data)
         .then(res => {
           this.course.isPublished = res.data === '' ? null : res.data

@@ -68,13 +68,11 @@ export default {
       .then(res => {
         this.courseGroup = res.data
         this.loadedGroup = true
-        console.log(res.data)
       })
     axios.get('/course/group/' + this.$route.params.id + '/courses')
       .then(res => {
         this.courses = res.data
         this.loadedCourses = true
-        console.log(res.data)
       })
   }
 }

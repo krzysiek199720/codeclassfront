@@ -140,12 +140,10 @@ export default {
     axios.get('/course/category')
       .then(res => {
         this.categories = res.data
-        console.log(this.categories)
       })
     axios.get('/course/language')
       .then(res => {
         this.languages = res.data
-        console.log(this.languages)
       })
   }
 }

@@ -62,7 +62,6 @@ export default {
   },
   methods: {
     addQuestion () {
-      console.log(this.newQuestion.answer)
       const isDuplicate = this.questions.find(e => { return e.question === this.newQuestion.question })
       if (isDuplicate) { return }
       this.questions.push(this.newQuestion)
