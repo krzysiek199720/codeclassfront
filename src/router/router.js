@@ -81,6 +81,20 @@ const routes = [
         next({ name: 'login' })
       }
     }
+  },
+  {
+    path: '/settings',
+    name: 'settingsAdmin',
+    component: () => import('../views/auth/user/AdminSettings'),
+    beforeEnter: (to, from, next) => { next() } // fixme is admin
+  },
+  {
+    path: '/auth/role/:id',
+    name: 'roleEdit',
+    component: () => import('../views/auth/role/RoleEdit'),
+    beforeEnter: (to, from, next) => {
+      next(store.getters.authHasPermission('get_role') && store.getters.authHasPermission('save_role'))
+    }
   }
 ]
 

@@ -73,7 +73,8 @@ const getters = {
   authRoleId: state => state.roleId,
   authRoleName: state => state.roleName,
   authIsAuthenticated: state => state.token !== null,
-  authHasPermissionAny: state => (perms) => { return state.permissions.findIndex(e => perms.includes(e.name)) !== -1 }
+  authHasPermissionAny: state => (perms) => { return state.permissions.findIndex(e => perms.includes(e.name)) !== -1 },
+  authHasPermission: state => (perm) => { return state.permissions.findIndex(e => e.name === perm) !== -1 }
 }
 
 export default {

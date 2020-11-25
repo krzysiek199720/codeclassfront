@@ -14,6 +14,12 @@ export default {
         this.$store.dispatch('authLogout')
         this.$router.push({ name: 'home' })
       })
+      .catch(err => {
+        if (err.response.data.value === 'auth.token.notfound') {
+          this.$store.dispatch('authLogout')
+          this.$router.push({ name: 'home' })
+        }
+      })
   }
 }
 </script>

@@ -8,6 +8,8 @@
       </template>
       <template v-else>
         <router-link :to="{ name: 'settings'}">Settings</router-link>
+<!--        fixme is admin \/-->
+        <router-link :to="{ name: 'settingsAdmin'}">Settings Admin</router-link>
         <router-link :to="{ name: 'logout'}">Logout</router-link>
       </template>
       <router-link :to="{ name: 'search' } ">Search</router-link>

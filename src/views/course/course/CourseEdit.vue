@@ -75,7 +75,7 @@ export default {
         title: this.course.title
       }
       if (this.isNew) {
-        axios.post('/course/', data)
+        axios.post('/course', data)
       } else {
         axios.put('/course/' + this.$route.params.id, data)
       }
@@ -137,12 +137,12 @@ export default {
       .then(res => {
         this.files = res.data
       })
-    axios.get('/course/category/')
+    axios.get('/course/category')
       .then(res => {
         this.categories = res.data
         console.log(this.categories)
       })
-    axios.get('/course/language/')
+    axios.get('/course/language')
       .then(res => {
         this.languages = res.data
         console.log(this.languages)

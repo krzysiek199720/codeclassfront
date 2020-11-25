@@ -46,7 +46,7 @@ export default {
         email: this.email,
         password: this.password
       }
-      axios.post('/user/', data)
+      axios.post('/user', data)
         .then(res => {
           this.$router.push({ name: 'login' })
         })
