@@ -1,5 +1,6 @@
 <template>
   <div id="role-edit" v-if="loaded">
+    <router-link tag="button" :to="{ name: 'settingsAdmin' }">Back to admin settings</router-link>
     <label for="name">Role name <input type="text" id="name" class="name" v-model="roleName"></label>
     <br> <!-- todo tmp -->
     <label for="isAdmin">Is admin role <input type="checkbox" id="isAdmin" class="isAdmin" v-model="isAdmin"></label>
@@ -67,6 +68,7 @@ export default {
         .then(res => {
           this.selectedPermissions = res.data.permissions.map(x => x.id)
           this.roleName = res.data.name
+          this.isAdmin = res.data.isAdmin
           this.loadedRole = true
         })
     }

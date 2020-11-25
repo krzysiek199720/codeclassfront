@@ -15,8 +15,8 @@
     </div>
     <div class="category-settings" v-if="$store.getters.authHasPermissionAny(['save_category', 'delete_category'])">
       <div class="cat-add" v-if="$store.getters.authHasPermission('save_category')">
-        <label for="category"><input type="text" id="category" v-model="newLang"></label>
-        <button class="save" @click="addLanguage">Add category</button>
+        <label for="category"><input type="text" id="category" v-model="newCat"></label>
+        <button class="save" @click="addCategory">Add category</button>
       </div>
       <template v-for="(c, index) in categories">
         <div class="cat" :key="c.id">
@@ -32,19 +32,23 @@
         <div class="role" :key="role.id">
           <span class="role-name">{{role.name}}</span>
           <router-link tag="button" :to="{name: 'roleEdit', params: {id: role.id}}" v-if="$store.getters.authHasPermission('save_role')">Edit</router-link>
-          <button class="delete" v-if="$store.getters.authHasPermission('delete_role')">Delete role</button>
+          <button class="delete" v-if="$store.getters.authHasPermission('delete_role')" @click="deleteRole(role)">Delete role</button>
         </div>
       </template>
     </div>
-    <div class="user-settings" v-if="$store.getters.authHasPermission('update_role_user')"></div> <!-- maybe new component -->
+    <userAdminPanel class="user-settings" :roles="roles" v-if="$store.getters.authHasPermission('update_role_user')"></userAdminPanel>
   </div>
 </template>
 
 <script>
 import axios from '@/axios/axios'
+import userAdminPanel from '@/components/auth/userAdminPanel'
 
 export default {
   name: 'AdminSettings',
+  components: {
+    userAdminPanel
+  },
   data () {
     return {
       langLoad: false,
@@ -82,9 +86,9 @@ export default {
         })
     },
     deleteLanguage (lang) {
-      axios.delete('/course/category/' + lang.id)
+      axios.delete('/course/language/' + lang.id)
         .then(res => {
-          const index = this.categories.indexOf(lang)
+          const index = this.languages.indexOf(lang)
           this.languages.splice(index, 1)
         })
     },
@@ -94,7 +98,7 @@ export default {
       }
       axios.post('/course/category', data)
         .then(res => {
-          this.languages.push(res.data)
+          this.categories.push(res.data)
         })
     },
     saveCategory (cat) {
@@ -111,6 +115,13 @@ export default {
         .then(res => {
           const index = this.categories.indexOf(cat)
           this.categories.splice(index, 1)
+        })
+    },
+    deleteRole (role) {
+      axios.delete('/auth/role/' + role.id)
+        .then(res => {
+          const index = this.roles.indexOf(role)
+          this.roles.splice(index, 1)
         })
     }
   },
