@@ -19,7 +19,7 @@
 <!--          TODO: make a showable password component-->
           <input type="text" id="password" name="password" placeholder="Password" v-model="password"/>
         </div>
-        <button @click.prevent="login">Log in</button>
+        <button @click.prevent="login">Sign in</button>
       </form>
     </div>
   </div>

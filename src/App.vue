@@ -13,14 +13,20 @@
         <router-link :to="{ name: 'logout'}">Logout</router-link>
       </template>
       <router-link :to="{ name: 'search' } ">Search</router-link>
+      <notification v-if="$store.getters.authIsAuthenticated"></notification>
     </div>
-    <router-view/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 
+import notification from '@/components/notification/notification'
+
 export default {
+  components: {
+    notification
+  },
   mounted () {
     this.$store.dispatch('tryLogin')
   }
