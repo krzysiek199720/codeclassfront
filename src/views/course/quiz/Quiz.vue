@@ -26,7 +26,6 @@
 
 <script>
 import axios from '../../../axios/axios'
-import qs from 'qs'
 
 export default {
   name: 'Quiz',
@@ -48,17 +47,12 @@ export default {
       this.answer = null
       this.questionNumber++
       if (this.questionNumber >= this.quizData.questions.length) {
-        axios.post('/course/' + this.$route.params.id + '/quiz/score', {
-          params: {
-            score: this.score
-          },
-          paramsSerializer: params => {
-            return qs.stringify(params, { indices: false })
-          }
-        })
-          .then(res => {
+        const data = {
+          score: this.score
+        }
 
-          })
+        axios.post('/course/' + this.$route.params.id + '/quiz/score', data)
+          .then(res => {})
           .catch(err => {
             //  failed to save score
             console.log(err)

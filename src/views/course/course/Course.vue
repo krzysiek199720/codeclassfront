@@ -19,7 +19,7 @@
         <span class="file" v-for="file in files" :key="file.id" @click="downloadFile(file.id)">{{file.display}}</span>
       </div>
     </div>
-    <div class="manage"> <!-- prop better to v-if on next template then here -->
+    <div class="manage"> <!-- prob better to v-if on next template then here -->
       <template v-if="$store.getters.authIsAuthenticated">
         <template v-if="!course.isAuthor">
           <button class="follow" v-if="!course.isFollowing" @click="follow(true)">Follow</button>
@@ -66,8 +66,7 @@ export default {
     quizString () {
       if (this.quiz === null) { return '' }
       if (this.quizScore === null) { return 'Quiz' }
-      if (this.quizScore.points === 0) { return 'Quiz' }
-      return this.quizScore.points + ' / ' + this.quizScore.max
+      return 'Quiz ' + this.quizScore.points + ' / ' + this.quizScore.max
     }
   },
   components: {
