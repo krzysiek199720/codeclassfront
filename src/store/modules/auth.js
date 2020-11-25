@@ -9,6 +9,7 @@ const state = {
   lastName: null,
   roleId: null,
   roleName: null,
+  isAdmin: false,
   permissions: []
 }
 
@@ -22,6 +23,7 @@ const mutations = {
     state.lastName = loginData.lastName
     state.roleId = loginData.roleId
     state.roleName = loginData.roleName
+    state.isAdmin = loginData.isAdmin
     state.permissions = loginData.permissions
 
     if (state.token !== undefined && state.token !== null) {
@@ -39,6 +41,7 @@ const mutations = {
     state.lastName = null
     state.roleId = null
     state.roleName = null
+    state.isAdmin = false
     state.permissions = []
 
     axios.defaults.headers.common.Authorization = ''
@@ -74,7 +77,8 @@ const getters = {
   authRoleName: state => state.roleName,
   authIsAuthenticated: state => state.token !== null,
   authHasPermissionAny: state => (perms) => { return state.permissions.findIndex(e => perms.includes(e.name)) !== -1 },
-  authHasPermission: state => (perm) => { return state.permissions.findIndex(e => e.name === perm) !== -1 }
+  authHasPermission: state => (perm) => { return state.permissions.findIndex(e => e.name === perm) !== -1 },
+  authIsAdmin: state => { return state.isAdmin }
 }
 
 export default {
