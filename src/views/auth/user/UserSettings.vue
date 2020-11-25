@@ -45,7 +45,7 @@ export default {
         axios.delete('/user/' + this.$store.getters.authUserId)
           .then(_ => {
             this.$store.dispatch('authLogout')
-            this.$router.push('')
+            this.$router.push({ name: 'home' })
           })
       }
     },
@@ -56,17 +56,17 @@ export default {
       axios.get('/auth/logout/all')
         .then(_ => {
           this.$store.dispatch('authLogout')
-          this.$router.push({ name: '' })
+          this.$router.push({ name: 'home' })
         })
         .catch(_ => {
           this.$store.dispatch('authLogout')
-          this.$router.push({ name: '' })
+          this.$router.push({ name: 'home' })
         })
     },
     editEmail () {
       axios.put('/user/' + this.$store.getters.authUserId + '/email', this.newEmail)
         .then(_ => {
-          this.newPassword = {
+          this.newEmail = {
             email: null,
             password: null
           }
