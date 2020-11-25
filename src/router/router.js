@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import store from '../store/store'
 
 Vue.use(VueRouter)
 
@@ -33,12 +34,18 @@ const routes = [
   {
     path: '/course/:id/edit',
     name: 'courseEdit',
-    component: () => import('../views/course/course/CourseEdit')
+    component: () => import('../views/course/course/CourseEdit'),
+    beforeEnter: (to, from, next) => {
+      next(store.getters.authHasPermissionAny(['save_course', 'delete_course']))
+    }
   },
   {
     path: '/course/:id/edit/data',
     name: 'courseEditData',
-    component: () => import('../views/course/course/CourseDataEdit')
+    component: () => import('../views/course/course/CourseDataEdit'),
+    beforeEnter: (to, from, next) => {
+      next(store.getters.authHasPermissionAny(['save_course_data']))
+    }
   },
   {
     path: '/search',
@@ -58,7 +65,10 @@ const routes = [
   {
     path: '/course/:id/quiz/edit',
     name: 'quizEdit',
-    component: () => import('../views/course/quiz/QuizEdit')
+    component: () => import('../views/course/quiz/QuizEdit'),
+    beforeEnter: (to, from, next) => {
+      next(store.getters.authHasPermissionAny(['save_quiz', 'delete_quiz']))
+    }
   }
 ]
 

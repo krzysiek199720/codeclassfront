@@ -1,8 +1,8 @@
 <template>
   <div id="courseEdit" v-if="loaded">
     <div class="controlls">
-      <router-link tag="button" :to="{name: 'courseEditData', params: { id: this.$route.params.id}}" class="edit-button">Edit data</router-link>
-      <router-link tag="button" :to="{name: 'quizEdit', params: { id: this.$route.params.id}}" class="edit-button">Edit quiz</router-link>
+      <router-link tag="button" :to="{name: 'courseEditData', params: { id: this.$route.params.id}}" class="edit-button" v-if="$store.getters.authHasPermissionAny(['save_course_data'])">Edit data</router-link>
+      <router-link tag="button" :to="{name: 'quizEdit', params: { id: this.$route.params.id}}" class="edit-button" v-if="$store.getters.authHasPermissionAny(['save_quiz', 'delete_quiz'])">Edit quiz</router-link>
       <router-link tag="button" :to="{name: 'course', params: { id: this.$route.params.id}}" class="edit-button">Return to course</router-link>
     </div>
     <div class="data">
@@ -23,16 +23,18 @@
           <option v-for="cat in categories" :key="cat.id" class="category-option" :value="cat">{{cat.name}}</option>
         </select>
       </label>
-      <button class="save" @click="saveDetails">Save details</button>
+      <button class="save" @click="saveDetails" v-if="$store.getters.authHasPermissionAny(['save_course'])">Save details</button>
     </div>
     <div class="links">
-      <label for="link-create-d">Displayed text<input type="text" id="link-create-d" v-model="newLink.display"></label>
-      <label for="link-create-l">Link<input type="text" id="link-create-l" v-model="newLink.link"></label>
-      <button class="save" @click="addLink">Add link</button>
+      <template v-if="$store.getters.authHasPermissionAny(['save_link'])">
+        <label for="link-create-d">Displayed text<input type="text" id="link-create-d" v-model="newLink.display"></label>
+        <label for="link-create-l">Link<input type="text" id="link-create-l" v-model="newLink.link"></label>
+        <button class="save" @click="addLink">Add link</button>
+      </template>
       <div class="link" v-for="link in links" :key="link.id">
         <span class="link-d">{{link.display}}: </span>
         <span class="link-l">{{link.link}}</span>
-        <button class="remove" @click="removeLink(link)">Remove</button>
+        <button class="remove" @click="removeLink(link)" v-if="$store.getters.authHasPermissionAny(['delete_link'])">Remove</button>
       </div>
     </div>
     <div class="files">
@@ -79,20 +81,28 @@ export default {
       }
     },
     addLink () {
+      if (!this.$store.getters.authHasPermissionAny(['save_link'])) return
       axios.post('/course/' + this.$route.params.id + '/link', this.newLink)
         .then(res => {
           this.links.push(res.data)
         })
     },
     removeLink (link) {
+      if (!this.$store.getters.authHasPermissionAny(['delete_link'])) return
       axios.delete('/course/link/' + link.id)
         .then(res => {
           const index = this.links.indexOf(link)
           this.links.splice(index, 1)
         })
     },
-    addFile () {},
-    removeFile () {}
+    addFile () {
+      if (!this.$store.getters.authHasPermissionAny(['save_file'])) return
+      console.log('todo')
+    },
+    removeFile () {
+      if (!this.$store.getters.authHasPermissionAny(['delete_file'])) return
+      console.log('todo')
+    }
   },
   created () {
     axios.get('/course/' + this.$route.params.id)

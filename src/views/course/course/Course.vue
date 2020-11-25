@@ -28,7 +28,7 @@
             <option v-for="ass in assimilationValues" :key="ass" class="assimilation-option">{{ass}}</option>
           </select>
         </template>
-        <template v-else>
+        <template v-else-if="$store.getters.authHasPermissionAny(['publish_course'])">
           <button class="publish" v-if="course.isPublished === null" @click="publish(true)">Publish</button>
           <button class="publish unpublish" v-else @click="publish(false)">Make private</button>
 
