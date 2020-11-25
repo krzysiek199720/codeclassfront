@@ -7,6 +7,7 @@
         <router-link :to="{ name: 'signup'}">Signup</router-link>
       </template>
       <template v-else>
+        <router-link :to="{ name: 'settings'}">Settings</router-link>
         <router-link :to="{ name: 'logout'}">Logout</router-link>
       </template>
       <router-link :to="{ name: 'search' } ">Search</router-link>

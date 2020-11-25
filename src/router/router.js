@@ -69,6 +69,18 @@ const routes = [
     beforeEnter: (to, from, next) => {
       next(store.getters.authHasPermissionAny(['save_quiz', 'delete_quiz']))
     }
+  },
+  {
+    path: '/user',
+    name: 'settings',
+    component: () => import('../views/auth/user/UserSettings'),
+    beforeEnter: (to, from, next) => {
+      if (store.getters.authIsAuthenticated) {
+        next()
+      } else {
+        next({ name: 'login' })
+      }
+    }
   }
 ]
 
