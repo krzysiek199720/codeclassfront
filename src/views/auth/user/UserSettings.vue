@@ -1,5 +1,6 @@
 <template>
   <div id="settings" v-if="loaded">
+    <button class="logout" @click="logoutAll">Log out all sessions</button>
     <div class="controlls">
       <div class="edit">
         <label for="email">New email<input type="text" id="email" class="email" v-model="newEmail.email"></label>
@@ -47,6 +48,20 @@ export default {
             this.$router.push('')
           })
       }
+    },
+    logoutAll () {
+      // only logout and route if server responded,
+      // if response was positive - you were loggedd out
+      // if not - you were never logged in a first place (or your token says so)
+      axios.get('/auth/logout/all')
+        .then(_ => {
+          this.$store.dispatch('authLogout')
+          this.$router.push({ name: '' })
+        })
+        .catch(_ => {
+          this.$store.dispatch('authLogout')
+          this.$router.push({ name: '' })
+        })
     },
     editEmail () {
       axios.put('/user/' + this.$store.getters.authUserId + '/email', this.newEmail)
