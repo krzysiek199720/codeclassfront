@@ -1,6 +1,6 @@
 <template>
     <div v-if="loaded">
-      <commentForm add-code="false"></commentForm>
+      <commentForm :add-code="false"></commentForm>
       <div class="comment-base" v-for="main_com in rootComments" :key="main_com.id">
         <single-comment :data="main_com"></single-comment>
         <div class="comment-children" v-for="com in commentMap.get(main_com.id)" :key="com.id">

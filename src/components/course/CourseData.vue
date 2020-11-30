@@ -57,6 +57,17 @@ export default {
     axios.get('/course/' + this.$route.params.id + '/data')
       .then(res => {
         this.data = res.data.sort((first, second) => { if (first.order < second.order) return -1; if (first.order > second.order) return 1; return 0 })
+
+        // data lines map
+        // dataLinesMapSet
+        const map = new Map()
+        this.data.forEach(e => {
+          if (e.type === 'CODE') {
+            map.set(e.id, e.linesPlain)
+          }
+        })
+        this.$store.dispatch('dataLinesMapSet', map)
+
         this.loaded = true
       })
   }

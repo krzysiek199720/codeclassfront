@@ -4,8 +4,13 @@
       <span class="comment-info" v-if="rootComment !== null">Responding to {{rootComment.userFirstName}} {{rootComment.userLastName}}'s comment</span>
     </div>
     <div class="commentMentionData" v-if="addCode">
-<!--      todo get course data here - store courseData in store and send lines from server?-->
-<!--      todo buttons to add lines before/after-->
+      <button class="line-button" @click.prevent="removeFirst()">Remove first line</button>
+      <button class="line-button" @click.prevent="addPrevious()">Add previous line</button>
+      <button class="line-button"  @click.prevent="addNext()">Add next line</button>
+      <button class="line-button" @click.prevent="removeLast()">Remove last line</button>
+      <div class="selcted-lines">
+        <div class="line" v-for="line in getLines" :key="line.index">{{line.line}}</div>
+      </div>
     </div>
     <textarea name="commentData" v-model="commentData" cols="30" rows="10" class="commentdata"></textarea>
     <button class="submit-comment" @click.prevent="sendComment">Submit</button>
@@ -17,14 +22,21 @@ import axios from '../../../axios/axios'
 
 export default {
   name: 'commentForm',
-  props: ['commentRootIdProp', 'addCode'], // for code mentioning, as for now not implemented in data comment view
+  props: {
+    commentRootIdProp: {},
+    addCode: {
+      type: Boolean,
+      default: false
+    }
+  }, // for code mentioning, as for now not implemented in data comment view
   data () {
     return {
       commentRootId: null,
       commentData: '',
       scriptId: this.addCode ? this.$store.getters.dataCourseDataId : null,
       lineFrom: this.addCode ? this.$store.getters.dataLineGet : null,
-      lineTo: this.addCode ? this.$store.getters.dataLineGet : null
+      lineTo: this.addCode ? this.$store.getters.dataLineGet : null,
+      lineMax: this.addCode ? this.$store.getters.dataLineMaxGet : null
     }
   },
   computed: {
@@ -33,9 +45,44 @@ export default {
       let result = this.$store.dispatch('commentGet')
       if (result === undefined) { result = null }
       return result
+    },
+    getLines () {
+      const res = []
+
+      if (!this.addCode) { return res }
+      // console.log(this.$store.getters.dataGetDataLines(this.scriptId))
+      const linesArray = this.$store.getters.dataGetDataLines(this.scriptId).slice(this.lineFrom, this.lineTo + 1)
+
+      console.log(linesArray)
+
+      for (let i = 0; i < linesArray.length; i++) {
+        res.push({
+          index: i,
+          line: linesArray[i]
+        })
+      }
+
+      console.log(res)
+
+      return res
     }
   },
   methods: {
+    removeFirst () {
+      if (this.lineFrom + 1 >= 0 && this.lineFrom + 1 <= this.lineMax && this.lineFrom + 1 <= this.lineTo) { this.lineFrom += 1 }
+    },
+    addPrevious () {
+      if (this.lineFrom - 1 >= 0 && this.lineFrom - 1 <= this.lineMax && this.lineFrom - 1 <= this.lineTo) { this.lineFrom -= 1 }
+    },
+    addNext () {
+      if (this.lineTo + 1 >= 0 && this.lineTo + 1 <= this.lineMax && this.lineFrom <= this.lineTo + 1) { this.lineTo += 1 }
+    },
+    removeLast () {
+      if (this.lineTo - 1 >= 0 && this.lineTo - 1 <= this.lineMax && this.lineFrom <= this.lineTo - 1) {
+        this.lineTo -= 1
+        this.$forceUpdate()
+      }
+    },
     clearInput () {
       this.commentRootId = null
       this.commentData = ''

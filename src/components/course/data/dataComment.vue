@@ -2,7 +2,7 @@
   <div v-if="$store.getters.commentIsSelectedGet">
     <button class="showCommentForm" @click="showForm = true" v-if="!showForm">Comment with this line</button>
     <button class="showCommentForm" @click="showForm = false" v-else>Close commenting</button>
-    <commentForm v-if="showForm" add-code="true" @removeCommentForm="showForm = false"></commentForm>
+    <commentForm v-if="showForm" :add-code="true" @removeCommentForm="showForm = false"></commentForm>
     <div class="comment-data-container" v-if="loaded">
       <div class="comment-base" v-for="main_com in data.roots" :key="main_com.id">
         <single-comment :data="main_com"></single-comment>

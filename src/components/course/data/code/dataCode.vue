@@ -36,6 +36,7 @@ export default {
       }
       this.$store.dispatch('dataLineSet', line)
       this.$store.dispatch('dataCourseDataIdSet', this.data.id)
+      this.$store.dispatch('dataLineMaxSet', this.data.courseDataLineList.length)
     }
   }
 }

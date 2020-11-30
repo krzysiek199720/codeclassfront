@@ -2,7 +2,9 @@ const state = {
   rootComments: null,
   commentMap: null,
   dataLineSelection: null,
-  dataCourseDataId: null
+  dataCourseDataId: null, // selected one
+  dataMaxLine: 0,
+  dataLinesMap: null
 }
 
 const mutations = {
@@ -13,8 +15,14 @@ const mutations = {
   dataLnSet: (state, payload) => {
     state.dataLineSelection = payload
   },
+  dataLnMax: (state, payload) => {
+    state.dataMaxLine = payload
+  },
   dataCDISet: (state, payload) => {
     state.dataCourseDataId = payload
+  },
+  dataSetMap: (state, payload) => {
+    state.dataLinesMap = payload
   },
   remCom: state => {
     state.rootComments = null
@@ -36,6 +44,12 @@ const actions = {
   dataLineSet: ({ commit }, payload) => {
     commit('dataLnSet', payload)
   },
+  dataLineMaxSet: ({ commit }, payload) => {
+    commit('dataLnMax', payload)
+  },
+  dataLinesMapSet: ({ commit }, payload) => {
+    commit('dataSetMap', payload)
+  },
   dataCourseDataIdSet: ({ commit }, payload) => {
     commit('dataCDISet', payload)
   },
@@ -51,6 +65,8 @@ const getters = {
   getRootComments (state) { return state.rootComments },
   getCommentMap (state) { return state.commentMap },
   dataLineGet (state) { return state.dataLineSelection },
+  dataLineMaxGet (state) { return state.dataMaxLine },
+  dataGetDataLines: (state) => (key) => { return state.dataLinesMap.get(key) },
   dataCourseDataId (state) { return state.dataCourseDataId },
   getRoot: (state) => (commentId) => { return state.rootComments.find(el => el.id === commentId) },
   getChildren: (state) => (commentId) => { return state.commentMap.get(commentId) },
