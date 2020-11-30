@@ -50,10 +50,7 @@ export default {
       const res = []
 
       if (!this.addCode) { return res }
-      // console.log(this.$store.getters.dataGetDataLines(this.scriptId))
       const linesArray = this.$store.getters.dataGetDataLines(this.scriptId).slice(this.lineFrom, this.lineTo + 1)
-
-      console.log(linesArray)
 
       for (let i = 0; i < linesArray.length; i++) {
         res.push({
@@ -61,8 +58,6 @@ export default {
           line: linesArray[i]
         })
       }
-
-      console.log(res)
 
       return res
     }
@@ -95,8 +90,8 @@ export default {
         data: this.commentData,
         root: this.commentRootId,
         scriptId: this.scriptId,
-        lineFrom: this.lineFrom,
-        lineTo: this.lineTo
+        linesFrom: this.lineFrom,
+        linesTo: this.lineTo
       }
       axios.post('/course/' + this.$route.params.id + '/comment', comment)
         .then(res => {

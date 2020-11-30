@@ -18,12 +18,10 @@ export default {
     getLines () {
       const res = []
 
-      const linesArray = this.data.lines.slice(this.data.linesFrom, this.data.linesTo + 1)
-
-      for (let i = 0; i < linesArray.length; i++) {
+      for (let i = 0; i < this.data.lines.length; i++) {
         res.push({
-          index: i,
-          line: linesArray[i]
+          index: this.data.linesFrom + i,
+          line: this.data.lines[i]
         })
       }
 
