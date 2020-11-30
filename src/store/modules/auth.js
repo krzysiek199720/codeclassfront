@@ -57,7 +57,10 @@ const actions = {
     const auth = JSON.parse(localStorage.getItem('auth'))
     if (auth === null) { return }
     const date = new Date()
-    if (date >= auth.expires) { commit('authRem') }
+    console.log(date)
+    console.log(new Date(auth.expires))
+    console.log(date >= auth.expires)
+    if (date >= new Date(auth.expires)) { commit('authRem'); return }
     commit('authSet', auth)
   },
   authLogout: ({ commit }) => {
