@@ -38,7 +38,16 @@
       </div>
     </div>
     <div class="files">
+      <template v-if="$store.getters.authHasPermissionAny(['save_file'])">
+        <label for="link-create-d">Displayed text<input type="text" id="file-create-d" v-model="newFile.display"></label>
+        <label for="link-create-l">File<input type="file" id="file-create-l" ref="file" @change="OnFileChange()"></label>
+        <button class="save" @click="addFile">Add file</button>
+      </template>
 <!--      todo: -->
+      <div class="file" v-for="file in files" :key="file.id">
+        <span class="link-d">{{file.display}}</span>
+        <button class="remove" @click="removeFile(file)" v-if="$store.getters.authHasPermissionAny(['delete_file'])">Remove</button>
+      </div>
     </div>
   </div>
 </template>
@@ -62,6 +71,10 @@ export default {
       newLink: {
         display: null,
         link: null
+      },
+      newFile: {
+        display: '',
+        file: null
       }
     }
   },
@@ -95,13 +108,36 @@ export default {
           this.links.splice(index, 1)
         })
     },
+    OnFileChange () {
+      this.newFile.file = this.$refs.file.files[0]
+    },
     addFile () {
       if (!this.$store.getters.authHasPermissionAny(['save_file'])) return
-      console.log('todo')
+
+      const formData = new FormData()
+      formData.append('name', this.newFile.display)
+      formData.append('file', this.newFile.file)
+
+      axios.post('/course/' + this.$route.params.id + '/file',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .then(res => {
+          this.files.push(res.data)
+        }).catch(_ => {
+          console.log('failed to save file')
+        })
     },
-    removeFile () {
+    removeFile (file) {
       if (!this.$store.getters.authHasPermissionAny(['delete_file'])) return
-      console.log('todo')
+      axios.delete('/course/file/' + file.id)
+        .then(res => {
+          const index = this.files.indexOf(file)
+          this.files.splice(index, 1)
+        })
     }
   },
   created () {

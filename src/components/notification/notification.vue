@@ -51,7 +51,6 @@ export default {
       this.isOpened = !this.isOpened
     },
     closeEvent (event) {
-      console.log('event')
       this.isOpened = false
     }
   },
