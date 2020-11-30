@@ -7,7 +7,7 @@
     </div>
     <div class="data">
       <label for="title">Title: <input type="text" id="title" v-model="course.title"></label>
-      <label for="group-order">Group order: <input type="text" id="group-order" v-model="course.groupOrder"></label>
+      <label for="group-order">Group order: <input type="number" id="group-order" v-model="course.groupOrder"></label>
       <label for="complexity">Complexity:
         <select name="complexity" id="complexity" v-model="course.complexity" >
           <option v-for="com in complexityValues" :key="com" class="assimilation-option">{{com}}</option>

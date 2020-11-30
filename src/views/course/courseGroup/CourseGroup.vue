@@ -12,6 +12,7 @@
           </template>
           <template v-else>
             <router-link tag="button" :to="{name: 'courseGroupSave', params: { id: this.$route.params.id}}" class="edit-button">Edit</router-link>
+            <router-link tag="button" :to="{name: 'courseSave', query: {'cgid': $route.params.id}}" class="create-button">Create course</router-link>
           </template>
         </template>
       </div>

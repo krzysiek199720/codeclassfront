@@ -44,6 +44,11 @@ const routes = [
     component: () => import('../views/course/course/Course')
   },
   {
+    path: '/course',
+    name: 'courseSave',
+    component: () => import('../views/course/course/CourseCreate')
+  },
+  {
     path: '/course/:id/edit',
     name: 'courseEdit',
     component: () => import('../views/course/course/CourseEdit'),
