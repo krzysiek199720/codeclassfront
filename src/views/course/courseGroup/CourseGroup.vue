@@ -11,7 +11,7 @@
             <button class="follow unfollow" v-else>Unfollow</button>
           </template>
           <template v-else>
-            <router-link tag="button" :to="{name: 'courseGroupEdit', params: { id: this.$route.params.id}}" class="edit-button">Edit</router-link>
+            <router-link tag="button" :to="{name: 'courseGroupSave', params: { id: this.$route.params.id}}" class="edit-button">Edit</router-link>
           </template>
         </template>
       </div>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import axios from '../../axios/axios'
+import axios from '../../../axios/axios'
 
 export default {
   name: 'CourseGroup',

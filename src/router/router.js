@@ -14,7 +14,13 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('../views/auth/access/Login')
+    component: () => import('../views/auth/access/Login'),
+    beforeEnter: (to, from, next) => {
+      if (store.getters.authIsAuthenticated) {
+        next({ name: 'Home' })
+      }
+      next()
+    }
   },
   {
     path: '/logout',
@@ -24,7 +30,13 @@ const routes = [
   {
     path: '/signup',
     name: 'signup',
-    component: () => import('../views/auth/user/Signup')
+    component: () => import('../views/auth/user/Signup'),
+    beforeEnter: (to, from, next) => {
+      if (store.getters.authIsAuthenticated) {
+        next({ name: 'Home' })
+      }
+      next()
+    }
   },
   {
     path: '/course/:id',
@@ -55,7 +67,12 @@ const routes = [
   {
     path: '/course/group/:id',
     name: 'courseGroup',
-    component: () => import('../views/course/CourseGroup')
+    component: () => import('../views/course/courseGroup/CourseGroup')
+  },
+  {
+    path: '/course/group/:id/edit',
+    name: 'courseGroupSave',
+    component: () => import('../views/course/courseGroup/CourseGroupSave')
   },
   {
     path: '/course/:id/quiz',
