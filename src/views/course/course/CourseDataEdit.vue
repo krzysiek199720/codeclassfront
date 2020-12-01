@@ -7,7 +7,9 @@
     <div class="edit-container">
       <div class="editor">
 <!--        just put string for now / make a editor component later-->
-        <button class="insert" @click.stop.capture="insertCode()">Insert &lt;code&gt;</button>
+        <button class="insert" @click="insertCode()">&lt;code&gt;</button>
+        <button class="insert" @click="insertLine()">&lt;line&gt;</button>
+        <button class="insert" @click="insertElement()">&lt;element&gt;</button>
         <textarea name="dataraw" id="dataraw" cols="30" rows="20" v-model="dataRaw" ref="dataraw" accept-charset="utf-8"></textarea>
       </div>
       <div class="result">
@@ -51,6 +53,12 @@ export default {
     },
     insertCode () {
       this.insertBlock('<code>', '</code>')
+    },
+    insertLine () {
+      this.insertBlock('<line indent="">', '</line>')
+    },
+    insertElement () {
+      this.insertBlock('<element desc="">', '</element>')
     },
     insertBlock (insertHead, insertTail) {
       // insert head and tail on cursor
