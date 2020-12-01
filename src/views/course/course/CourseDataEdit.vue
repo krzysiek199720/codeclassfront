@@ -1,6 +1,5 @@
 <template>
   <div id="quizEdit" v-if="loaded">
-    sdjkgbjisdfbgasdfji
     <router-link tag="button" :to="{name:'courseEdit', params: {id: this.$route.params.id}}">Back to course edit</router-link>
     <button class="save" @click="save">Save</button>
     <button class="save" @click="preview">Preview</button>
@@ -82,7 +81,6 @@ export default {
       ta.focus()
     },
     insert (pos, text) {
-      console.log(pos, text)
       const ta = this.$refs.dataraw
       const taval = ta.value
       ta.value = taval.slice(0, pos) + text + taval.slice(pos)

@@ -47,7 +47,6 @@ export default {
         })
     },
     switchOpen () {
-      console.log('switchOpen')
       this.isOpened = !this.isOpened
     },
     closeEvent (event) {

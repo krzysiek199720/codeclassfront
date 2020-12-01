@@ -60,10 +60,7 @@ export default {
 
   created () {
     if (!(store.getters.authHasPermission('get_role') && store.getters.authHasPermission('save_role'))) {
-      console.log('document.referrer')
-      console.log(document.referrer)
-      const x = router.go(-1)
-      console.log(x)
+      router.go(-1)
     }
 
     axios.get('/auth/permissions')

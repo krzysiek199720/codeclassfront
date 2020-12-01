@@ -85,7 +85,6 @@ export default {
     }
   },
   beforeRouteEnter (to, from, next) {
-    console.log('before rouite')
     if (!store.getters.authIsAuthenticated) { next({ name: 'login' }) }
     next()
   },
