@@ -18,6 +18,8 @@
 
 <script>
 import axios from '@/axios/axios'
+import store from '@/store/store'
+import router from '@/router/router'
 
 export default {
   name: 'RoleEdit',
@@ -55,7 +57,15 @@ export default {
       }
     }
   },
+
   created () {
+    if (!(store.getters.authHasPermission('get_role') && store.getters.authHasPermission('save_role'))) {
+      console.log('document.referrer')
+      console.log(document.referrer)
+      const x = router.go(-1)
+      console.log(x)
+    }
+
     axios.get('/auth/permissions')
       .then(res => {
         this.permissions = res.data

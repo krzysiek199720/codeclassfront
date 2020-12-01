@@ -42,6 +42,7 @@
 
 <script>
 import axios from '@/axios/axios'
+import store from '@/store/store'
 
 export default {
   name: 'QuizEdit',
@@ -106,6 +107,9 @@ export default {
       .catch(_ => {
         this.loaded = true
       })
+  },
+  beforeRouteEnter: (to, from, next) => {
+    next(store.getters.authHasPermissionAny(['save_quiz', 'delete_quiz']))
   }
 }
 </script>

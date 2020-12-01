@@ -8,8 +8,7 @@
         </div>
         <div class="input-div">
           <label for="password"></label>
-<!--          TODO: make a showable password component-->
-          <input type="text" id="password" name="password" placeholder="Password" v-model="password"/>
+          <input type="password" id="password" name="password" placeholder="Password" v-model="password"/>
         </div>
         <button @click.prevent="login">Log in</button>
       </form>
@@ -19,6 +18,7 @@
 
 <script>
 import axios from '../../../axios/axios'
+import store from '@/store/store'
 
 export default {
   name: 'login',
@@ -41,6 +41,12 @@ export default {
           this.$router.push({ name: 'home' })
         })
     }
+  },
+  beforeRouteEnter: (to, from, next) => {
+    if (store.getters.authIsAuthenticated) {
+      next({ name: 'Home' })
+    }
+    next()
   }
 }
 </script>

@@ -23,6 +23,7 @@
 
 <script>
 import axios from '@/axios/axios'
+import store from '@/store/store'
 
 export default {
   name: 'UserSettings',
@@ -82,6 +83,11 @@ export default {
           }
         })
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    console.log('before rouite')
+    if (!store.getters.authIsAuthenticated) { next({ name: 'login' }) }
+    next()
   },
   created () {
     axios.get('/course/group/user')

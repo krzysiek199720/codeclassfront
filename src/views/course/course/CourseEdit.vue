@@ -54,6 +54,7 @@
 
 <script>
 import axios from '@/axios/axios'
+import store from '@/store/store'
 
 export default {
   name: 'CourseEdit',
@@ -181,6 +182,9 @@ export default {
       .then(res => {
         this.languages = res.data
       })
+  },
+  beforeRouteEnter: (to, from, next) => {
+    next(store.getters.authHasPermissionAny(['save_course', 'delete_course']))
   }
 }
 </script>

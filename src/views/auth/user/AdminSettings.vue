@@ -126,6 +126,9 @@ export default {
     }
   },
   async created () {
+    this.$store.dispatch('defaultOnNotLoggedIn')
+    this.$store.dispatch('defaultOnNotAdmin')
+
     axios.get('/course/language')
       .then(res => {
         this.languages = res.data

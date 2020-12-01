@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import store from '../store/store'
 
 Vue.use(VueRouter)
 
@@ -14,13 +13,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('../views/auth/access/Login'),
-    beforeEnter: (to, from, next) => {
-      if (store.getters.authIsAuthenticated) {
-        next({ name: 'Home' })
-      }
-      next()
-    }
+    component: () => import('../views/auth/access/Login')
   },
   {
     path: '/logout',
@@ -30,13 +23,7 @@ const routes = [
   {
     path: '/signup',
     name: 'signup',
-    component: () => import('../views/auth/user/Signup'),
-    beforeEnter: (to, from, next) => {
-      if (store.getters.authIsAuthenticated) {
-        next({ name: 'Home' })
-      }
-      next()
-    }
+    component: () => import('../views/auth/user/Signup')
   },
   {
     path: '/course/:id',
@@ -51,18 +38,12 @@ const routes = [
   {
     path: '/course/:id/edit',
     name: 'courseEdit',
-    component: () => import('../views/course/course/CourseEdit'),
-    beforeEnter: (to, from, next) => {
-      next(store.getters.authHasPermissionAny(['save_course', 'delete_course']))
-    }
+    component: () => import('../views/course/course/CourseEdit')
   },
   {
     path: '/course/:id/edit/data',
     name: 'courseEditData',
-    component: () => import('../views/course/course/CourseDataEdit'),
-    beforeEnter: (to, from, next) => {
-      next(store.getters.authHasPermissionAny(['save_course_data']))
-    }
+    component: () => import('../views/course/course/CourseDataEdit')
   },
   {
     path: '/search',
@@ -87,36 +68,22 @@ const routes = [
   {
     path: '/course/:id/quiz/edit',
     name: 'quizEdit',
-    component: () => import('../views/course/quiz/QuizEdit'),
-    beforeEnter: (to, from, next) => {
-      next(store.getters.authHasPermissionAny(['save_quiz', 'delete_quiz']))
-    }
+    component: () => import('../views/course/quiz/QuizEdit')
   },
   {
     path: '/user',
     name: 'settings',
-    component: () => import('../views/auth/user/UserSettings'),
-    beforeEnter: (to, from, next) => {
-      if (store.getters.authIsAuthenticated) {
-        next()
-      } else {
-        next({ name: 'login' })
-      }
-    }
+    component: () => import('../views/auth/user/UserSettings')
   },
   {
     path: '/settings',
     name: 'settingsAdmin',
-    component: () => import('../views/auth/user/AdminSettings'),
-    beforeEnter: (to, from, next) => { next() } // fixme is admin
+    component: () => import('../views/auth/user/AdminSettings')
   },
   {
     path: '/auth/role/:id',
     name: 'roleEdit',
-    component: () => import('../views/auth/role/RoleEdit'),
-    beforeEnter: (to, from, next) => {
-      next(store.getters.authHasPermission('get_role') && store.getters.authHasPermission('save_role'))
-    }
+    component: () => import('../views/auth/role/RoleEdit')
   }
 ]
 

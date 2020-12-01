@@ -10,7 +10,8 @@ const state = {
   roleId: null,
   roleName: null,
   isAdmin: false,
-  permissions: []
+  permissions: [],
+  loginTried: false
 }
 
 const mutations = {
@@ -45,6 +46,9 @@ const mutations = {
     state.permissions = []
 
     axios.defaults.headers.common.Authorization = ''
+  },
+  logTr: state => {
+    state.loginTried = true
   }
 }
 
@@ -54,14 +58,20 @@ const actions = {
     commit('authSet', loginData.data)
   },
   tryLogin: ({ commit }) => {
+    console.log('tryLogin')
     const auth = JSON.parse(localStorage.getItem('auth'))
-    if (auth === null) { return }
+    if (auth === null) {
+      commit('logTr')
+      return
+    }
     const date = new Date()
-    console.log(date)
-    console.log(new Date(auth.expires))
-    console.log(date >= auth.expires)
-    if (date >= new Date(auth.expires)) { commit('authRem'); return }
+    if (date >= new Date(auth.expires)) {
+      commit('authRem')
+      commit('logTr')
+      return
+    }
     commit('authSet', auth)
+    commit('logTr')
   },
   authLogout: ({ commit }) => {
     localStorage.removeItem('auth')
@@ -71,6 +81,7 @@ const actions = {
 
 const getters = {
   authToken: state => { return state.token },
+  loginT: state => { return state.loginTried },
   authExpires: state => state.expires,
   authUserId: state => state.userId,
   authEmail: state => state.email,

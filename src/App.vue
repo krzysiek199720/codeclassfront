@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-if="loaded">
     <div id="nav">
       <router-link :to="'/'">Home</router-link>
       <template v-if="!$store.getters.authIsAuthenticated">
@@ -27,7 +27,10 @@ export default {
   components: {
     notification
   },
-  mounted () {
+  computed: {
+    loaded () { return this.$store.getters.loginT }
+  },
+  beforeCreate () {
     this.$store.dispatch('tryLogin')
   }
 }

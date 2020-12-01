@@ -27,6 +27,7 @@
 
 <script>
 import axios from '../../../axios/axios'
+import store from '@/store/store'
 
 export default {
   name: 'signup',
@@ -55,6 +56,12 @@ export default {
           console.log(error)
         })
     }
+  },
+  beforeRouteEnter: (to, from, next) => {
+    if (store.getters.authIsAuthenticated) {
+      next({ name: 'Home' })
+    }
+    next()
   }
 }
 </script>

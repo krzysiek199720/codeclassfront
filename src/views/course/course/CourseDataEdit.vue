@@ -1,12 +1,14 @@
 <template>
   <div id="quizEdit" v-if="loaded">
+    sdjkgbjisdfbgasdfji
     <router-link tag="button" :to="{name:'courseEdit', params: {id: this.$route.params.id}}">Back to course edit</router-link>
     <button class="save" @click="save">Save</button>
     <button class="save" @click="preview">Preview</button>
     <div class="edit-container">
       <div class="editor">
 <!--        just put string for now / make a editor component later-->
-        <textarea name="dataraw" id="dataraw" cols="30" rows="20" v-model="dataRaw" accept-charset="utf-8"></textarea>
+        <button class="insert" @click.stop.capture="insertCode()">Insert &lt;code&gt;</button>
+        <textarea name="dataraw" id="dataraw" cols="30" rows="20" v-model="dataRaw" ref="dataraw" accept-charset="utf-8"></textarea>
       </div>
       <div class="result">
         <courseData class="coursedata" :showComments="false" :usePropsData="false" :propsData="data"></courseData>
@@ -18,6 +20,7 @@
 <script>
 import axios from '@/axios/axios'
 import CourseData from '@/components/course/CourseData'
+import store from '@/store/store'
 
 export default {
   name: 'CourseDataEdit',
@@ -45,6 +48,36 @@ export default {
         .then(res => {
           this.data = res.data
         })
+    },
+    insertCode () {
+      this.insertBlock('<code>', '</code>')
+    },
+    insertBlock (insertHead, insertTail) {
+      // insert head and tail on cursor
+      // if a selection - contain it between
+      const ta = this.$refs.dataraw
+      let startPos = ta.selectionStart
+      let endPos = ta.selectionEnd
+
+      if (startPos === endPos) {
+        this.insert(startPos, insertHead + insertTail)
+        startPos += (insertHead + insertTail).length
+        endPos += (insertHead + insertTail).length
+      } else {
+        this.insert(startPos, insertHead)
+        startPos += insertHead.length
+        endPos += insertHead.length
+        this.insert(endPos, insertTail)
+      }
+      ta.selectionStart = startPos
+      ta.selectionEnd = endPos
+      ta.focus()
+    },
+    insert (pos, text) {
+      console.log(pos, text)
+      const ta = this.$refs.dataraw
+      const taval = ta.value
+      ta.value = taval.slice(0, pos) + text + taval.slice(pos)
     }
   },
   components: {
@@ -67,6 +100,9 @@ export default {
       .catch(_ => {
         this.loadDR = true
       })
+  },
+  beforeRouteEnter: (to, from, next) => {
+    next(store.getters.authHasPermission('save_course_data'))
   }
 }
 </script>
