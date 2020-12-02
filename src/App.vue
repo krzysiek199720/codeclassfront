@@ -89,7 +89,7 @@ body {
 
 #nav {
   span {
-    color: $text-color;
+    color: $highlight-color;
     margin: 0 10px;
     padding: 2px;
     cursor: pointer;

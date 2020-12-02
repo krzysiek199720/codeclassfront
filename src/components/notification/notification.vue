@@ -73,7 +73,7 @@ export default {
   display: block;
   padding: 5px;
   margin-top: -2px;
-  color: $text-color;
+  color: $highlight-color;
 }
 
 .content{
@@ -116,16 +116,16 @@ export default {
     margin: 8px auto;
     align-self: center;
     .mark-read{
-      color: $text-color;
+      color: $highlight-color;
       background-color: transparent;
-      border: 1px solid $text-color;
+      border: 1px solid $highlight-color;
     }
     .mark-read:hover{
       color: $primary-color;
-      background-color: $text-color;
+      background-color: $highlight-color;
     }
     button{
-      border-color: $highlight-color;
+      border-color: $text-color;
       border-radius: 4px;
       margin: 2px 2px
     }
