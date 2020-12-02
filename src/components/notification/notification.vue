@@ -1,6 +1,6 @@
 <template>
   <div id="notification-container" v-click-outside="closeEvent">
-    <div class="opener" @click="switchOpen"></div>
+    <div class="opener" @click="switchOpen"><font-awesome-icon :icon="['far','bell']"/></div>
     <div class="content" v-if="isOpened">
       <router-link class="notification"
                    tag="div"
@@ -12,7 +12,7 @@
         <span class="text">{{not.text}}</span>
         <div class="buttons">
           <button class="mark-read" @click.stop="markRead(not)" v-if="!not.isread">Mark as read</button>
-          <button class="mark-read" @click.stop="deleteNotification(not)">Delete</button>
+          <button class="delete" @click.stop="deleteNotification(not)">Delete</button>
         </div>
       </router-link>
       <div class="no-content" v-if="notifications.length === 0"><span>No notifications</span></div>
@@ -67,22 +67,77 @@ export default {
 
 <style scoped lang="scss">
 
+@import 'src/assets/css/variables.scss';
+
 .opener{
   display: block;
   padding: 5px;
-  border: 2px darkgoldenrod solid;
+  margin-top: -2px;
+  color: $text-color;
 }
 
 .content{
+    width: 400px;
+
     display: block;
     position: absolute;
-    padding: 10px;
-    border: 2px deeppink solid;
-  .read{
-    border: 2px cornflowerblue solid;
+    right: 15px;
+    padding: 0;
+    border: 1px $secondary-color solid;
+    background-color: $primary-color;
+    margin: 5px 0;
+  //.read{
+  //  background-color: $primary-color;
+  //}
+  //.unread{
+  //  background-color: $secondary-color;
+  //}
+  .notification{
+    display: flex;
+    background-color: $primary-color;
+    margin: 0 8px;
   }
-  .unread{
-    border: 2px darkmagenta solid;
+  .notification+.notification{
+    //padding: 0 2px;
+    border-top: $secondary-color solid 1px;
+  }
+  .read+.read{
+  }
+  span{
+    margin: 0!important;
+    padding: 8px 8px!important;
+  }
+
+  .buttons{
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    //align-content: center;
+    margin: 8px auto;
+    align-self: center;
+    .mark-read{
+      color: $text-color;
+      background-color: transparent;
+      border: 1px solid $text-color;
+    }
+    .mark-read:hover{
+      color: $primary-color;
+      background-color: $text-color;
+    }
+    button{
+      border-color: $highlight-color;
+      border-radius: 4px;
+      margin: 2px 2px
+    }
+    .delete{
+      color: $delete-color;
+      border: 1px solid $delete-color;
+      background-color: transparent;
+    }
+    .delete:hover{
+      color: $primary-color;
+      background-color: $delete-color;
+    }
   }
 }
 

@@ -1,21 +1,30 @@
 <template>
   <div id="app" v-if="loaded">
     <div id="nav">
-      <router-link :to="'/'">Home</router-link>
-      <template v-if="!$store.getters.authIsAuthenticated">
-        <router-link :to="{name: 'login'}">Login</router-link>
-        <router-link :to="{ name: 'signup'}">Signup</router-link>
+      <div class="nav-links">
+      <router-link tag="span" :to="'/'">Home</router-link>
+      <template v-if="$store.getters.authIsAuthenticated">
+        <router-link tag="span" :to="{ name: 'settings'}">Settings</router-link>
+        <router-link tag="span" :to="{ name: 'settingsAdmin'}" v-if="$store.getters.authIsAdmin">Settings Admin</router-link>
+
       </template>
-      <template v-else>
-        <router-link :to="{ name: 'settings'}">Settings</router-link>
-<!--        fixme is admin \/-->
-        <router-link :to="{ name: 'settingsAdmin'}" v-if="$store.getters.authIsAdmin">Settings Admin</router-link>
-        <router-link :to="{ name: 'logout'}">Logout</router-link>
-      </template>
-      <router-link :to="{ name: 'search' } ">Search</router-link>
-      <notification v-if="$store.getters.authIsAuthenticated"></notification>
+
+      <router-link tag="span" :to="{ name: 'search' } ">Search</router-link>
+      </div>
+      <div class="nav-other">
+        <notification v-if="$store.getters.authIsAuthenticated"></notification>
+        <template v-if="!$store.getters.authIsAuthenticated">
+          <router-link tag="span" :to="{name: 'login'}">Login</router-link>
+          <router-link tag="span" :to="{ name: 'signup'}">Signup</router-link>
+        </template>
+        <template v-else>
+          <router-link tag="span" :to="{ name: 'logout'}">Logout</router-link>
+        </template>
+      </div>
     </div>
-    <router-view></router-view>
+    <div class="content">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -38,13 +47,58 @@ export default {
 </script>
 
 <style lang="scss">
+@import 'assets/css/fontImport.css';
+
+@import 'assets/css/variables.scss';
+
+*{
+  font-family: 'Open Sans', sans-serif;
+}
+
+//font-family: 'Comfortaa', cursive;
+
+//font-family: 'Architects Daughter', cursive;
+
+body {
+  margin: 0;
+  background-color: $primary-color;
+}
 
 #app{
+  width: 100%;
   #nav{
     display: flex;
-    flex-direction: column;
-    margin: 100px auto;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: $header-height;
+    margin: 0;
+    padding: 0 5px ;
+
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+
+    background-color: $header-bg-color;
   }
+  &>.content {
+    margin-top: $header-height;
+  }
+}
+
+#nav {
+  span {
+    color: $text-color;
+    margin: 0 10px;
+    padding: 2px;
+    cursor: pointer;
+  }
+}
+
+#nav .nav-other{
+  display: flex;
+  flex-direction: row;
 }
 
 </style>

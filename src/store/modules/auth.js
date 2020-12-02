@@ -58,7 +58,6 @@ const actions = {
     commit('authSet', loginData.data)
   },
   tryLogin: ({ commit }) => {
-    console.log('tryLogin')
     const auth = JSON.parse(localStorage.getItem('auth'))
     if (auth === null) {
       commit('logTr')

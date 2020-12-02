@@ -1,10 +1,16 @@
 import Vue from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faBell, faBellSlash } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import store from './store/store'
 import router from './router/router'
 
 import moment from 'moment'
+
+library.add(faBell, faBellSlash)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 
