@@ -22,6 +22,14 @@ Vue.filter('formatDate', function (value) {
   }
 })
 
+Vue.filter('formatDateOrEmpty', function (value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY')
+  } else {
+    return ''
+  }
+})
+
 const main = new Vue({
   router,
   store,

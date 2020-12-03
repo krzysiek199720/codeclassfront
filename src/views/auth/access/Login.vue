@@ -88,7 +88,7 @@ export default {
   }
 
   button{
-    margin-top: 80px;
+    margin-top: 50px;
     color: $highlight-color;
     border-color: $highlight-color;
     width:80%;
@@ -109,6 +109,10 @@ export default {
     border-bottom: 1px solid $input-color;
     background-color: transparent;
     margin: 0 auto;
+  }
+
+  input::placeholder{
+    color: $input-placeholder-color;
   }
 
   input:focus, input:active, input:hover{
