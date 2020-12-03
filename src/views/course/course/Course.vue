@@ -150,6 +150,7 @@ export default {
             this.quizScore = res.data === '' ? null : res.data
           })
       })
+      .catch(_ => {})
     axios.get('/course/' + this.$route.params.id + '/link')
       .then(res => {
         this.links = res.data

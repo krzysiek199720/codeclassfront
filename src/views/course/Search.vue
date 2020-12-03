@@ -19,10 +19,12 @@
           <div class="moreinfo">
             <div class="important">
               <div class="complexity">
-                <template>{{item.minComplexity}}<template v-if="item.minComplexity !== item.maxComplexity"> {{item.maxComplexity}}</template></template>
+                <template>{{item.minComplexity}}<template v-if="item.minComplexity !== item.maxComplexity"> - {{item.maxComplexity}}</template></template>
               </div>
-              <span class="language">{{item.languageName}}</span>
-              <span class="category">{{item.categoryName}}</span>
+              <div class="lancat">
+                <span class="language">{{item.languageName}}</span>
+                <span class="category">{{item.categoryName}}</span>
+              </div>
             </div>
             <div class="info-rest">
               <span class="updated">Last updated: {{item.lastAddedDate | formatDateOrEmpty}}</span>
@@ -169,8 +171,8 @@ export default {
       color: $highlight-color;
       display: flex;
       flex-direction: column;
+      align-self: center;
       width: 60%;
-      border-right: $text-color 1px solid;
       cursor: pointer;
       .title{
         font-size: 20px;
@@ -180,7 +182,8 @@ export default {
       }
     }
     .moreinfo{
-      margin-left: 10px;
+      padding-left: 10px;
+      border-left: $text-color 1px solid;
       display: flex;
       flex-direction: column;
       width: 40%;
@@ -193,12 +196,28 @@ export default {
 
   .moreinfo .important{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .moreinfo .complexity {
+    align-self: center;
+  }
+
+  .moreinfo .lancat{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
   }
 
   .moreinfo .info-rest{
     display: grid;
     grid-template-columns: 2fr 1fr;
+    &>*{
+      align-self: center;
+    }
+    .comment-count{
+      justify-self: center;
+    }
   }
 
   .moreinfo div+div{
