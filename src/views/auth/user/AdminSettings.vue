@@ -1,8 +1,8 @@
 <template>
   <div id="admin-settings" v-if="loaded">
-    <div class="language-settings" v-if="$store.getters.authHasPermissionAny(['save_language', 'delete_language'])">
+    <div class="section language-settings" v-if="$store.getters.authHasPermissionAny(['save_language', 'delete_language'])">
       <div class="lang-add" v-if="$store.getters.authHasPermission('save_language')">
-        <label for="language"><input type="text" id="language" v-model="newLang"></label>
+        <label for="language">Language name: <input type="text" id="language" v-model="newLang"></label>
         <button class="save" @click="addLanguage">Add language</button>
       </div>
       <template v-for="(l, index) in languages">
@@ -13,7 +13,7 @@
         </div>
       </template>
     </div>
-    <div class="category-settings" v-if="$store.getters.authHasPermissionAny(['save_category', 'delete_category'])">
+    <div class="section category-settings" v-if="$store.getters.authHasPermissionAny(['save_category', 'delete_category'])">
       <div class="cat-add" v-if="$store.getters.authHasPermission('save_category')">
         <label for="category"><input type="text" id="category" v-model="newCat"></label>
         <button class="save" @click="addCategory">Add category</button>
@@ -26,7 +26,7 @@
         </div>
       </template>
     </div>
-    <div class="role-settings" v-if="$store.getters.authHasPermission('get_role')">
+    <div class="section role-settings" v-if="$store.getters.authHasPermission('get_role')">
       <router-link tag="button" :to="{name: 'roleEdit', params: {id: null}}" class="new-role" v-if="$store.getters.authHasPermission('save_role')">New role</router-link>
       <template v-for="role in roles">
         <div class="role" :key="role.id">
@@ -36,7 +36,7 @@
         </div>
       </template>
     </div>
-    <userAdminPanel class="user-settings" :roles="roles" v-if="$store.getters.authHasPermission('update_role_user')"></userAdminPanel>
+    <userAdminPanel class="section user-settings" :roles="roles" v-if="$store.getters.authHasPermission('update_role_user')"></userAdminPanel>
   </div>
 </template>
 
@@ -149,6 +149,38 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
+@import 'src/assets/css/variables.scss';
+
+#admin-settings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 1200px;
+  margin: 120px auto auto auto;
+  color: $text-color;
+
+  .section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    background-color: $header-bg-color;
+    padding: 30px;
+    border-radius: 5px;
+  }
+
+  .section+.section{
+    margin-top: 10px;
+  }
+
+  .lang-add{
+    display: flex;
+    flex-direction: row;
+    button{
+      margin-left:10px;
+    }
+  }
+}
 </style>

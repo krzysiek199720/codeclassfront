@@ -115,7 +115,6 @@ export default {
   width: 1200px;
   margin: 120px auto auto auto;
   color: $text-color;
-  padding: 30px;
 
   .settings{
     display: flex;
