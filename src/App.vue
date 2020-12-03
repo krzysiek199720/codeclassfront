@@ -64,6 +64,12 @@ body {
   background-color: $primary-color;
 }
 
+button{
+  border: 1px solid red;
+  background-color: transparent;
+  border-radius: 5px;
+}
+
 #app{
   width: 100%;
   #nav{

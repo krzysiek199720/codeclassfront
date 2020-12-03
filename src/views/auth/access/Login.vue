@@ -90,9 +90,7 @@ export default {
   button{
     margin-top: 80px;
     color: $highlight-color;
-    border: 1px solid $highlight-color;
-    background-color: transparent;
-    border-radius: 5px;
+    border-color: $highlight-color;
     width:80%;
     height: 35px;
   }
