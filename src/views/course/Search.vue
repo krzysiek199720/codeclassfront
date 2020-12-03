@@ -1,13 +1,17 @@
 <template>
   <div id="search" class="search-container">
     <div class="controls">
-      <input type="text" v-model="searchQuery" placeholder="Searched text">
-      <div class="complexities-check">
-        <label for="BEGINNER"><input type="checkbox" id="BEGINNER" value="BEGINNER" v-model="complexities">Beginner<span class="checkmark"></span></label>
-        <label for="INTERMEDIATE"><input type="checkbox" id="INTERMEDIATE" value="INTERMEDIATE" v-model="complexities">Intermediate<span class="checkmark"></span></label>
-        <label for="ADVANCED"><input type="checkbox" id="ADVANCED" value="ADVANCED" v-model="complexities">Advanced<span class="checkmark"></span></label>
-      </div>
-      <button @click="search">Search</button>
+      <form>
+        <input type="text" v-model="searchQuery" placeholder="Searched text">
+        <div class="row">
+          <div class="complexities-check">
+            <label for="BEGINNER"><input type="checkbox" id="BEGINNER" value="BEGINNER" v-model="complexities">Beginner<span class="checkmark"></span></label>
+            <label for="INTERMEDIATE"><input type="checkbox" id="INTERMEDIATE" value="INTERMEDIATE" v-model="complexities">Intermediate<span class="checkmark"></span></label>
+            <label for="ADVANCED"><input type="checkbox" id="ADVANCED" value="ADVANCED" v-model="complexities">Advanced<span class="checkmark"></span></label>
+          </div>
+          <button @click.prevent.stop="search">Search</button>
+        </div>
+      </form>
     </div>
     <div class="search-results">
       <template v-if="result.length > 0">
@@ -97,21 +101,22 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 120px;
-  &>*{
-    margin: auto;
-  }
+
+  width: 1200px;
+  margin: 120px auto auto auto;
 
   .controls{
     display: flex;
     flex-direction: column;
-    margin-bottom: 40px;
     background-color: $header-bg-color;
+    width: calc(100%-60px);
+    margin-bottom: 20px;
     padding: 30px 30px;
     border-radius: 5px;
     .complexities-check{
       display: flex;
       flex-direction: row;
+      padding-top: 10px;
     }
   }
 
@@ -140,8 +145,12 @@ export default {
   }
 
   button{
+    margin-top: 10px;
+    height: 30px;
+    width: 150px;
     color: $highlight-color;
     border-color: $highlight-color;
+    outline: none;
   }
 
   button:hover{
@@ -153,11 +162,22 @@ export default {
     color: $text-color;
   }
 
+  .row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   .search-results{
-    width: 65%;
+    width: calc(100%-60px);
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    min-height: 60vh;
+
+    padding: 30px 30px;
+    background-color: $header-bg-color;
 
     color: $text-color;
   }
@@ -174,6 +194,7 @@ export default {
       align-self: center;
       width: 60%;
       cursor: pointer;
+      margin-left: 10px;
       .title{
         font-size: 20px;
       }
