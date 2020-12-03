@@ -81,7 +81,8 @@ button{
     margin: 0;
     padding: 0 5px ;
 
-    position: absolute;
+    position: fixed;
+    z-index: 1000;
     top:0;
     left:0;
     right:0;

@@ -113,6 +113,8 @@ export default {
     margin-bottom: 20px;
     padding: 30px 30px;
     border-radius: 5px;
+
+    box-shadow: 0 7px 15px rgba(0,0,0,.25);
     .complexities-check{
       display: flex;
       flex-direction: row;
@@ -175,6 +177,11 @@ export default {
     align-items: center;
 
     min-height: 60vh;
+    margin-bottom: 35px;
+
+    border-radius: 5px;
+
+    box-shadow: 0 7px 15px rgba(0,0,0,.25);
 
     padding: 30px 30px;
     background-color: $header-bg-color;
