@@ -1,10 +1,14 @@
 <template>
   <div id="course-group" class="course-group-container" v-if="loaded">
-    <div class="group-info">
-      <span class="title">{{courseGroup.name}}</span>
-      <div class="author">
-        <span class="name">{{courseGroup.authorFirstname}} {{courseGroup.authorLastname}}</span>
-        <span class="email">{{courseGroup.authorEmail}}</span>
+    <div class="top">
+      <div class="group-info">
+        <span class="title">{{courseGroup.name}}</span>
+        <div class="author">
+          <span class="name">{{courseGroup.authorFirstname}} {{courseGroup.authorLastname}}</span>
+          <span class="email">{{courseGroup.authorEmail}}</span>
+        </div>
+      </div>
+      <div class="controls">
         <template v-if="$store.getters.authIsAuthenticated">
           <template v-if="!courseGroup.isAuthor">
             <button class="follow" v-if="!courseGroup.isFollowing">Follow</button>
@@ -20,12 +24,12 @@
     <div class="course-list">
       <div class="course" v-for="item in courses" :key="item.id">
         <div class="data">
+          <span class="order">{{item.groupOrder}}</span>
           <router-link tag="span" :to="{name:'course', params:{id: item.id}}" class="title">{{item.title}}</router-link>
           <span class="complexity">{{item.complexity}}</span>
           <span class="language">{{item.language.name}}</span>
           <span class="category">{{item.category.name}}</span>
-          <span class="published">{{item.isPublished}}</span>
-          <span class="order">{{item.groupOrder}}</span>
+          <span class="published">{{item.isPublished | formatDateOrEmpty}}</span>
         </div>
       </div>
     </div>
@@ -79,6 +83,83 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
+@import 'src/assets/css/variables.scss';
+
+#course-group{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 1200px;
+  margin: 120px auto auto auto;
+  color: $text-color;
+  .top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    background-color: $header-bg-color;
+    padding: 30px;
+    color: $highlight-color;
+
+    .title{
+      font-weight: bold;
+      font-size: 24px;
+    }
+    .author{
+      display: flex;
+      flex-direction: column;
+    }
+
+  }
+  .controls{
+    button{
+      color: $highlight-color;
+      border-color: $highlight-color;
+      height: 30px;
+      &.unfollow{
+        color: $unfollow-color;
+        border-color: $unfollow-color;
+      }
+    }
+    button:hover{
+      color: $header-bg-color;
+      background-color: $highlight-color;
+      &.unfollow{
+        color: $header-bg-color;
+        background-color: $unfollow-color;
+      }
+    }
+    button+button{
+      margin-left: 10px;
+    }
+  }
+
+  .course-list{
+    background-color: $header-bg-color;
+    padding: 30px;
+  }
+
+  .data{
+    display: grid;
+    grid-template-columns: 30px 3fr 1fr 1fr 1fr 1fr;
+    span{
+      margin: 0 5px;
+    }
+    .title{
+      cursor: pointer;
+    }
+  }
+
+  .course{
+    padding: 10px 0 10px 10px;
+  }
+
+  .course+.course{
+    border-top: $text-color 1px solid;
+  }
+}
 
 </style>
