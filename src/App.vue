@@ -65,7 +65,7 @@ body {
 }
 
 button{
-  border: 1px solid red;
+  border: 1px solid deeppink;
   background-color: transparent;
   border-radius: 5px;
 }

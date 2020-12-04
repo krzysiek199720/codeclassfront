@@ -1,26 +1,26 @@
 <template>
   <div id="admin-settings" v-if="loaded">
     <div class="section language-settings" v-if="$store.getters.authHasPermissionAny(['save_language', 'delete_language'])">
-      <div class="lang-add" v-if="$store.getters.authHasPermission('save_language')">
-        <label for="language">Language name: <input type="text" id="language" v-model="newLang"></label>
+      <div class="section-mini lang-add" v-if="$store.getters.authHasPermission('save_language')">
+        <input type="text" id="language" v-model="newLang" placeholder="New language">
         <button class="save" @click="addLanguage">Add language</button>
       </div>
       <template v-for="(l, index) in languages">
         <div class="lang" :key="l.id">
-          <input v-model="languages[index].name">
+          <input class="input-edit" v-model="languages[index].name">
           <button class="save" @click="saveLanguage(l)" v-if="$store.getters.authHasPermission('save_language')">Edit language</button>
           <button class="delete" @click="deleteLanguage(l)" v-if="$store.getters.authHasPermission('delete_language')">Delete language</button>
         </div>
       </template>
     </div>
     <div class="section category-settings" v-if="$store.getters.authHasPermissionAny(['save_category', 'delete_category'])">
-      <div class="cat-add" v-if="$store.getters.authHasPermission('save_category')">
-        <label for="category"><input type="text" id="category" v-model="newCat"></label>
+      <div class="section-mini cat-add" v-if="$store.getters.authHasPermission('save_category')">
+        <input type="text" id="category" v-model="newCat" placeholder="New category">
         <button class="save" @click="addCategory">Add category</button>
       </div>
       <template v-for="(c, index) in categories">
         <div class="cat" :key="c.id">
-          <input v-model="categories[index].name">
+          <input class="input-edit" v-model="categories[index].name">
           <button class="save" @click="saveCategory(c)" v-if="$store.getters.authHasPermission('save_category')">Edit category</button>
           <button class="delete" @click="deleteCategory(c)" v-if="$store.getters.authHasPermission('delete_category')">Delete category</button>
         </div>
@@ -30,8 +30,8 @@
       <router-link tag="button" :to="{name: 'roleEdit', params: {id: null}}" class="new-role" v-if="$store.getters.authHasPermission('save_role')">New role</router-link>
       <template v-for="role in roles">
         <div class="role" :key="role.id">
-          <span class="role-name">{{role.name}}</span>
-          <router-link tag="button" :to="{name: 'roleEdit', params: {id: role.id}}" v-if="$store.getters.authHasPermission('save_role')">Edit</router-link>
+          <div class="role-name">{{role.name}}</div>
+          <router-link tag="button" class="save" :to="{name: 'roleEdit', params: {id: role.id}}" v-if="$store.getters.authHasPermission('save_role')">Edit</router-link>
           <button class="delete" v-if="$store.getters.authHasPermission('delete_role')" @click="deleteRole(role)">Delete role</button>
         </div>
       </template>
@@ -43,6 +43,7 @@
 <script>
 import axios from '@/axios/axios'
 import userAdminPanel from '@/components/auth/userAdminPanel'
+import store from '@/store/store'
 
 export default {
   name: 'AdminSettings',
@@ -125,6 +126,12 @@ export default {
         })
     }
   },
+  beforeRouteEnter: (to, from, next) => {
+    next(
+      store.getters.authIsAuthenticated &&
+          store.getters.authIsAdmin
+    )
+  },
   async created () {
     this.$store.dispatch('defaultOnNotLoggedIn')
     this.$store.dispatch('defaultOnNotAdmin')
@@ -161,6 +168,34 @@ export default {
   margin: 120px auto auto auto;
   color: $text-color;
 
+  label{
+    padding: 0;
+  }
+
+  .save{
+    width: 15%;
+    height: 30px;
+    color: $save-color;
+    border-color: $save-color;
+  }
+
+  .save:hover{
+    color: $header-bg-color;
+    background-color: $save-color;
+  }
+
+  .delete{
+    width: 15%;
+    height: 30px;
+    color: $delete-color;
+    border-color: $delete-color;
+  }
+
+  .delete:hover{
+    color: $header-bg-color;
+    background-color: $delete-color;
+  }
+
   .section{
     display: flex;
     flex-direction: column;
@@ -181,6 +216,73 @@ export default {
     button{
       margin-left:10px;
     }
+  }
+
+  .section-mini{
+    border-bottom: rgba($text-color, 0.3) 1px solid;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+
+  .cat-add{
+    display: flex;
+    flex-direction: row;
+    button{
+      margin-left:10px;
+    }
+  }
+
+  .new-role{
+    width: 15%;
+    height: 30px;
+    color: $save-color;
+    border-color: $save-color;
+    margin-bottom: 20px;
+  }
+  .new-role:hover{
+    color: $header-bg-color;
+    background-color: $save-color;
+  }
+
+  .cat, .role{
+    display: flex;
+    flex-direction: row;
+  }
+
+  button+button{
+    margin-left:10px;
+  }
+
+  .input-edit{
+    width: 15%;
+    margin-right:10px;
+  }
+
+  .role-name{
+    width: 15%;
+    height: 30px;
+    color: $input-color;
+    border: 0;
+    border-bottom: 1px solid $input-color;
+    background-color: transparent;
+    margin-right:10px;
+  }
+
+  input{
+    width: 15%;
+    height: 30px;
+    color: $input-color;
+    border: 0;
+    border-bottom: 1px solid $input-color;
+    background-color: transparent;
+  }
+  input::placeholder{
+    color: $input-placeholder-color;
+  }
+  input:focus, input:active, input:hover{
+    border: 0;
+    border-bottom: 1px solid $highlight-color;
+    outline: 0;
   }
 }
 </style>
