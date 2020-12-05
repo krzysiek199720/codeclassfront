@@ -249,6 +249,10 @@ export default {
     flex-direction: row;
   }
 
+  .cat, .lang, .role{
+    margin:5px;
+  }
+
   button+button{
     margin-left:10px;
   }

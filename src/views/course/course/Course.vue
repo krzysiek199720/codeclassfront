@@ -1,41 +1,57 @@
 <template>
   <div id="course" v-if="loaded">
-    <span class="title">{{ course.title}}</span>
-    <div class="courseinfo">
-      <span class="info"><span class="author">
-        {{course.courseGroupResponse.authorFirstname}} {{course.courseGroupResponse.authorLastname}}
-      </span></span>
-      <span class="info" id="coursegroup">Course Group: <span>{{course.courseGroupResponse.name}}</span></span>
-      <span class="info" id="complexity">Complexity: <span>{{course.complexity}}</span></span>
-      <span class="info" id="language">Language: <span>{{course.language.name}}</span></span>
-      <span class="info" id="category">Category: <span>{{course.category.name}}</span></span>
-      <span class="info" id="published">Published: <span>{{course.isPublished | formatDate}}</span></span>
-    </div>
-    <div class="course-usefull">
-      <div class="links">
-        <a :href="link.link" class="link" v-for="link in links" :key="link.id">{{link.display}}</a>
-      </div>
-      <div class="files">
-        <span class="file" v-for="file in files" :key="file.id" @click="downloadFile(file.id)">{{file.display}}</span>
-      </div>
-    </div>
-    <div class="manage"> <!-- prob better to v-if on next template then here -->
-      <template v-if="$store.getters.authIsAuthenticated">
-        <template v-if="!course.isAuthor">
-          <button class="follow" v-if="!course.isFollowing" @click="follow(true)">Follow</button>
-          <button class="follow unfollow" v-else @click="follow(false)">Unfollow</button>
-          <select name="assimilation" id="assimilation" class="assimilation" v-model="assimilation" @change="changeAssimilation">
-            <option v-for="ass in assimilationValues" :key="ass" class="assimilation-option">{{ass}}</option>
-          </select>
-        </template>
-        <template v-else-if="$store.getters.authHasPermissionAny(['publish_course'])">
-          <button class="publish" v-if="course.isPublished === null" @click="publish(true)">Publish</button>
-          <button class="publish unpublish" v-else @click="publish(false)">Make private</button>
+    <div class="top">
+      <span class="title">{{ course.title}}</span>
+      <div class="manage"> <!-- prob better to v-if on next template then here -->
+        <template v-if="$store.getters.authIsAuthenticated">
+          <template v-if="!course.isAuthor">
+            <span class="assText">Assimilation:</span>
+            <div class="select">
+              <select name="assimilation" id="assimilation" class="assimilation" v-model="assimilation" @change="changeAssimilation">
+                <option v-for="ass in assimilationValues" :key="ass" class="assimilation-option">{{ass}}</option>
+              </select>
+            </div>
+            <button class="follow" v-if="!course.isFollowing" @click="follow(true)">Follow</button>
+            <button class="follow unfollow" v-else @click="follow(false)">Unfollow</button>
+          </template>
+          <template v-else-if="$store.getters.authHasPermissionAny(['publish_course'])">
+            <button class="publish" v-if="course.isPublished === null" @click="publish(true)">Publish</button>
+            <button class="publish unpublish" v-else @click="publish(false)">Make private</button>
 
-          <router-link tag="button" :to="{name: 'courseEdit', params: { id: this.$route.params.id}}" class="edit-button">Edit</router-link>
+            <router-link tag="button" :to="{name: 'courseEdit', params: { id: this.$route.params.id}}" class="edit-button">Edit</router-link>
+          </template>
         </template>
-      </template>
-      <router-link v-if="quiz !== null" tag="button" :to="{name:'quiz', params: {id: this.$route.params.id}}">{{quizString}}</router-link>
+        <router-link v-if="quiz !== null" tag="button" :to="{name:'quiz', params: {id: this.$route.params.id}}">{{quizString}}</router-link>
+      </div>
+    </div>
+    <div class="info-container">
+      <div class="courseinfo">
+        <span class="info" id="coursegroup">Course Group: <span>{{course.courseGroupResponse.name}}</span></span>
+        <span class="info">
+          <span>Author: </span>
+          <span class="author">
+            {{course.courseGroupResponse.authorFirstname}} {{course.courseGroupResponse.authorLastname}}
+          </span>
+        </span>
+        <span class="info" id="complexity">Complexity: <span>{{course.complexity}}</span></span>
+        <span class="info" id="language">Language: <span>{{course.language.name}}</span></span>
+        <span class="info" id="category">Category: <span>{{course.category.name}}</span></span>
+        <span class="info" id="published">Published: <span>{{course.isPublished | formatDate}}</span></span>
+      </div>
+      <div class="course-useful">
+        <div class="links-div">
+          <span>Useful links</span>
+          <div class="links">
+            <span :href="link.link" class="link" v-for="link in links" :key="link.id">{{link.display}}</span>
+          </div>
+        </div>
+        <div class="files-div">
+          <span>Useful files</span>
+          <div class="files">
+            <span class="file" v-for="file in files" :key="file.id" @click="downloadFile(file.id)">{{file.display}}</span>
+          </div>
+        </div>
+      </div>
     </div>
     <courseData class="coursedata"></courseData>
     <courseComment class="comments" :courseId="course.id"></courseComment>
@@ -165,24 +181,193 @@ export default {
 
 <style scoped lang="scss">
 
-.coursedata {
-  border: 1px black solid;
-  margin: 10px 0;
-}
+@import 'src/assets/css/variables.scss';
 
-.courseinfo {
-  border: 1px black solid;
-  margin: 10px 0;
+#course{
+  width: 1600px;
+
+  margin: 120px auto auto auto;
+  color: $text-color;
+
   display: flex;
   flex-direction: column;
-  .info{
-    margin-left: 5px;
-  }
-}
+  justify-content: center;
 
-.comments {
-  border: 1px black solid;
-  margin: 10px 0;
+  &>*+*{
+    margin-top:10px;
+  }
+
+  .top{
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    background-color: $header-bg-color;
+    border-radius: 5px;
+    padding:20px;
+
+    align-content: center;
+
+    .title{
+      font-weight: bold;
+      font-size: 24px;
+      color: $highlight-color;
+    }
+
+    .manage{
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
+
+  .manage{
+    select, button{
+      margin-left: 10px;
+    }
+
+    button {
+      height: 25px;
+    }
+
+    .assText{
+      margin-right: 5px;
+    }
+
+    /* Reset Select */
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      -ms-appearance: none;
+      appearance: none;
+      outline: 0;
+      box-shadow: none;
+      border: 0 !important;
+      background: $primary-color;
+      background-image: none;
+    }
+    /* Remove IE arrow */
+    select::-ms-expand {
+      display: none;
+    }
+    /* Custom Select */
+    .select {
+      position: relative;
+      display: flex;
+      width: 150px;
+      height: 25px;
+      line-height: 3;
+      background: $primary-color;
+      overflow: hidden;
+      border-radius: .25em;
+    }
+
+    #search-div{
+      width: 15%!important;
+      margin-left: 10px;
+    }
+
+    select {
+      flex: 1;
+      padding: 0 .5em;
+      color: $text-color;
+      cursor: pointer;
+    }
+    /* Arrow */
+    .select::after {
+      content: '\25BC';
+      position: absolute;
+      top: -0.7em;
+      right: 0;
+      padding: 0 0.5em;
+      background: $primary-color;
+      color: $secondary-color;
+      cursor: pointer;
+      pointer-events: none;
+      -webkit-transition: .25s all ease;
+      -o-transition: .25s all ease;
+      transition: .25s all ease;
+    }
+    /* Transition */
+    .select:hover::after {
+      color: $text-color;
+    }
+  }
+
+  button{
+    color: $highlight-color;
+    border-color: $highlight-color;
+    height: 30px;
+    &.unfollow{
+      color: $unfollow-color;
+      border-color: $unfollow-color;
+    }
+  }
+  button:hover{
+    color: $header-bg-color;
+    background-color: $highlight-color;
+    &.unfollow{
+      color: $header-bg-color;
+      background-color: $unfollow-color;
+    }
+  }
+  button+button{
+    margin-left: 10px;
+  }
+
+  .info-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: $header-bg-color;
+    border-radius: 5px;
+    padding:20px;
+
+    align-content: center;
+    .info{
+      display: grid;
+      grid-template-columns: 130px 1fr;
+    }
+
+    .courseinfo{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      span{
+        padding:3px;
+      }
+    }
+
+    .course-useful{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      span{
+        cursor: pointer;
+      }
+    }
+
+    .links-div, .files-div{
+      display: flex;
+      flex-direction: column;
+
+      &>span{
+        justify-self: center;
+        margin: 0 auto 10px auto;
+        color: $highlight-color;
+      }
+    }
+
+    .links, .files{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      border-left: rgba($text-color, 0.3) 1px solid;
+      padding-left:10px;
+    }
+
+    .link, .file{
+      padding: 3px;
+    }
+  }
 }
 
 </style>
