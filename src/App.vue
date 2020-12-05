@@ -125,4 +125,8 @@ label {
 
 }
 
+button{
+  outline: 0;
+}
+
 </style>
