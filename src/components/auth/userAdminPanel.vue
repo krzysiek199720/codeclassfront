@@ -115,7 +115,6 @@ export default {
     flex-direction: row;
   }
 
-  /* Reset Select */
   select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -127,11 +126,9 @@ export default {
     background: $primary-color;
     background-image: none;
   }
-  /* Remove IE arrow */
   select::-ms-expand {
     display: none;
   }
-  /* Custom Select */
   .select {
     position: relative;
     display: flex;
@@ -154,7 +151,6 @@ export default {
     color: $text-color;
     cursor: pointer;
   }
-  /* Arrow */
   .select::after {
     content: '\25BC';
     position: absolute;
@@ -169,7 +165,6 @@ export default {
     -o-transition: .25s all ease;
     transition: .25s all ease;
   }
-  /* Transition */
   .select:hover::after {
     color: $text-color;
   }

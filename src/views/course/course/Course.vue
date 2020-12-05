@@ -33,9 +33,9 @@
             {{course.courseGroupResponse.authorFirstname}} {{course.courseGroupResponse.authorLastname}}
           </span>
         </span>
-        <span class="info" id="complexity">Complexity: <span>{{course.complexity}}</span></span>
         <span class="info" id="language">Language: <span>{{course.language.name}}</span></span>
         <span class="info" id="category">Category: <span>{{course.category.name}}</span></span>
+        <span class="info" id="complexity">Complexity: <span>{{course.complexity}}</span></span>
         <span class="info" id="published">Published: <span>{{course.isPublished | formatDate}}</span></span>
       </div>
       <div class="course-useful">
@@ -233,7 +233,6 @@ export default {
       margin-right: 5px;
     }
 
-    /* Reset Select */
     select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -245,11 +244,9 @@ export default {
       background: $primary-color;
       background-image: none;
     }
-    /* Remove IE arrow */
     select::-ms-expand {
       display: none;
     }
-    /* Custom Select */
     .select {
       position: relative;
       display: flex;
@@ -272,7 +269,6 @@ export default {
       color: $text-color;
       cursor: pointer;
     }
-    /* Arrow */
     .select::after {
       content: '\25BC';
       position: absolute;
@@ -287,7 +283,6 @@ export default {
       -o-transition: .25s all ease;
       transition: .25s all ease;
     }
-    /* Transition */
     .select:hover::after {
       color: $text-color;
     }
@@ -340,9 +335,6 @@ export default {
       display: grid;
       grid-template-columns: 1fr 1fr;
 
-      span{
-        cursor: pointer;
-      }
     }
 
     .links-div, .files-div{
@@ -366,6 +358,8 @@ export default {
 
     .link, .file{
       padding: 3px;
+      cursor: pointer;
+      justify-self: center;
     }
   }
 }
