@@ -68,6 +68,24 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
+@import 'src/assets/css/variables.scss';
+
+.comment-base{
+  color: $text-color;
+  padding:10px;
+
+  .comment-children{
+    padding-left: 1.5em;
+    margin-left: 1.5em;
+    border-left: rgba($text-color, 0.3) 1px groove;
+  }
+}
+
+.comment-base+.comment-base{
+  padding-top:10px;
+  border-top: rgba($input-color, 0.2) 1px solid;
+}
 
 </style>

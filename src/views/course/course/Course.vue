@@ -1,6 +1,6 @@
 <template>
   <div id="course" v-if="loaded">
-    <div class="top">
+    <div class="section top">
       <span class="title">{{ course.title}}</span>
       <div class="manage"> <!-- prob better to v-if on next template then here -->
         <template v-if="$store.getters.authIsAuthenticated">
@@ -24,7 +24,7 @@
         <router-link v-if="quiz !== null" tag="button" :to="{name:'quiz', params: {id: this.$route.params.id}}">{{quizString}}</router-link>
       </div>
     </div>
-    <div class="info-container">
+    <div class="section info-container">
       <div class="courseinfo">
         <span class="info" id="coursegroup">Course Group: <span>{{course.courseGroupResponse.name}}</span></span>
         <span class="info">
@@ -53,8 +53,8 @@
         </div>
       </div>
     </div>
-    <courseData class="coursedata"></courseData>
-    <courseComment class="comments" :courseId="course.id"></courseComment>
+    <courseData class="section coursedata"></courseData>
+    <courseComment class="section comments" :courseId="course.id"></courseComment>
   </div>
 </template>
 
@@ -309,12 +309,15 @@ export default {
     margin-left: 10px;
   }
 
-  .info-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  .section{
     background-color: $header-bg-color;
     border-radius: 5px;
     padding:20px;
+  }
+
+  .info-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 
     align-content: center;
     .info{

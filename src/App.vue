@@ -51,7 +51,7 @@ export default {
 
 @import 'assets/css/variables.scss';
 
-*{
+body{
   font-family: 'Open Sans', sans-serif;
 }
 
