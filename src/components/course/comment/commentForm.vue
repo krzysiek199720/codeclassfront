@@ -48,7 +48,6 @@ export default {
     rootComment () {
       if (this.commentRootId === null) { return null }
       let result = this.$store.getters.commentGet(this.commentRootId)
-      console.log(result)
       if (result === undefined) { result = null }
       return result
     },
