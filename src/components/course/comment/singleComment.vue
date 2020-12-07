@@ -8,12 +8,13 @@
       <div class="line" v-for="line in getLines" :key="line.index">{{line.line}}</div>
     </div>
     <div class="comment-content">{{data.data}}</div>
-    <comment-form v-if="reply" :add-code="false" :comment-root-id-prop="data.id"></comment-form>
+    <comment-form v-if="reply" :add-code="false" :comment-root-id-prop="data.id" @removeCommentForm="removeCommentForm"></comment-form>
   </div>
 </template>
 
 <script>
 import commentForm from '@/components/course/comment/commentForm'
+import { eventBus } from '@/main'
 
 export default {
   name: 'singleComment',
@@ -35,6 +36,12 @@ export default {
       }
 
       return res
+    }
+  },
+  methods: {
+    removeCommentForm () {
+      this.reply = false
+      eventBus.$emit('force-comment-update')
     }
   },
   components: {

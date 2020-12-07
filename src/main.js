@@ -31,6 +31,8 @@ Vue.filter('formatDateOrEmpty', function (value) {
   }
 })
 
+export const eventBus = new Vue()
+
 const main = new Vue({
   router,
   store,

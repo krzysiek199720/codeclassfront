@@ -54,11 +54,11 @@ export default {
 
 .desc-tooltip {
   visibility: hidden;
-  background-color: rgba(black, 0.8);
+  background-color: rgba(black, 0.9);
   color: $text-color;
   text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
+  padding: 5px 5px;
+  border-radius: 5px;
 
   /* Position the tooltip text - see examples below! */
   position: absolute;
@@ -66,7 +66,8 @@ export default {
   min-width: 150px;
   z-index: 1;
 
-  top: -250%;
+  transform: translate(0, -100%);
+  top: -3px;
 }
 
 .element{

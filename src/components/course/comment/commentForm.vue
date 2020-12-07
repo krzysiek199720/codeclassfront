@@ -102,7 +102,9 @@ export default {
         .then(res => {
           this.$store.dispatch('addComment', res.data)
 
-          if (this.addCode) {
+          console.log('com')
+
+          if (this.addCode || comment.root !== null) {
             this.$emit('removeCommentForm')
           } else {
             this.clearInput()

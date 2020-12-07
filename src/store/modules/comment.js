@@ -1,3 +1,5 @@
+import { eventBus } from '@/main'
+
 const state = {
   rootComments: null,
   commentMap: null,
@@ -34,6 +36,7 @@ const mutations = {
     } else {
       state.commentMap.get(payload.rootId).push(payload)
     }
+    eventBus.$emit('force-comment-update')
   }
 }
 
@@ -89,11 +92,13 @@ const getters = {
     if (result !== undefined) { return result }
 
     const iterator = state.commentMap.values()
-    let item = { done: false }
-    while (item.done === false) {
-      item = iterator.next()
-      console.log(item.value[0])
-      if (item.value[0].id === commentId) { return item.value[0] }
+    let keyItem = { done: false }
+    while (keyItem.done === false) {
+      keyItem = iterator.next()
+      for (let i = 0; i < keyItem.value.length; i++) {
+        const item = keyItem.value[i]
+        if (item.id === commentId) { return item }
+      }
     }
 
     return undefined

@@ -20,6 +20,7 @@
 <script>
 import singleComment from '@/components/course/comment/singleComment'
 import commentForm from '@/components/course/comment/commentForm'
+import { eventBus } from '@/main'
 
 export default {
   name: 'dataComment',
@@ -32,9 +33,17 @@ export default {
       showForm: false
     }
   },
+  methods: {
+    commentForceUpdate () {
+      this.$forceUpdate()
+    }
+  },
   computed: {
     data () { return this.$store.getters.getCommentsByCodeLine },
     loaded () { return this.$store.getters.commentIsLoaded }
+  },
+  created () {
+    eventBus.$on('force-comment-update', this.commentForceUpdate)
   }
 }
 </script>

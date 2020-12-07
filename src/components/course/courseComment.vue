@@ -15,6 +15,7 @@ import axios from '@/axios/axios'
 
 import singleComment from '@/components/course/comment/singleComment'
 import commentForm from '@/components/course/comment/commentForm'
+import { eventBus } from '@/main'
 
 export default {
   name: 'courseComment',
@@ -29,6 +30,9 @@ export default {
       if (first.id < second.id) return -1
       if (first.id > second.id) return 1
       return 0
+    },
+    commentForceUpdate () {
+      this.$forceUpdate()
     }
   },
   components: {
@@ -36,6 +40,8 @@ export default {
     commentForm
   },
   created () {
+    eventBus.$on('force-comment-update', this.commentForceUpdate)
+
     axios.get('/course/' + this.courseId + '/comment')
       .then(res => {
         const newRoots = []
