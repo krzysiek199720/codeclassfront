@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     save () {
-      axios.post('/course/' + this.$route.params.id + '/data', this.dataRaw)
+      axios.post('/course/' + this.$route.params.id + '/data', { data: this.dataRaw })
         .then(res => {
           this.$router.push({ name: 'courseEdit', props: { id: this.$route.params.id } })
         })
