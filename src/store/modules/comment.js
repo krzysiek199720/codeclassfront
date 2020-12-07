@@ -85,9 +85,22 @@ const getters = {
   },
   commentIsLoaded (state) { return state.rootComments !== null },
   commentGet: (state) => (commentId) => {
-    const result = this.getRoot(commentId)
+    const result = state.rootComments.find(el => el.id === commentId)
     if (result !== undefined) { return result }
-    return state.commentMap.values().find(el => el.id === commentId)
+    // return state.commentMap.values().find(el => el.id === commentId)
+
+    const iterator = state.commentMap.values()
+    let item = { done: false }
+    while (item.done === false) {
+      console.log('iter')
+      item = iterator.next()
+      console.log(item.value[0])
+      if (item.value[0].id === commentId) { return item.value[0] }
+    }
+
+    console.log('after')
+
+    return undefined
   },
   commentIsSelectedGet () { return state.dataCourseDataId !== null }
 }

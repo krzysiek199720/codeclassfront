@@ -8,7 +8,7 @@
       <div class="line" v-for="line in getLines" :key="line.index">{{line.line}}</div>
     </div>
     <div class="comment-content">{{data.data}}</div>
-    <comment-form v-if="reply" :add-code="false"></comment-form>
+    <comment-form v-if="reply" :add-code="false" :comment-root-id-prop="data.id"></comment-form>
   </div>
 </template>
 

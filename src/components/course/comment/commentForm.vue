@@ -1,7 +1,9 @@
 <template>
   <form class="commentForm">
     <div class="commentInfoContainer">
-      <span class="comment-info" v-if="rootComment !== null">Responding to {{rootComment.userFirstName}} {{rootComment.userLastName}}'s comment</span>
+      <span class="comment-info" v-if="rootComment !== null">Responding to
+        <div class="name">{{rootComment.userFirstName}} {{rootComment.userLastName}}</div>'s comment
+      </span>
     </div>
     <div class="commentMentionData" v-if="addCode">
       <button class="line-button" @click.prevent="removeFirst()">Remove first line</button>
@@ -12,8 +14,10 @@
         <div class="line" v-for="line in getLines" :key="line.index">{{line.line}}</div>
       </div>
     </div>
-    <textarea name="commentData" v-model="commentData" cols="30" rows="10" class="commentdata"></textarea>
-    <button class="submit-comment" @click.prevent="sendComment">Submit</button>
+    <div class="con">
+      <textarea name="commentData" v-model="commentData" cols="60" :rows="rowsMin" ref="tacommment" @input="resizeIt" class="commentdata"></textarea>
+      <button class="submit-comment" @click.prevent="sendComment">Submit</button>
+    </div>
   </form>
 </template>
 
@@ -36,13 +40,15 @@ export default {
       scriptId: this.addCode ? this.$store.getters.dataCourseDataId : null,
       lineFrom: this.addCode ? this.$store.getters.dataLineGet : null,
       lineTo: this.addCode ? this.$store.getters.dataLineGet : null,
-      lineMax: this.addCode ? this.$store.getters.dataLineMaxGet : null
+      lineMax: this.addCode ? this.$store.getters.dataLineMaxGet : null,
+      rowsMin: 5
     }
   },
   computed: {
     rootComment () {
       if (this.commentRootId === null) { return null }
-      let result = this.$store.dispatch('commentGet')
+      let result = this.$store.getters.commentGet(this.commentRootId)
+      console.log(result)
       if (result === undefined) { result = null }
       return result
     },
@@ -107,6 +113,16 @@ export default {
         // do error thingy
           console.log(err)
         })
+    },
+    resizeIt () {
+      const cols = this.$refs.tacommment.cols
+
+      let linecount = 0
+      this.commentData.split('\n').forEach(function (l) {
+        linecount += Math.ceil(l.length / (cols - 1)) // Take into account long lines
+      })
+      const newrows = Math.max(this.rowsMin, linecount + 1)
+      this.$refs.tacommment.rows = newrows
     }
   },
   created () {
@@ -122,5 +138,39 @@ export default {
 <style scoped lang="scss">
 
 @import 'src/assets/css/variables.scss';
+
+.commentForm{
+  .commentdata{
+    background-color: rgba($secondary-color, 0.4);
+    resize: none;
+    outline: 0;
+    border: 0;
+    color: $text-color;
+  }
+
+  .con{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .name{
+    color: $highlight-color;
+    display: inline;
+  }
+
+  .submit-comment{
+    width: 10%;
+    height: 25px;
+    color: $save-color;
+    border-color: $save-color;
+    align-self: flex-end;
+    margin-left: 10px;
+  }
+
+  .submit-comment:hover{
+    color: $header-bg-color;
+    background-color: $save-color;
+  }
+}
 
 </style>
