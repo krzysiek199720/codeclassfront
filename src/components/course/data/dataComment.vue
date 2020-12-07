@@ -68,4 +68,16 @@ export default {
   border-top: rgba($input-color, 0.2) 1px solid;
 }
 
+.showCommentForm{
+  width: 150px;
+  height: 30px;
+  color: $save-color;
+  border-color: $save-color;
+  padding:2px;
+}
+.showCommentForm:hover{
+  color: $header-bg-color;
+  background-color: $save-color;
+}
+
 </style>

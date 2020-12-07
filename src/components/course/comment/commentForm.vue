@@ -6,10 +6,12 @@
       </span>
     </div>
     <div class="commentMentionData" v-if="addCode">
-      <button class="line-button" @click.prevent="removeFirst()">Remove first line</button>
-      <button class="line-button" @click.prevent="addPrevious()">Add previous line</button>
-      <button class="line-button"  @click.prevent="addNext()">Add next line</button>
-      <button class="line-button" @click.prevent="removeLast()">Remove last line</button>
+      <div class="buttons">
+        <button class="line-button del-line" @click.prevent="removeFirst()">Remove first line</button>
+        <button class="line-button" @click.prevent="addPrevious()">Add previous line</button>
+        <button class="line-button"  @click.prevent="addNext()">Add next line</button>
+        <button class="line-button del-line" @click.prevent="removeLast()">Remove last line</button>
+      </div>
       <div class="selcted-lines">
         <div class="line" v-for="line in getLines" :key="line.index">{{line.line}}</div>
       </div>
@@ -141,6 +143,9 @@ export default {
 @import 'src/assets/css/variables.scss';
 
 .commentForm{
+  border-bottom: rgba($text-color, 0.7) 1px solid;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
   .commentdata{
     background-color: rgba($secondary-color, 0.4);
     resize: none;
@@ -159,6 +164,17 @@ export default {
     display: inline;
   }
 
+  .buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .commentMentionData{
+    margin-top: 10px;
+
+  }
+
   .submit-comment{
     width: 10%;
     height: 25px;
@@ -171,6 +187,32 @@ export default {
   .submit-comment:hover{
     color: $header-bg-color;
     background-color: $save-color;
+  }
+
+  .line-button{
+    width: 145px;
+    height: 20px;
+    color: $follow-color;
+    border-color: $follow-color;
+    padding:2px;
+  }
+
+  .line-button:hover{
+    color: $header-bg-color;
+    background-color: $follow-color;
+  }
+  .del-line{
+    color: $unfollow-color;
+    border-color: $unfollow-color;
+  }
+  .del-line:hover{
+    color: $header-bg-color;
+    background-color: $unfollow-color;
+  }
+
+  .selcted-lines{
+    background-color: $code-bg-color;
+    margin: 10px 0;
   }
 }
 

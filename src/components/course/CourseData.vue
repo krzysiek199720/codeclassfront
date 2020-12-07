@@ -7,8 +7,10 @@
         :is="fordata.type === 'CODE' ? 'dataCode' : 'dataText'"
         :data="data[index]"></component>
     </div>
-    <div class="code-comments" v-if="showComments">
-      <dataComment></dataComment>
+    <div>
+      <div class="code-comments" v-if="showComments">
+        <dataComment></dataComment>
+      </div>
     </div>
   </div>
 </template>
@@ -77,5 +79,16 @@ export default {
 <style scoped lang="scss">
 
 @import 'src/assets/css/variables.scss';
+
+.course-data{
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+
+  .code-comments{
+    padding-left: 10px;
+    margin-left:10px;
+    border-left: rgba($highlight-color, 0.4) 1px solid;
+  }
+}
 
 </style>
