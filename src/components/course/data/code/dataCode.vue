@@ -45,18 +45,22 @@ export default {
 
 <style scoped lang="scss">
 
+@import 'src/assets/css/variables.scss';
+
+.code-field{
+  background-color: $code-bg-color;
+  font-family: 'JetBrains Mono';
+  color: $text-color
+}
+
 .line{
   padding: 8px;
   display: flex;
   flex-direction: row;
 }
 
-.line+.line{
-
-  border-top:1px darkcyan solid;
-}
-
 pre{
   margin:0
 }
+
 </style>
