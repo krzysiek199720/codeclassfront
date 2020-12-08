@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import store from '@/store/store'
 
 Vue.use(VueRouter)
 
@@ -91,6 +92,12 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  store.dispatch('dataLineSet', null)
+  store.dispatch('dataCourseDataIdSet', null)
+  next()
 })
 
 export default router
