@@ -1,5 +1,5 @@
 <template>
-  <div class="course-data" v-if="loaded">
+  <div :class="{'course-data': showComments}" v-if="loaded">
     <div class="data-section" >
       <component
         v-for="(fordata, index) in data"

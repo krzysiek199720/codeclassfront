@@ -1,15 +1,18 @@
 <template>
-  <div id="quizEdit" v-if="loaded">
-    <router-link tag="button" :to="{name:'courseEdit', params: {id: this.$route.params.id}}">Back to course edit</router-link>
-    <button class="save" @click="save">Save</button>
-    <button class="save" @click="preview">Preview</button>
-    <div class="edit-container">
+  <div id="course-data-edit" v-if="loaded">
+    <div class="section controls">
+      <router-link tag="button" :to="{name:'courseEdit', params: {id: this.$route.params.id}}">Back to course edit</router-link>
+      <button class="save" @click="save">Save</button>
+      <button class="save" @click="preview">Preview</button>
+    </div>
+    <div class="section edit-container">
       <div class="editor">
-<!--        just put string for now / make a editor component later-->
-        <button class="insert" @click="insertCode()">&lt;code&gt;</button>
-        <button class="insert" @click="insertLine()">&lt;line&gt;</button>
-        <button class="insert" @click="insertElement()">&lt;element&gt;</button>
-        <textarea name="dataraw" id="dataraw" cols="30" rows="20" v-model="dataRaw" ref="dataraw" accept-charset="utf-8"></textarea>
+        <div class="buttons">
+          <button class="insert" @click="insertCode()">&lt;code&gt;</button>
+          <button class="insert" @click="insertLine()">&lt;line&gt;</button>
+          <button class="insert" @click="insertElement()">&lt;element&gt;</button>
+        </div>
+        <textarea name="dataraw" id="dataraw" :cols="cols" :rows="rows" v-model="dataRaw" ref="dataraw" @input="resizeIt" @keydown.tab="tabInsert" accept-charset="utf-8"></textarea>
       </div>
       <div class="result">
         <courseData class="coursedata" :showComments="false" :usePropsData="false" :propsData="data"></courseData>
@@ -30,7 +33,10 @@ export default {
       loadD: false,
       loadDR: false,
       dataRaw: null,
-      data: null
+      data: null,
+      rowsMin: 20,
+      rows: 1,
+      cols: 100
     }
   },
   computed: {
@@ -81,9 +87,41 @@ export default {
       ta.focus()
     },
     insert (pos, text) {
+      console.log('insert')
       const ta = this.$refs.dataraw
       const taval = ta.value
       ta.value = taval.slice(0, pos) + text + taval.slice(pos)
+    },
+    resizeIt () {
+      const cols = this.cols
+
+      let linecount = 0
+      this.dataRaw.split('\n').forEach(function (l) {
+        if (l.length === 0) {
+          linecount += 1
+          return
+        }
+        linecount += Math.ceil(l.length / (cols - 1)) // Take into account long lines
+      })
+      this.rows = Math.max(this.rowsMin, linecount + 1)
+    },
+    tabInsert (event) {
+      event.preventDefault()
+      console.log('tabinser')
+      const ta = this.$refs.dataraw
+      const startPos = ta.selectionStart
+      const endPos = ta.selectionEnd
+
+      const tabReplacement = '  '
+
+      let newData = this.dataRaw.substr(0, startPos)
+      const newDataEnd = this.dataRaw.substr(endPos)
+      newData += tabReplacement + newDataEnd
+      this.dataRaw = newData
+
+      ta.selectionStart = startPos + tabReplacement.length
+      ta.selectionEnd = startPos + tabReplacement.length
+      ta.focus()
     }
   },
   components: {
@@ -101,6 +139,8 @@ export default {
     axios.get('/course/' + this.$route.params.id + '/data/raw')
       .then(res => {
         this.dataRaw = res.data
+        console.log('sssssss')
+        this.resizeIt()
         this.loadDR = true
       })
       .catch(_ => {
@@ -113,6 +153,91 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
+@import 'src/assets/css/variables.scss';
+
+#course-data-edit {
+  width: 1600px;
+
+  margin: 120px auto auto auto;
+  color: $text-color;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  button{
+    width: 140px;
+    height: 30px;
+    color: $save-color;
+    border-color: $save-color;
+  }
+  button:hover{
+    color: $header-bg-color;
+    background-color: $save-color;
+  }
+
+  .controls{
+
+    button+button{
+      margin-left:10px;
+    }
+  }
+
+  .insert{
+    width: 100px;
+    height: 20px;
+    color: $save-color;
+    border-color: $save-color;
+  }
+  .insert:hover{
+    color: $header-bg-color;
+    background-color: $save-color;
+  }
+
+  .section{
+    background-color: $header-bg-color;
+    padding: 30px;
+    border-radius: 5px;
+
+    &>div{
+      padding:10px;
+    }
+  }
+  .section+.section{
+    margin-top: 10px;
+  }
+
+  .edit-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .buttons{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    justify-content: center;
+
+    button+button{
+      margin-left: 10px;
+    }
+  }
+
+  #insert{
+    width: 100%;
+  }
+
+  #dataraw{
+    resize: none;
+    outline: 0;
+
+    font-family: 'JetBrains Mono';
+
+    background-color: rgba($secondary-color, 0.4);
+    border: 0;
+    color: $text-color;
+  }
+}
 </style>
