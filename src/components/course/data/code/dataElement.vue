@@ -1,30 +1,28 @@
 <template>
   <div class="filler">
-    <div class="element" :v-if="isDepthBigger" @mouseover.stop.self="onHover" @mouseleave.stop.self="hovering = false" :class="{hovered: hovering}">
+    <div class="element" @mouseover.stop.self="onHover" @mouseleave.stop.self="hovering = false" :class="{hovered: hovering}">
       <span class="desc-tooltip" v-if="elem.description !== null">{{elem.description}}</span>
       <template>{{elem.data}}</template>
-      <dataElement v-if="(index + 1) < data.length" :data="data" :index="index+1" @hov="hovering = false"></dataElement>
+      <dataElement v-if="deepeerElem !== null" :data="deepeerElem.list" @hov="hovering = false"></dataElement>
     </div>
-    <template v-if="!isDepthBigger">{{elem.data}}</template>
+    <dataElement v-for="elem in list" :data="elem.list" :key="elem.order" @hov="hovering = false"></dataElement>
   </div>
 </template>
 
 <script>
 export default {
   name: 'dataElement',
-  props: ['data', 'index'],
+  props: ['data'],
   data () {
     return {
-      hovering: false
+      hovering: false,
+      list: [],
+      deepeerElem: null
     }
   },
   computed: {
     elem () {
-      return this.data[this.index]
-    },
-    isDepthBigger () {
-      if (this.index === 0) { return true }
-      return this.data[this.index - 1].depth < this.data[this.index].depth
+      return this.data[0]
     }
   },
   methods: {
@@ -32,6 +30,41 @@ export default {
       this.hovering = true
       this.$emit('hov')
     }
+  },
+  created () {
+    const list = this.data
+
+    const result = []
+
+    const initialDepth = list[0].depth
+    let start = 1
+    let i = 2
+    for (; i < list.length; i++) {
+      if (list[i].depth === initialDepth) {
+        result.push({
+          list: list.slice(start, i),
+          ord: list[start].order,
+          dep: list[start].depth
+        })
+        start = i
+      }
+    }
+    if (start !== i) {
+      result.push({
+        list: list.slice(start, i),
+        order: list[start].order,
+        dep: list[start].depth
+      })
+    }
+
+    console.log()
+
+    if (result[0].dep > initialDepth) {
+      this.deepeerElem = result[0]
+      result.splice(0, 1)
+    }
+
+    this.list = result
   }
 }
 </script>

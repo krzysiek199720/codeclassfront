@@ -4,7 +4,7 @@
       <template v-for="line in data.courseDataLineList">
         <div class="line" :key="line.id" @click="selectLine(line.order)">
           <pre v-for="n in line.indent" :key="line.id + '_' + n">  </pre>
-          <data-element :data="line.courseDataElementList.sort(sortElements)" :index="0"></data-element>
+          <data-element v-for="list in getElementLists(line)" :data="list.list" :key="list.order"></data-element>
         </div>
       </template>
     </div>
@@ -37,6 +37,33 @@ export default {
       this.$store.dispatch('dataLineSet', line)
       this.$store.dispatch('dataCourseDataIdSet', this.data.id)
       this.$store.dispatch('dataLineMaxSet', this.data.courseDataLineList.length)
+    },
+    getElementLists (line) {
+      line.courseDataElementList.sort(this.sortElements)
+      const list = line.courseDataElementList
+
+      const result = []
+
+      const initialDepth = list[0].depth
+      let start = 0
+      let i = 1
+      for (; i < list.length; i++) {
+        if (list[i].depth === initialDepth) {
+          result.push({
+            list: list.slice(start, i),
+            order: list[start].order
+          })
+          start = i
+        }
+      }
+      if (start !== i) {
+        result.push({
+          list: list.slice(start, i),
+          order: list[start].order
+        })
+      }
+
+      return result
     }
   }
 }
