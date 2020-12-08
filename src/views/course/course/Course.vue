@@ -42,7 +42,7 @@
         <div class="links-div">
           <span>Useful links</span>
           <div class="links">
-            <span :href="link.link" class="link" v-for="link in links" :key="link.id">{{link.display}}</span>
+            <a :href="link.link" class="link" v-for="link in links" :key="link.id">{{link.display}}</a>
           </div>
         </div>
         <div class="files-div">
@@ -363,6 +363,12 @@ export default {
       padding: 3px;
       cursor: pointer;
       justify-self: center;
+    }
+
+    .link, .link:active, .link:visited, .link:link{
+      color: $highlight-color;
+      border: 0;
+      text-decoration: none;
     }
   }
 }
