@@ -3,7 +3,6 @@
     <div class="data-section" >
       <component
         v-for="(fordata, index) in data"
-        :key="fordata.id"
         :is="fordata.type === 'CODE' ? 'dataCode' : 'dataText'"
         :data="data[index]"></component>
     </div>
@@ -54,7 +53,11 @@ export default {
     dataComment
   },
   created () {
-    if (this.usePropsData) return
+    if (this.usePropsData) {
+      this.data = this.propsData
+      this.loaded = true
+      return
+    }
 
     axios.get('/course/' + this.$route.params.id + '/data')
       .then(res => {

@@ -15,7 +15,7 @@
         <textarea name="dataraw" id="dataraw" :cols="cols" :rows="rows" v-model="dataRaw" ref="dataraw" @input="resizeIt" @keydown.tab="tabInsert" accept-charset="utf-8"></textarea>
       </div>
       <div class="result">
-        <courseData class="coursedata" :showComments="false" :usePropsData="false" :propsData="data"></courseData>
+        <courseData class="coursedata" v-if="showPreview" :showComments="false" :usePropsData="true" :propsData="data"></courseData>
       </div>
     </div>
   </div>
@@ -25,6 +25,7 @@
 import axios from '@/axios/axios'
 import CourseData from '@/components/course/CourseData'
 import store from '@/store/store'
+import { eventBus } from '@/main'
 
 export default {
   name: 'CourseDataEdit',
@@ -36,7 +37,8 @@ export default {
       data: null,
       rowsMin: 20,
       rows: 1,
-      cols: 100
+      cols: 100,
+      showPreview: true
     }
   },
   computed: {
@@ -51,9 +53,11 @@ export default {
         .catch(_ => {})
     },
     preview () {
+      this.showPreview = false
       axios.post('/course/data/check', { data: this.dataRaw })
         .then(res => {
           this.data = res.data
+          this.showPreview = true
         })
     },
     insertCode () {
