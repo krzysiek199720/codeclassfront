@@ -77,11 +77,12 @@ export default {
 .code-field{
   background-color: $code-bg-color;
   font-family: 'JetBrains Mono';
-  color: $text-color
+  color: $text-color;
+  margin: 5px 0;
 }
 
 .line{
-  padding: 8px;
+  padding: 5px;
   display: flex;
   flex-direction: row;
 }

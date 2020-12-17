@@ -1,5 +1,8 @@
 <template>
     <div v-if="loaded">
+      <div class="title-container">
+        <div class="title">Comments</div>
+      </div>
       <commentForm :add-code="false"></commentForm>
       <div class="comment-base" v-for="main_com in rootComments" :key="main_com.id">
         <single-comment :data="main_com"></single-comment>
@@ -78,6 +81,16 @@ export default {
 
 @import 'src/assets/css/variables.scss';
 
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  .title {
+    font-family: $font2;
+    color: $text-color2;
+    font-size: 20px;
+  }
+}
+
 .comment-base{
   color: $text-color;
   padding:10px;
@@ -91,7 +104,7 @@ export default {
 
 .comment-base+.comment-base{
   padding-top:10px;
-  border-top: rgba($input-color, 0.2) 1px solid;
+  border-top: $box-border1;
 }
 
 </style>

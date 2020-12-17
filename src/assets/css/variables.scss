@@ -1,19 +1,35 @@
-$header-bg-color: #24223C;
+$header-bg-color: #443c4e;
 $header-height: 50px;
 
-$primary-color: #37393F;
-$secondary-color: #676B74;
-$text-color: #F5E9CF;
-$highlight-color: #D8A659;
+$font1: 'Open Sans', sans-serif;
+$font2: 'Comfortaa', sans-serif;
+$font3: 'Architects Daughter', sans-serif;
 
-$delete-color: #F28246;
+$primary-color: #f2f3f3;
+$secondary-color: #676B74;
+$text-color: #000000;
+$highlight-color: #d78e57;
+
+$box-bg-color1: #FFFFFF;
+$box-bg-color2: #f6f6f6;
+
+$box-shadow1: 0 1px 2px 0 rgba($header-bg-color,0.5);
+
+$box-border1: 1px solid #EAEDED;
+
+$text-color1: #000000;
+$text-color2: $highlight-color;
+
+
+
+$delete-color: #ff0000;
 $save-color: #5D85BF;
 
-$input-color: #EBECEB;
+$input-color: $text-color;
 $input-placeholder-color: #B0B5B0;
 
 $follow-color: $highlight-color;
 $unfollow-color: #D86C59;
 
-$code-bg-color: #3b3762;
-$hover-bg-color: $header-bg-color;
+$code-bg-color: $box-bg-color2;
+$hover-bg-color: $highlight-color;

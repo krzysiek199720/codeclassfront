@@ -13,6 +13,7 @@ export default {
 
 p{
   white-space: pre-wrap;
+  margin: 5px 0;
 }
 
 </style>

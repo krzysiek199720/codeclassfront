@@ -59,24 +59,39 @@ export default {
   color:$text-color;
 
   .info{
-    font-size: 14px;
+    font-size: 11px;
     color: $highlight-color;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    padding: 5px 0;
+    .author{
+      border: 1px solid $highlight-color;
+      padding: 1px 8px;
+      border-radius: 12px;
+    }
     .reply{
       margin-left: 10px;
+      border: 1px solid $highlight-color;
+      padding: 1px 6px;
+      border-radius: 12px;
+      cursor: pointer;
+      &:hover{
+        background-color: $highlight-color;
+        color: $box-bg-color1;
+      }
     }
   }
   .script-data{
     font-family: 'JetBrains Mono'!important;
     font-style: normal;
-    background-color: $code-bg-color;
-    padding: 5px;
+    background-color: $box-bg-color2;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     width: fit-content;
     max-width: 100%;
-    margin: 2px 2px 2px 5px;
+    margin: 5px 10px;
 
     .line{
       text-wrap: normal;
@@ -86,8 +101,8 @@ export default {
 
   .comment-content{
     font-size: 16px;
-    margin-left: 5px;
-    margin-bottom: 10px;
+    margin: 0px 5px 10px;
+    padding: 5px 0;
   }
 }
 

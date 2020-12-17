@@ -52,7 +52,11 @@ export default {
 @import 'assets/css/variables.scss';
 
 body{
-  font-family: 'Open Sans', sans-serif;
+  font-family: $font1;
+}
+
+input{
+  font-family: $font1;
 }
 
 //font-family: 'Comfortaa', cursive;
@@ -68,6 +72,7 @@ button{
   border: 1px solid deeppink;
   background-color: transparent;
   border-radius: 5px;
+  font-family: $font2;
 }
 
 #app{
@@ -80,6 +85,7 @@ button{
     height: $header-height;
     margin: 0;
     padding: 0 5px ;
+    font-family: $font2;
 
     position: fixed;
     z-index: 1000;
@@ -88,6 +94,7 @@ button{
     right:0;
 
     background-color: $header-bg-color;
+
   }
   &>.content {
     margin-top: $header-height;
@@ -127,6 +134,10 @@ label {
 
 button{
   outline: 0;
+}
+
+.router-link-exact-active{
+  filter: hue-rotate(180deg);
 }
 
 </style>

@@ -15,27 +15,29 @@
     </div>
     <div class="search-results">
       <template v-if="result.length > 0">
-        <div class="result" v-for="item in result" :key="item.courseGroupId">
-          <router-link tag="div" :to="{name:'courseGroup', params:{id: item.courseGroupId}}" class="data">
+        <router-link tag="div" :to="{name:'courseGroup', params:{id: item.courseGroupId}}" class="result" v-for="item in result" :key="item.courseGroupId">
+          <div class="data">
             <span tag="span" class="title">{{item.courseGroupName}}</span>
             <span class="author">{{item.authorFirstName}} {{item.authorLastName}}</span>
-          </router-link>
+          </div>
           <div class="moreinfo">
-            <div class="important">
               <div class="complexity">
                 <template>{{item.minComplexity}}<template v-if="item.minComplexity !== item.maxComplexity"> - {{item.maxComplexity}}</template></template>
               </div>
-              <div class="lancat">
-                <span class="language">{{item.languageName}}</span>
-                <span class="category">{{item.categoryName}}</span>
-              </div>
+              <div class="updated">Last updated: {{item.lastAddedDate | formatDateOrEmpty}}</div>
+          </div>
+          <div class="evenmoreinfo">
+            <div class="infotype">
+              <span>Language: {{item.languageName}}</span>
             </div>
-            <div class="info-rest">
-              <span class="updated">Last updated: {{item.lastAddedDate | formatDateOrEmpty}}</span>
-              <span class="comment-count">Comments: {{item.commentCount}}</span>
+            <div class="infotype">
+              <span>Category: {{item.categoryName}}</span>
+            </div>
+            <div class="infotype">
+              <span>Comments: {{item.commentCount}}</span>
             </div>
           </div>
-        </div>
+        </router-link>
       </template>
       <template v-else>
         <div class="result-empty">No results</div>
@@ -101,39 +103,42 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  width: 1200px;
-  margin: 120px auto auto auto;
+  max-width: 1400px;
+  width: calc(100% - 40px);
+  margin: 100px auto auto auto;
 
   .controls{
     display: flex;
     flex-direction: column;
-    background-color: $header-bg-color;
-    width: calc(100%-60px);
+    background-color: $box-bg-color1;
     margin-bottom: 20px;
-    padding: 30px 30px;
-    border-radius: 5px;
+    padding: 30px 30px 20px;
 
-    box-shadow: 0 7px 15px rgba(0,0,0,.25);
+    box-shadow: $box-shadow1;
+
     .complexities-check{
       display: flex;
       flex-direction: row;
       padding-top: 10px;
+      font-family: $font2;
     }
   }
 
   label{
-    padding-right: 10px;
+    padding: 4px 4px 4px 26px;
+  }
+
+  form{
+    display: flex;
+    flex-direction: column;
   }
 
   input{
-    width: 100%;
     height: 30px;
     color: $input-color;
     border: 0;
     border-bottom: 1px solid $input-color;
     background-color: transparent;
-    margin: 0 auto;
   }
 
   input::placeholder{
@@ -156,12 +161,13 @@ export default {
   }
 
   button:hover{
-    color: $header-bg-color;
+    color: $box-bg-color1;
     background-color: $highlight-color;
   }
 
   .result-empty{
     color: $text-color;
+    padding: 20px 30px;
   }
 
   .row{
@@ -171,86 +177,72 @@ export default {
   }
 
   .search-results{
-    width: calc(100%-60px);
     display: flex;
     flex-direction: column;
     align-items: center;
-
     min-height: 60vh;
     margin-bottom: 35px;
-
-    border-radius: 5px;
-
-    box-shadow: 0 7px 15px rgba(0,0,0,.25);
-
-    padding: 30px 30px;
-    background-color: $header-bg-color;
-
-    color: $text-color;
+    box-shadow: $box-shadow1;
+    background-color: $box-bg-color1;
+    color: #000000;
   }
 
   .result{
-    width: 100%;
+    width: calc(100% - 60px);
     display: flex;
     flex-direction: row;
-    padding: 10px 0;
+    padding: 20px 30px;
+    cursor: pointer;
+    border-bottom: $box-border1;
+    &:hover{
+      background-color: $box-bg-color2;
+    }
     .data{
       color: $highlight-color;
       display: flex;
       flex-direction: column;
       align-self: center;
       width: 60%;
-      cursor: pointer;
       margin-left: 10px;
       .title{
-        font-size: 20px;
+        font-size: 24px;
+        font-family: $font2;
       }
       .author{
-        font-size: 15px;
+        font-size: 18px;
+        font-family: $font2;
       }
     }
     .moreinfo{
-      padding-left: 10px;
-      border-left: $text-color 1px solid;
+      padding: 0 10px;
+      border-left: $box-border1;
       display: flex;
       flex-direction: column;
-      width: 40%;
+      width: 20%;
+      font-size: 15px;
+      justify-content: center;
+    }
+    .evenmoreinfo{
+      padding: 0 10px;
+      display: flex;
+      flex-direction: column;
+      width: 15%;
       font-size: 15px;
     }
   }
-  .result+.result{
-    border-top: $text-color 1px solid;
-  }
 
-  .moreinfo .important{
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-  }
-
-  .moreinfo .complexity {
-    align-self: center;
-  }
-
-  .moreinfo .lancat{
+  .infotype{
     display: flex;
-    flex-direction: column;
-    justify-self: center;
-  }
-
-  .moreinfo .info-rest{
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    &>*{
-      align-self: center;
-    }
-    .comment-count{
-      justify-self: center;
-    }
   }
 
   .moreinfo div+div{
+    margin-top: 10px;
+  }
+
+  .evenmoreinfo div+div{
     margin-top: 5px;
   }
+
   .complexities-check{
     /* Hide the browser's default checkbox */
     input {

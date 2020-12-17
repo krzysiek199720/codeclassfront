@@ -1,6 +1,6 @@
 <template>
   <div :class="{'course-data': showComments}" v-if="loaded">
-    <div class="data-section" >
+    <div class="data-section">
       <component
         v-for="(fordata, index) in data"
         :is="fordata.type === 'CODE' ? 'dataCode' : 'dataText'"
@@ -83,14 +83,20 @@ export default {
 
 @import 'src/assets/css/variables.scss';
 
+.data-section{
+  display: flex;
+  flex-direction: column;
+}
+
 .course-data{
   display: grid;
   grid-template-columns: 3fr 2fr;
+  padding: 20px 0 0;
 
   .code-comments{
-    padding-left: 10px;
-    margin-left:10px;
-    border-left: rgba($highlight-color, 0.4) 1px solid;
+    padding-left: 20px;
+    margin-left: 20px;
+    border-left: $box-border1;
   }
 }
 

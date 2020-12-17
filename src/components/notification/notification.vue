@@ -9,7 +9,9 @@
                    :to="not.slug"
                    :class="{read: not.isread, unread: !not.isread}"
                    @click.native="markRead(not)">
-        <span class="text">{{not.text}}</span>
+        <div class="text">
+          {{not.text}}
+        </div>
         <div class="buttons">
           <button class="mark-read" @click.stop="markRead(not)" v-if="!not.isread">Mark as read</button>
           <button class="delete" @click.stop="deleteNotification(not)">Delete</button>
@@ -71,20 +73,20 @@ export default {
 
 .opener{
   display: block;
-  padding: 5px;
-  margin-top: -2px;
+  padding: 2px;
   color: $highlight-color;
 }
 
 .content{
-    width: 400px;
+    width: 500px;
 
     display: block;
     position: absolute;
-    right: 15px;
+    top: 50px;
+    right: 5px;
     padding: 0;
-    border: 1px $secondary-color solid;
-    background-color: $primary-color;
+    box-shadow: $box-shadow1;
+    background-color: $box-bg-color1;
     margin: 5px 0;
   //.read{
   //  background-color: $primary-color;
@@ -94,18 +96,29 @@ export default {
   //}
   .notification{
     display: flex;
-    background-color: $primary-color;
-    margin: 0 8px;
+    margin: 0 12px;
+    align-content: center;
   }
   .notification+.notification{
     //padding: 0 2px;
-    border-top: $secondary-color solid 1px;
+    border-top: $box-border1;
   }
-  .read+.read{
+  .text{
+    padding: 12px;
+    align-self: center;
   }
-  span{
-    margin: 0!important;
-    padding: 8px 8px!important;
+  .unread{
+    color: $text-color2;
+  }
+  .read{
+    color: rgba($text-color2,0.6);
+  }
+
+  .no-content{
+    padding: 10px;
+    span {
+      cursor: default!important;
+    }
   }
 
   .buttons{
@@ -117,11 +130,10 @@ export default {
     align-self: center;
     .mark-read{
       color: $highlight-color;
-      background-color: transparent;
       border: 1px solid $highlight-color;
     }
     .mark-read:hover{
-      color: $primary-color;
+      color: $box-bg-color1;
       background-color: $highlight-color;
     }
     button{
@@ -132,10 +144,9 @@ export default {
     .delete{
       color: $delete-color;
       border: 1px solid $delete-color;
-      background-color: transparent;
     }
     .delete:hover{
-      color: $primary-color;
+      color: $box-bg-color1;
       background-color: $delete-color;
     }
   }

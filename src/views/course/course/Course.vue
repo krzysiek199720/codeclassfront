@@ -1,7 +1,7 @@
 <template>
   <div id="course" v-if="loaded">
     <div class="section top">
-      <span class="title">{{ course.title}}</span>
+      <span class="title">{{course.title}}</span>
       <div class="manage"> <!-- prob better to v-if on next template then here -->
         <template v-if="$store.getters.authIsAuthenticated">
           <template v-if="!course.isAuthor">
@@ -24,36 +24,41 @@
         <router-link v-if="quiz !== null" tag="button" :to="{name:'quiz', params: {id: this.$route.params.id}}">{{quizString}}</router-link>
       </div>
     </div>
-    <div class="section info-container">
-      <div class="courseinfo">
-        <span class="info" id="coursegroup">Course Group: <span>{{course.courseGroupResponse.name}}</span></span>
-        <span class="info">
-          <span>Author: </span>
-          <span class="author">
-            {{course.courseGroupResponse.authorFirstname}} {{course.courseGroupResponse.authorLastname}}
-          </span>
-        </span>
-        <span class="info" id="language">Language: <span>{{course.language.name}}</span></span>
-        <span class="info" id="category">Category: <span>{{course.category.name}}</span></span>
-        <span class="info" id="complexity">Complexity: <span>{{course.complexity}}</span></span>
-        <span class="info" id="published">Published: <span>{{course.isPublished | formatDate}}</span></span>
+    <div class="section">
+      <div class="title-container">
+        <div class="title">Course information</div>
       </div>
-      <div class="course-useful">
-        <div class="links-div">
-          <span>Useful links</span>
-          <div class="links">
-            <a :href="link.link" class="link" v-for="link in links" :key="link.id">{{link.display}}</a>
-          </div>
+      <div class="info-container">
+        <div class="courseinfo">
+          <span class="info" id="coursegroup">Course Group: <span class="info-text">{{course.courseGroupResponse.name}}</span></span>
+          <span class="info">Author:<span  class="info-text author">{{course.courseGroupResponse.authorFirstname}} {{course.courseGroupResponse.authorLastname}}</span></span>
+          <span class="info" id="language">Language: <span class="info-text">{{course.language.name}}</span></span>
+          <span class="info" id="category">Category: <span class="info-text">{{course.category.name}}</span></span>
+          <span class="info" id="complexity">Complexity: <span class="info-text">{{course.complexity}}</span></span>
+          <span class="info" id="published">Published: <span class="info-text">{{course.isPublished | formatDate}}</span></span>
         </div>
-        <div class="files-div">
-          <span>Useful files</span>
-          <div class="files">
-            <span class="file" v-for="file in files" :key="file.id" @click="downloadFile(file.id)">{{file.display}}</span>
+        <div class="course-useful">
+          <div class="links-div">
+            <span>Useful links</span>
+            <div class="links">
+              <a :href="link.link" class="link" v-for="link in links" :key="link.id">{{link.display}}</a>
+            </div>
+          </div>
+          <div class="files-div">
+            <span>Useful files</span>
+            <div class="files">
+              <span class="file" v-for="file in files" :key="file.id" @click="downloadFile(file.id)">{{file.display}}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <courseData class="section coursedata"></courseData>
+    <div class="section course">
+      <div class="title-container">
+        <div class="title">Course</div>
+      </div>
+      <courseData class="coursedata"></courseData>
+    </div>
     <courseComment class="section comments" :courseId="course.id"></courseComment>
   </div>
 </template>
@@ -184,30 +189,25 @@ export default {
 @import 'src/assets/css/variables.scss';
 
 #course{
-  width: 1600px;
-
-  margin: 120px auto auto auto;
-  color: $text-color;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
+  max-width: 1400px;
+  width: calc(100% - 40px);
+  margin: 100px auto 20px auto;
 
   &>*+*{
-    margin-top:10px;
+    margin-top:20px;
   }
 
   .top{
     display: grid;
     grid-template-columns: 3fr 2fr;
-    background-color: $header-bg-color;
-    border-radius: 5px;
-    padding:20px;
-
     align-content: center;
 
     .title{
-      font-weight: bold;
+      font-weight: 600;
+      font-family: $font2;
       font-size: 24px;
       color: $highlight-color;
     }
@@ -220,71 +220,80 @@ export default {
     }
   }
 
+  .course{
+    padding: 30px 30px 25px!important;
+  }
+
   .manage{
     select, button{
       margin-left: 10px;
     }
 
     button {
-      height: 25px;
-    }
-
-    .assText{
-      margin-right: 5px;
+      height: 30px;
     }
 
     select {
       -webkit-appearance: none;
       -moz-appearance: none;
       -ms-appearance: none;
+      -webkit-transition: .25s all ease;
+      -o-transition: .25s all ease;
+      transition: .25s all ease;
       appearance: none;
       outline: 0;
       box-shadow: none;
       border: 0 !important;
-      background: $primary-color;
+      background: $box-bg-color2;
       background-image: none;
     }
     select::-ms-expand {
       display: none;
     }
     .select {
+      width: 200px;
       position: relative;
       display: flex;
-      width: 150px;
-      height: 25px;
+      height: 30px;
       line-height: 3;
-      background: $primary-color;
       overflow: hidden;
-      border-radius: .25em;
-    }
-
-    #search-div{
-      width: 15%!important;
       margin-left: 10px;
+      &:hover select, select:focus {
+        color: $box-bg-color1;
+        background-color: $header-bg-color;
+        option {
+          color: $text-color;
+          background: $box-bg-color1;
+        }
+      }
     }
 
     select {
-      flex: 1;
+      width: 200px;
       padding: 0 .5em;
       color: $text-color;
+      border-radius: 5px;
       cursor: pointer;
     }
     .select::after {
       content: '\25BC';
       position: absolute;
-      top: -0.7em;
-      right: 0;
-      padding: 0 0.5em;
-      background: $primary-color;
-      color: $secondary-color;
+      overflow: hidden;
+      font-size: 10px;
+      color: $text-color2;
       cursor: pointer;
       pointer-events: none;
       -webkit-transition: .25s all ease;
       -o-transition: .25s all ease;
       transition: .25s all ease;
+      right: 0;
+      padding: 0 0.8em;
+      height: 30px;
+      border-radius: 5px;
+
     }
     .select:hover::after {
-      color: $text-color;
+      color: $box-bg-color1;
     }
   }
 
@@ -298,10 +307,10 @@ export default {
     }
   }
   button:hover{
-    color: $header-bg-color;
+    color: $box-bg-color1;
     background-color: $highlight-color;
     &.unfollow{
-      color: $header-bg-color;
+      color: $box-bg-color1;
       background-color: $unfollow-color;
     }
   }
@@ -310,43 +319,62 @@ export default {
   }
 
   .section{
-    background-color: $header-bg-color;
-    border-radius: 5px;
-    padding:20px;
+    background-color: $box-bg-color1;
+    box-shadow: $box-shadow1;
+    padding: 30px;
+  }
+
+  .title-container {
+    display: flex;
+    justify-content: space-between;
+    .title {
+      font-family: $font2;
+      color: $text-color2;
+      font-size: 20px;
+    }
   }
 
   .info-container{
+    margin-top: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
 
     align-content: center;
     .info{
       display: grid;
-      grid-template-columns: 130px 1fr;
+      grid-template-columns: 135px 1fr;
+      align-items: center;
+      font-size: 16px;
+      font-family: $font2;
+      color: $text-color2;
+      .info-text{
+        font-size: 14.5px;
+        font-family: $font1;
+        color: $text-color1;
+      }
     }
 
     .courseinfo{
       display: grid;
       grid-template-columns: 1fr 1fr;
-
-      span{
-        padding:3px;
-      }
+      grid-gap: 10px;
     }
 
     .course-useful{
       display: grid;
       grid-template-columns: 1fr 1fr;
-
     }
 
     .links-div, .files-div{
       display: flex;
       flex-direction: column;
+      padding: 0 10px;
+      border-left: $box-border1;
 
       &>span{
-        justify-self: center;
         margin: 0 auto 10px auto;
+        font-family: $font2;
         color: $highlight-color;
       }
     }
@@ -354,19 +382,17 @@ export default {
     .links, .files{
       display: grid;
       grid-template-columns: 1fr 1fr;
-
-      border-left: rgba($text-color, 0.3) 1px solid;
-      padding-left:10px;
+      grid-gap: 5px;
     }
 
     .link, .file{
-      padding: 3px;
       cursor: pointer;
       justify-self: center;
+      color: rgba($highlight-color,0.6);
     }
 
     .link, .link:active, .link:visited, .link:link{
-      color: $highlight-color;
+      color: rgba($highlight-color,0.6);
       border: 0;
       text-decoration: none;
     }

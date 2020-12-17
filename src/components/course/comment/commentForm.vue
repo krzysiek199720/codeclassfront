@@ -143,20 +143,26 @@ export default {
 @import 'src/assets/css/variables.scss';
 
 .commentForm{
-  border-bottom: rgba($text-color, 0.7) 1px solid;
+  border-bottom: $box-border1;
   padding-bottom: 10px;
   margin-bottom: 10px;
   .commentdata{
-    background-color: rgba($secondary-color, 0.4);
+    background-color: $box-bg-color2;
     resize: none;
     outline: 0;
-    border: 0;
+    border: $box-border1;
     color: $text-color;
+    font-size: 14px;
+    font-family: $font1;
+  }
+
+  .commentInfoContainer{
+    margin-bottom: 10px;
   }
 
   .con{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
   }
 
   .name{
@@ -167,38 +173,39 @@ export default {
   .buttons{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
   }
 
   .commentMentionData{
     margin-top: 10px;
-
   }
 
   .submit-comment{
-    width: 10%;
+    margin-top: 10px;
+    width: 100px;
     height: 25px;
     color: $save-color;
     border-color: $save-color;
     align-self: flex-end;
-    margin-left: 10px;
   }
 
   .submit-comment:hover{
-    color: $header-bg-color;
+    color: $box-bg-color1;
     background-color: $save-color;
   }
 
   .line-button{
-    width: 145px;
-    height: 20px;
+    width: 130px;
+    height: 30px;
     color: $follow-color;
     border-color: $follow-color;
     padding:2px;
   }
+  .line-button+.line-button{
+    margin-left: 10px;
+  }
 
   .line-button:hover{
-    color: $header-bg-color;
+    color: $box-bg-color1;
     background-color: $follow-color;
   }
   .del-line{
@@ -206,7 +213,7 @@ export default {
     border-color: $unfollow-color;
   }
   .del-line:hover{
-    color: $header-bg-color;
+    color: $box-bg-color1;
     background-color: $unfollow-color;
   }
 

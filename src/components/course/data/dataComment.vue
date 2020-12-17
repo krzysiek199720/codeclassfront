@@ -54,29 +54,24 @@ export default {
 
 .comment-base{
   color: $text-color;
-  padding:10px;
+  padding: 10px 0;
 
-.comment-children{
-  padding-left: 1.5em;
-  margin-left: 1.5em;
-  border-left: rgba($text-color, 0.3) 1px groove;
-}
-}
-
-.comment-base+.comment-base{
-  padding-top:10px;
-  border-top: rgba($input-color, 0.2) 1px solid;
+  .comment-children{
+    padding-left: 20px;
+    margin-left: 20px;
+    border-left: rgba($text-color, 0.3) 1px solid;
+  }
 }
 
 .showCommentForm{
-  width: 150px;
+  width: 200px;
   height: 30px;
   color: $save-color;
   border-color: $save-color;
   padding:2px;
 }
 .showCommentForm:hover{
-  color: $header-bg-color;
+  color: $box-bg-color1;
   background-color: $save-color;
 }
 

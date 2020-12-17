@@ -87,8 +87,10 @@ export default {
 
 .desc-tooltip {
   visibility: hidden;
-  background-color: rgba(black, 0.9);
-  color: $text-color;
+  background-color: $header-bg-color;
+  box-shadow: $box-shadow1;
+  font-family: $font3;
+  color: $box-bg-color1;
   text-align: center;
   padding: 5px 5px;
   border-radius: 5px;
@@ -100,7 +102,7 @@ export default {
   z-index: 1;
 
   transform: translate(0, -100%);
-  top: -3px;
+  top: -5px;
 }
 
 .element{

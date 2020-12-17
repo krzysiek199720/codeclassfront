@@ -1,7 +1,12 @@
 <template>
   <div id="user-admin-panel">
-    <div class="search-panel">
-      <input type="text" v-model="searchQuery" placeholder="User search">
+    <div class="title-container">
+      <div class="title">User Admin Panel</div>
+    </div>
+    <div class="top-section">
+      <div class="text-container">
+        <input type="text" v-model="searchQuery" placeholder="User search">
+      </div>
       <div class="select" id="search-div">
         <select name="role" id="role" v-model="selectedRole" >
           <option class="role-option" :value="null">----</option>
@@ -82,19 +87,35 @@ export default {
 
   .search{
     margin-left: 10px;
-    width: 15%;
+    width: 150px;
+    width: 150px;
     height: 30px;
     color: $save-color;
     border-color: $save-color;
   }
 
+  .title-container{
+    display: flex;
+    justify-content: space-between;
+  }
+  .title{
+    font-family: $font2;
+    color: $text-color2;
+    font-size: 20px;
+  }
+
   .search:hover{
-    color: $header-bg-color;
+    color: $box-bg-color1;
     background-color: $save-color;
   }
 
+  .text-container{
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+  }
+
   input{
-    width: 15%;
     height: 30px;
     color: $input-color;
     border: 0;
@@ -110,7 +131,10 @@ export default {
     outline: 0;
   }
 
-  .search-panel{
+  .top-section{
+    border-bottom: $box-border1;
+    padding-bottom: 20px;
+    margin-top: 20px;
     display: flex;
     flex-direction: row;
   }
@@ -119,67 +143,77 @@ export default {
     -webkit-appearance: none;
     -moz-appearance: none;
     -ms-appearance: none;
+    -webkit-transition: .25s all ease;
+    -o-transition: .25s all ease;
+    transition: .25s all ease;
     appearance: none;
     outline: 0;
     box-shadow: none;
     border: 0 !important;
-    background: $primary-color;
+    background: $box-bg-color2;
     background-image: none;
   }
   select::-ms-expand {
     display: none;
   }
   .select {
+    width: 200px;
     position: relative;
     display: flex;
-    width: 100%;
     height: 30px;
     line-height: 3;
-    background: $primary-color;
     overflow: hidden;
-    border-radius: .25em;
-  }
-
-  #search-div{
-    width: 15%!important;
     margin-left: 10px;
+    &:hover select, select:focus {
+      color: $box-bg-color1;
+      background-color: $header-bg-color;
+      option {
+        color: $text-color;
+        background: $box-bg-color1;
+      }
+    }
   }
 
   select {
-    flex: 1;
+    width: 200px;
     padding: 0 .5em;
     color: $text-color;
+    border-radius: 5px;
     cursor: pointer;
   }
   .select::after {
     content: '\25BC';
     position: absolute;
-    top: -0.5em;
-    right: 0;
-    padding: 0 0.5em;
-    background: $primary-color;
-    color: $secondary-color;
+    overflow: hidden;
+    font-size: 10px;
+    color: $text-color2;
     cursor: pointer;
     pointer-events: none;
     -webkit-transition: .25s all ease;
     -o-transition: .25s all ease;
     transition: .25s all ease;
+    right: 0;
+    padding: 0 0.8em;
+    height: 30px;
+    border-radius: 5px;
+
   }
   .select:hover::after {
-    color: $text-color;
+    color: $box-bg-color1;
   }
 
   .users{
-    border-top: rgba($text-color, 0.3) 1px solid;
-    padding-top: 10px;
-    margin-top: 10px;
+    margin-top: 20px;
   }
 
   .user{
     display: grid;
-    grid-template-columns: 5fr 7fr 3fr 8fr;
+    grid-template-columns: 5fr 7fr 4fr 7fr;
     .email, .select{
-      margin-left: 35px;
+      padding-left: 20px;
+    }
+    .email, .name{
+      overflow: hidden;
     }
   }
 

@@ -22,16 +22,16 @@
       </div>
     </div>
     <div class="course-list">
-      <div class="course" v-for="item in courses" :key="item.id">
+      <router-link tag="div" :to="{name:'course', params:{id: item.id}}" class="course" v-for="item in courses" :key="item.id">
         <div class="data">
           <span class="order">{{item.groupOrder}}</span>
-          <router-link tag="span" :to="{name:'course', params:{id: item.id}}" class="title">{{item.title}}</router-link>
+          <span class="title">{{item.title}}</span>
           <span class="complexity">{{item.complexity}}</span>
           <span class="language">{{item.language.name}}</span>
           <span class="category">{{item.category.name}}</span>
           <span class="published">{{item.isPublished | formatDateOrEmpty}}</span>
         </div>
-      </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -91,18 +91,21 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 1200px;
-  margin: 120px auto auto auto;
-  color: $text-color;
+  max-width: 1400px;
+  width: calc(100% - 40px);
+  margin: 100px auto auto auto;
+
   .top{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 20px;
+    font-family: $font2;
 
-    background-color: $header-bg-color;
+    background-color: $box-bg-color1;
     padding: 30px;
     color: $highlight-color;
+    box-shadow: $box-shadow1;
 
     .title{
       font-weight: bold;
@@ -111,6 +114,7 @@ export default {
     .author{
       display: flex;
       flex-direction: column;
+      font-size: 18px;
     }
 
   }
@@ -125,10 +129,10 @@ export default {
       }
     }
     button:hover{
-      color: $header-bg-color;
+      color: $box-bg-color1;
       background-color: $highlight-color;
       &.unfollow{
-        color: $header-bg-color;
+        color: $box-bg-color1;
         background-color: $unfollow-color;
       }
     }
@@ -138,8 +142,8 @@ export default {
   }
 
   .course-list{
-    background-color: $header-bg-color;
-    padding: 30px;
+    background-color: $box-bg-color1;
+    box-shadow: $box-shadow1;
   }
 
   .data{
@@ -148,17 +152,21 @@ export default {
     span{
       margin: 0 5px;
     }
-    .title{
-      cursor: pointer;
+    span:first-child{
+      margin-left: 0;
     }
   }
 
   .course{
-    padding: 10px 0 10px 10px;
+    padding: 15px 30px 15px 30px;
+    cursor: pointer;
+    &:hover{
+      background-color: $box-bg-color2;
+    }
   }
 
   .course+.course{
-    border-top: $text-color 1px solid;
+    border-top: $box-border1;
   }
 }
 
