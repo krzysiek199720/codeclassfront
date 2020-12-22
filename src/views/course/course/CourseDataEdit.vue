@@ -95,8 +95,8 @@ export default {
     removeImage (image) {
       axios.delete('/course/' + this.$route.params.id + '/data/image/' + image.localId)
         .then(res => {
-          const index = this.files.indexOf(file)
-          this.files.splice(index, 1)
+          const index = this.images.indexOf(image)
+          this.images.splice(index, 1)
         })
     },
     save () {
