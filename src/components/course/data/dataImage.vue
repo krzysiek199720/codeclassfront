@@ -22,7 +22,7 @@ export default {
     return {
     startingOptions: {
       "inline": false,
-      "button": false,
+      "button": true,
       "navbar": false,
       "title": true,
       "toolbar": false,
