@@ -3,7 +3,7 @@
     <div class="data-section">
       <component
         v-for="(fordata, index) in data"
-        :is="fordata.type === 'CODE' ? 'dataCode' : 'dataText'"
+        :is="fordata.type === 'CODE' ? 'dataCode' : fordata.type === 'TEXT' ? 'dataText' : 'dataImage'"
         :data="data[index]"></component>
     </div>
     <div>
@@ -19,6 +19,7 @@ import axios from '../../axios/axios'
 
 import dataText from '@/components/course/data/dataText'
 import dataCode from '@/components/course/data/code/dataCode'
+import dataImage from '@/components/course/data/dataImage'
 import dataComment from '@/components/course/data/dataComment'
 
 export default {
@@ -50,6 +51,7 @@ export default {
   components: {
     dataText,
     dataCode,
+    dataImage,
     dataComment
   },
   created () {
