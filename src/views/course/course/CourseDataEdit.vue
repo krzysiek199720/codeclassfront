@@ -5,12 +5,35 @@
       <button class="save" @click="save">Save</button>
       <button class="save" @click="preview">Preview</button>
     </div>
+    <div class="section image-settings">
+      <div class="title-container">
+        <div class="title">Images</div>
+      </div>
+      <div class="top-section">
+        <div class="text-container">
+          <label for="image-create-d">Image id<input type="text" id="image-create-d" v-model="newImage.localId"></label>
+          <label for="image-create-l">Image file<input type="file" id="image-create-l" ref="file" @change="OnFileChange()"></label>
+        </div>
+        <button class="save" @click="addImage()">Add image</button>
+      </div>
+      <div class="image-container">
+        <template v-for="i in images">
+          <div class="bottom-section" :key="i.localId">
+            <div class="text-container">
+              <span class="image-name">{{i.localId}}</span>
+            </div>
+            <button class="delete" @click="removeImage(i)">Delete image</button>
+          </div>
+        </template>
+      </div>
+    </div>
     <div class="section edit-container">
       <div class="editor">
         <div class="buttons">
           <button class="insert" @click="insertCode()">&lt;code&gt;</button>
           <button class="insert" @click="insertLine()">&lt;line&gt;</button>
           <button class="insert" @click="insertElement()">&lt;element&gt;</button>
+          <button class="insert" @click="insertImage()">&lt;image&gt;</button>
         </div>
         <textarea name="dataraw" id="dataraw" :cols="cols" :rows="rows" v-model="dataRaw" ref="dataraw" @input="resizeIt" @keydown.tab="tabInsert" accept-charset="utf-8"></textarea>
       </div>
@@ -38,13 +61,44 @@ export default {
       rowsMin: 20,
       rows: 1,
       cols: 100,
-      showPreview: true
+      showPreview: true,
+      newImage: {},
+      images: []
     }
   },
   computed: {
     loaded () { return this.loadD && this.loadDR }
   },
   methods: {
+    OnFileChange () {
+      this.newImage.file = this.$refs.file.files[0]
+    },
+    addImage () {
+      const formData = new FormData()
+      formData.append('image', this.newImage.localId)
+      formData.append('file', this.newImage.file)
+
+      axios.post('/course/' + this.$route.params.id + '/data/image',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .then(res => {
+          this.images.push(res.data)
+          this.newImage = {}
+        }).catch(_ => {
+        console.log('failed to save image')
+      })
+    },
+    removeImage (image) {
+      axios.delete('/course/' + this.$route.params.id + '/data/image/' + image.localId)
+        .then(res => {
+          const index = this.files.indexOf(file)
+          this.files.splice(index, 1)
+        })
+    },
     save () {
       axios.post('/course/' + this.$route.params.id + '/data', { data: this.dataRaw })
         .then(res => {
@@ -68,6 +122,9 @@ export default {
     },
     insertElement () {
       this.insertBlock('<element desc="">', '</element>')
+    },
+    insertImage () {
+      this.insertBlock('<image id="">', '')
     },
     insertBlock (insertHead, insertTail) {
       // insert head and tail on cursor
@@ -150,6 +207,10 @@ export default {
       .catch(_ => {
         this.loadDR = true
       })
+    axios.get('/course/' + this.$route.params.id + '/data/image')
+    .then(res => {
+      this.images = res.data
+    })
   },
   beforeRouteEnter: (to, from, next) => {
     next(store.getters.authHasPermission('save_course_data'))
