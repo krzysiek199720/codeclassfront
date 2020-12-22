@@ -35,11 +35,14 @@
           <button class="insert" @click="insertElement()">&lt;element&gt;</button>
           <button class="insert" @click="insertImage()">&lt;image&gt;</button>
         </div>
-        <div class="editor-text">
-          <div class="left">
-            <div class="rowCell" v-for="x in rows" :class="{'error-row': errorRow === x}">{{x}}</div>
+        <div class="editor-text-container">
+          <div class="editor-text">
+            <div class="left">
+              <div class="rowCell" v-for="x in rows" :class="{'error-row': errorRow === x}">{{x}}</div>
+            </div>
+            <textarea name="dataraw" id="dataraw" :cols="cols" :rows="rows" v-model="dataRaw" ref="dataraw" @input="resizeIt" @keydown.tab="tabInsert" accept-charset="utf-8"></textarea>
           </div>
-          <textarea name="dataraw" id="dataraw" :cols="cols" :rows="rows" v-model="dataRaw" ref="dataraw" @input="resizeIt" @keydown.tab="tabInsert" accept-charset="utf-8"></textarea>
+          <span class="error">{{errorMessage}}</span>
         </div>
       </div>
       <div class="result">
@@ -69,7 +72,8 @@ export default {
       showPreview: true,
       newImage: {},
       images: [],
-      errorRow: null
+      errorRow: null,
+      errorMessage: ''
     }
   },
   computed: {
@@ -119,15 +123,17 @@ export default {
           this.data = res.data
           this.showPreview = true
           this.errorRow = null
+          this.errorMessage = ''
         })
         .catch(err => {
           console.log(err.response)
+          this.errorMessage = err.response.data.error
           if(err.response.data.errorPlace){
             let characters = 0
             const lines = this.dataRaw.split('\n')
             for(let i = 0; i < lines.length; ++i){
               characters += lines[i].length
-              if(characters > err.response.data.errorPlace){
+              if(characters >= err.response.data.errorPlace){
                 this.errorRow = i
                 return
               }
@@ -344,6 +350,14 @@ export default {
         background-color: red!important;
         margin-left: -10px;
       }
+    }
+  }
+
+  .editor-text-container{
+    display: flex;
+    flex-direction: column;
+    .error {
+      color: red;
     }
   }
 }
