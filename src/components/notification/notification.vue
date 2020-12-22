@@ -1,6 +1,9 @@
 <template>
   <div id="notification-container" v-click-outside="closeEvent">
-    <div class="opener" @click="switchOpen"><font-awesome-icon :icon="['far','bell']"/></div>
+    <div class="opener" @click="switchOpen">
+      <font-awesome-icon :icon="['far','bell']" v-if="unreadCount === 0"/>
+      <font-awesome-icon :icon="['fas','bell']" v-else/>
+    </div>
     <div class="content" v-if="isOpened">
       <router-link class="notification"
                    tag="div"
@@ -32,6 +35,14 @@ export default {
     return {
       isOpened: false,
       notifications: []
+    }
+  },
+  computed:
+  {
+    unreadCount () {
+      let result = 0
+      this.notifications.forEach(item => {if(!item.isread) result++})
+      return result
     }
   },
   methods: {
