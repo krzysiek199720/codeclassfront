@@ -35,7 +35,12 @@
           <button class="insert" @click="insertElement()">&lt;element&gt;</button>
           <button class="insert" @click="insertImage()">&lt;image&gt;</button>
         </div>
-        <textarea name="dataraw" id="dataraw" :cols="cols" :rows="rows" v-model="dataRaw" ref="dataraw" @input="resizeIt" @keydown.tab="tabInsert" accept-charset="utf-8"></textarea>
+        <div class="editor-text">
+          <div class="left">
+            <div class="rowCell" v-for="x in rows" :class="{'error-row': errorRow === x}">{{x}}</div>
+          </div>
+          <textarea name="dataraw" id="dataraw" :cols="cols" :rows="rows" v-model="dataRaw" ref="dataraw" @input="resizeIt" @keydown.tab="tabInsert" accept-charset="utf-8"></textarea>
+        </div>
       </div>
       <div class="result">
         <courseData class="coursedata" v-if="showPreview" :showComments="false" :usePropsData="true" :propsData="data"></courseData>
@@ -63,7 +68,8 @@ export default {
       cols: 100,
       showPreview: true,
       newImage: {},
-      images: []
+      images: [],
+      errorRow: null
     }
   },
   computed: {
@@ -112,6 +118,22 @@ export default {
         .then(res => {
           this.data = res.data
           this.showPreview = true
+          this.errorRow = null
+        })
+        .catch(err => {
+          console.log(err.response)
+          if(err.response.data.errorPlace){
+            let characters = 0
+            const lines = this.dataRaw.split('\n')
+            for(let i = 0; i < lines.length; ++i){
+              characters += lines[i].length
+              if(characters > err.response.data.errorPlace){
+                this.errorRow = i
+                return
+              }
+            }
+            this.errorRow = null
+          }
         })
     },
     insertCode () {
@@ -303,6 +325,26 @@ export default {
     background-color: rgba($secondary-color, 0.4);
     border: 0;
     color: $text-color;
+  }
+
+  .editor-text{
+    font-family: 'JetBrains Mono';
+    font-size: 13.3333px;
+    display: flex;
+    flex-direction: row;
+    .left{
+      display: flex;
+      flex-direction: column;
+      width: 1.7em;
+      padding: 2px 0.1em;
+      .rowCell{
+        background-color: #fff;
+      }
+      .error-row{
+        background-color: red!important;
+        margin-left: -10px;
+      }
+    }
   }
 }
 </style>
