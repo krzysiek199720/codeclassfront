@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="course-list">
-      <router-link tag="div" :to="{name:'course', params:{id: item.id}}" class="course" v-for="item in courses" :key="item.id">
+      <router-link tag="a" :to="{name:'course', params:{id: item.id}}" class="course" v-for="item in courses" :key="item.id">
         <div class="data">
           <span class="order">{{item.groupOrder}}</span>
           <span class="title">{{item.title}}</span>
@@ -158,6 +158,8 @@ export default {
   }
 
   .course{
+    display: flex;
+    flex-direction: column;
     padding: 15px 30px 15px 30px;
     cursor: pointer;
     &:hover{

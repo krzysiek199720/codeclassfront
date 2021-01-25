@@ -60,14 +60,13 @@ export default {
     background-color: $box-bg-color1;
     height: 400px;
     width: 300px;
-
     box-shadow:
-      0 2.8px 2.2px rgba($header-bg-color, 0.034),
-      0 6.7px 5.3px rgba($header-bg-color, 0.048),
-      0 12.5px 10px rgba($header-bg-color, 0.06),
-      0 22.3px 17.9px rgba($header-bg-color, 0.072),
-      0 41.8px 33.4px rgba($header-bg-color, 0.086),
-      0 100px 80px rgba($header-bg-color, 0.12)
+      0 3px 3px rgba($highlight-color, 0.03),
+      0 5px 6px rgba($highlight-color, 0.025),
+      0 10px 12px rgba($highlight-color, 0.02),
+      0 20px 24px rgba($highlight-color, 0.015),
+      0 40px 48px rgba($highlight-color, 0.01),
+      0 80px 96px rgba($highlight-color, 0.05);
 
   }
   form{
@@ -88,6 +87,10 @@ export default {
   button:hover{
     color: $box-bg-color1;
     background-color: $highlight-color;
+  }
+
+  .error{
+    border-bottom: 1px solid $error-color;
   }
 
   input{

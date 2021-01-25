@@ -2,7 +2,9 @@
 <!--  <p class="text-data">{{data.courseDataLineList[0].courseDataElementList[0].data}}</p>-->
   <viewer :options="startingOptions" :images="imageSrc" class="viewer" @inited="inited">
     <template slot-scope="scope">
-      <img v-for="src in scope.images" :src="src" :key="src">
+      <div class="image">
+        <img v-for="src in scope.images" :src="src" :key="src">
+      </div>
     </template>
   </viewer>
 </template>
@@ -66,5 +68,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+  @import 'src/assets/css/variables.scss';
+
+  .image{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    transition-duration: 100ms;
+    img{
+      height: 100px;
+      object-fit: COVER;
+      object-position: 40% 20%;
+    }
+  }
 
 </style>

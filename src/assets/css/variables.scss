@@ -1,29 +1,37 @@
-$header-bg-color: #443c4e;
+
 $header-height: 50px;
 
 $font1: 'Open Sans', sans-serif;
 $font2: 'Comfortaa', sans-serif;
 $font3: 'Architects Daughter', sans-serif;
 
-$primary-color: #f2f3f3;
+$hsl-h: 210;
+$header-bg-color: hsl($hsl-h, 17.6%, 16.7%);
+$primary-color: hsl($hsl-h, 7.7%, 12.7%);
 $secondary-color: #676B74;
-$text-color: #000000;
-$highlight-color: #d78e57;
+$text-color: #ffffff;
+$highlight-color: hsl($hsl-h, 100%, 55%);
 
-$box-bg-color1: #FFFFFF;
-$box-bg-color2: #f6f6f6;
+$box-bg-color1: hsl($hsl-h, 5.9%, 16.7%);
+$box-bg-color2: hsl($hsl-h, 4.8%, 20.6%);
+$box-bg-color3: hsl($hsl-h, 4%, 24.5%);
 
-$box-shadow1: 0 1px 2px 0 rgba($header-bg-color,0.5);
+$box-shadow1: 0px 0.8px 1.5px -0.5px rgba($highlight-color,0.5),
+              0px 0px 24px -18px rgba($highlight-color,0.05);
+$box-shadow2: 0px -0.5px 0.5px -0.5px rgba($highlight-color,0.5),
+              0px 0.45px 0.5px -0.5px rgba($highlight-color,0.5);
 
-$box-border1: 1px solid #EAEDED;
+$box-border1: 1px solid rgba($highlight-color,0.15);
 
-$text-color1: #000000;
+$text-color1: #ffffff;
 $text-color2: $highlight-color;
 
+$text-shadow: 0 0 1px rgba($highlight-color,1), 0 0 4px rgba($highlight-color,0.75),0 0 8px rgba($highlight-color,0.25);
+$text-shadow1: 0 0 0.5px #ffffff, 0 0 2px #ffffff, 0 0 4px rgba($highlight-color,0.3),0 0 8px rgba($highlight-color,0.6),0 0 12px rgba($highlight-color,0.9);
 
-
-$delete-color: #ff0000;
-$save-color: #5D85BF;
+$error-color: #f13769;
+$delete-color: $error-color;
+$save-color: #09ec8f;
 
 $input-color: $text-color;
 $input-placeholder-color: #B0B5B0;

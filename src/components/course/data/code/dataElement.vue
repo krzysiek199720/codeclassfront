@@ -1,7 +1,11 @@
 <template>
   <div class="filler">
     <div class="element" @mouseover.stop.self="onHover" @mouseleave.stop.self="hovering = false" :class="{hovered: hovering}">
-      <span class="desc-tooltip" v-if="elem.description !== null">{{elem.description}}</span>
+      <div class="desc-tooltip" v-if="elem.description !== null">
+        <div class="shadow">
+          {{elem.description}}
+        </div>
+      </div>
       <template>{{elem.data}}</template>
       <dataElement v-if="deepeerElem !== null" :data="deepeerElem.list" @hov="hovering = false"></dataElement>
     </div>
@@ -78,37 +82,58 @@ export default {
 }
 
 .hovered{
-  background-color: $hover-bg-color;
+  text-shadow: $text-shadow1;
 }
 
-.hovered>.desc-tooltip {
+.hovered > .desc-tooltip {
+  opacity: 1;
   visibility: visible;
 }
 
 .desc-tooltip {
   visibility: hidden;
-  background-color: $header-bg-color;
-  box-shadow: $box-shadow1;
+  opacity: 0;
+  transition-delay: 150ms;
+  transition-duration: 200ms;
+  background-color: $box-bg-color3;
+  box-shadow: $box-shadow2;
   font-family: $font3;
-  color: $box-bg-color1;
-  text-align: center;
-  padding: 5px 5px;
-  border-radius: 5px;
-
-  /* Position the tooltip text - see examples below! */
+  color: $highlight-color;
+  padding: 5px 6px;
   position: absolute;
-  max-width: 300px;
-  min-width: 150px;
   z-index: 1;
-
+  font-size: 14.3px;
   transform: translate(0, -100%);
-  top: -5px;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-shadow: none;
+  &:before {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    transform: translate(0, -100%);
+    background: linear-gradient(transparent, rgba($highlight-color,0.05));
+    content: '';
+  }
+  &:after {
+    position: absolute;
+    z-index: -1;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    transform: translate(0, 100%);
+    background: linear-gradient(rgba($highlight-color,0.05), transparent);
+    content: '';
+  }
 }
 
 .element{
-  position: relative;
   display: inline-block;
-
   cursor: default;
 
 }

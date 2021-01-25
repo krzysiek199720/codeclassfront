@@ -2,23 +2,22 @@
   <div id="app" v-if="loaded">
     <div id="nav">
       <div class="nav-links">
-      <router-link tag="span" :to="'/'">Home</router-link>
+      <router-link tag="a" :to="{ name: 'search' } ">Search</router-link>
       <template v-if="$store.getters.authIsAuthenticated">
-        <router-link tag="span" :to="{ name: 'settings'}">Settings</router-link>
-        <router-link tag="span" :to="{ name: 'settingsAdmin'}" v-if="$store.getters.authIsAdmin">Settings Admin</router-link>
+        <router-link tag="a" :to="{ name: 'settings'}">Settings</router-link>
+        <router-link tag="a" :to="{ name: 'settingsAdmin'}" v-if="$store.getters.authIsAdmin">Settings Admin</router-link>
 
       </template>
 
-      <router-link tag="span" :to="{ name: 'search' } ">Search</router-link>
       </div>
       <div class="nav-other">
         <notification v-if="$store.getters.authIsAuthenticated"></notification>
         <template v-if="!$store.getters.authIsAuthenticated">
-          <router-link tag="span" :to="{name: 'login'}">Login</router-link>
-          <router-link tag="span" :to="{ name: 'signup'}">Signup</router-link>
+          <router-link tag="a" :to="{name: 'login'}">Login</router-link>
+          <router-link tag="a" :to="{ name: 'signup'}">Signup</router-link>
         </template>
         <template v-else>
-          <router-link tag="span" :to="{ name: 'logout'}">Logout</router-link>
+          <router-link tag="a" :to="{ name: 'logout'}">Logout</router-link>
         </template>
       </div>
     </div>
@@ -66,13 +65,67 @@ input{
 body {
   margin: 0;
   background-color: $primary-color;
+  color: $text-color1;
 }
 
-button{
-  border: 1px solid deeppink;
+button {
+  color: $highlight-color!important;;
+  border: 1px solid $highlight-color!important;;
   background-color: transparent;
   border-radius: 5px;
   font-family: $font2;
+
+  &.follow, &.save, &.publish, &.submit-comment {
+    color: $save-color!important;;
+    border-color: $save-color!important;;
+  }
+
+  &.remove, &.unfollow, &.delete, &.unpublish {
+    color: $delete-color!important;;
+    border-color: $delete-color!important;;
+  }
+}
+
+button:hover{
+  color: $box-bg-color1!important;
+  background-color: $highlight-color!important;
+  &.follow, &.save, &.publish, &.submit-comment {
+    color: $box-bg-color1!important;
+    background-color: $save-color!important;
+  }
+  &.remove, &.unfollow, &.delete, &.unpublish{
+    color: $box-bg-color1!important;
+    background-color: $delete-color!important;
+  }
+}
+
+button:focus{
+  box-shadow: 0 0 0 2px rgba($highlight-color, .3);
+  &.follow, &.save, &.publish, &.submit-comment {
+    box-shadow: 0 0 0 2px rgba($save-color, .3);
+  }
+  &.remove, &.unfollow, &.delete, &.unpublish{
+    box-shadow: 0 0 0 2px rgba($delete-color, .3);
+  }
+}
+
+a{
+  text-decoration: none;
+  &:link, &:visited {
+    color: inherit;
+  }
+  &:focus{
+    outline: none;
+  }
+  &:active{
+    outline: none;
+  }
+}
+
+input[type=text]{
+  &:hover{
+    box-shadow:  0px 3px 4px -3.8px rgba($header-bg-color,0.5)
+  }
 }
 
 #app{
@@ -102,11 +155,14 @@ button{
 }
 
 #nav {
-  span {
+  a {
     color: $highlight-color;
     margin: 0 10px;
     padding: 2px;
     cursor: pointer;
+    &:focus {
+      outline: none;
+    }
   }
 }
 
@@ -137,7 +193,7 @@ button{
 }
 
 .router-link-exact-active{
-  filter: hue-rotate(180deg);
+  text-shadow: $text-shadow;
 }
 
 </style>

@@ -15,7 +15,7 @@
     </div>
     <div class="search-results">
       <template v-if="result.length > 0">
-        <router-link tag="div" :to="{name:'courseGroup', params:{id: item.courseGroupId}}" class="result" v-for="item in result" :key="item.courseGroupId">
+        <router-link tag="a" :to="{name:'courseGroup', params:{id: item.courseGroupId}}" class="result" v-for="item in result" :key="item.courseGroupId">
           <div class="data">
             <span tag="span" class="title">{{item.courseGroupName}}</span>
             <span class="author">{{item.authorFirstName}} {{item.authorLastName}}</span>
@@ -184,7 +184,7 @@ export default {
     margin-bottom: 35px;
     box-shadow: $box-shadow1;
     background-color: $box-bg-color1;
-    color: #000000;
+    color: $text-color1;
   }
 
   .result{

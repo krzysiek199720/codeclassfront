@@ -82,6 +82,7 @@ export default {
 }
 
 .line{
+  position: relative;
   padding: 5px;
   display: flex;
   flex-direction: row;

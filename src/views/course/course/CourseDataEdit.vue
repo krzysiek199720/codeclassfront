@@ -1,52 +1,74 @@
 <template>
   <div id="course-data-edit" v-if="loaded">
-    <div class="section controls">
-      <router-link tag="button" :to="{name:'courseEdit', params: {id: this.$route.params.id}}">Back to course edit</router-link>
-      <button class="save" @click="save">Save</button>
-      <button class="save" @click="preview">Preview</button>
-    </div>
-    <div class="section image-settings">
+    <div class="section">
       <div class="title-container">
-        <div class="title">Images</div>
-      </div>
-      <div class="top-section">
-        <div class="text-container">
-          <label for="image-create-d">Image id<input type="text" id="image-create-d" v-model="newImage.localId"></label>
-          <label for="image-create-l">Image file<input type="file" id="image-create-l" ref="file" @change="OnFileChange()"></label>
+        <div class="title">Edit data</div>
+        <div class="buttons">
+          <router-link tag="button" :to="{name:'courseEdit', params: {id: this.$route.params.id}}">Back to course edit</router-link>
+          <button class="save" @click="save">Save</button>
+          <button class="save" @click="preview">Preview</button>
         </div>
-        <button class="save" @click="addImage()">Add image</button>
       </div>
-      <div class="image-container">
-        <template v-for="i in images">
-          <div class="bottom-section" :key="i.localId">
-            <div class="text-container">
-              <span class="image-name">{{i.localId}}</span>
-            </div>
-            <button class="delete" @click="removeImage(i)">Delete image</button>
+      <div class="image-settings">
+        <div class="title-container">
+          <div class="title">Images</div>
+        </div>
+        <div class="new-image">
+          <div class="input-container">
+            <label for="file-create-d">ID</label>
+            <input type="text" id="file-create-d" v-model="newImage.localId">
           </div>
-        </template>
+          <div class="input-container">
+            <label for="file-create-l-text">File</label>
+            <input type="text" id="file-create-l-text" v-model="fileName" disabled>
+            <div class="hover">
+              <input type="file" id="file-create-l" ref="file" @change="OnFileChange()">
+              <div class="file-button">Choose file</div>
+            </div>
+          </div>
+          <div class="button-container">
+            <button class="save" @click="addImage()">Add image</button>
+          </div>
+        </div>
+        <div class="image-container">
+          <template v-for="i in images">
+            <div class="bottom-section" :key="i.localId">
+              <div class="text-container">
+                <span class="image-name">{{i.localId}}</span>
+              </div>
+              <div class="button-container">
+                <button class="remove" @click="removeImage(i)">Delete image</button>
+              </div>
+            </div>
+          </template>
+        </div>
       </div>
     </div>
-    <div class="section edit-container">
-      <div class="editor">
-        <div class="buttons">
-          <button class="insert" @click="insertCode()">&lt;code&gt;</button>
-          <button class="insert" @click="insertLine()">&lt;line&gt;</button>
-          <button class="insert" @click="insertElement()">&lt;element&gt;</button>
-          <button class="insert" @click="insertImage()">&lt;image&gt;</button>
-        </div>
-        <div class="editor-text-container">
-          <div class="editor-text">
-            <div class="left">
-              <div class="rowCell" v-for="x in rows" :class="{'error-row': errorRow === x}">{{x}}</div>
-            </div>
-            <textarea name="dataraw" id="dataraw" :cols="cols" :rows="rows" v-model="dataRaw" ref="dataraw" @input="resizeIt" @keydown.tab="tabInsert" accept-charset="utf-8"></textarea>
+    <div class="section">
+      <div class="title-container">
+        <div class="title">Code</div>
+      </div>
+      <div class="edit-container">
+        <div class="editor">
+          <div class="multimedia">
+            <button class="insert" @click="insertCode()">&lt;code&gt;</button>
+            <button class="insert" @click="insertLine()">&lt;line&gt;</button>
+            <button class="insert" @click="insertElement()">&lt;element&gt;</button>
+            <button class="insert" @click="insertImage()">&lt;image&gt;</button>
           </div>
           <span class="error">{{errorMessage}}</span>
+          <div class="editor-text-container">
+            <div class="editor-text">
+              <div class="left">
+                <div class="rowCell" v-for="x in rows" :class="{'error-row': errorRow === x}">{{x}}</div>
+              </div>
+              <textarea name="dataraw" id="dataraw" :rows="rows" v-model="dataRaw" ref="dataraw" @input="resizeIt" @keydown.tab="tabInsert" accept-charset="utf-8"></textarea>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="result">
-        <courseData class="coursedata" v-if="showPreview" :showComments="false" :usePropsData="true" :propsData="data"></courseData>
+        <div class="result">
+          <courseData class="coursedata" v-if="showPreview" :showComments="false" :usePropsData="true" :propsData="data"></courseData>
+        </div>
       </div>
     </div>
   </div>
@@ -62,13 +84,13 @@ export default {
   name: 'CourseDataEdit',
   data () {
     return {
+      fileName: '',
       loadD: false,
       loadDR: false,
       dataRaw: null,
       data: null,
       rowsMin: 20,
       rows: 1,
-      cols: 100,
       showPreview: true,
       newImage: {},
       images: [],
@@ -82,6 +104,7 @@ export default {
   methods: {
     OnFileChange () {
       this.newImage.file = this.$refs.file.files[0]
+      this.fileName = this.newImage.file.name
     },
     addImage () {
       const formData = new FormData()
@@ -99,8 +122,8 @@ export default {
           this.images.push(res.data)
           this.newImage = {}
         }).catch(_ => {
-        console.log('failed to save image')
-      })
+          console.log('failed to save image')
+        })
     },
     removeImage (image) {
       axios.delete('/course/' + this.$route.params.id + '/data/image/' + image.localId)
@@ -128,12 +151,12 @@ export default {
         .catch(err => {
           console.log(err.response)
           this.errorMessage = err.response.data.error
-          if(err.response.data.errorPlace){
+          if (err.response.data.errorPlace) {
             let characters = 0
             const lines = this.dataRaw.split('\n')
-            for(let i = 0; i < lines.length; ++i){
+            for (let i = 0; i < lines.length; ++i) {
               characters += lines[i].length
-              if(characters >= err.response.data.errorPlace){
+              if (characters >= err.response.data.errorPlace) {
                 this.errorRow = i
                 return
               }
@@ -182,15 +205,9 @@ export default {
       ta.value = taval.slice(0, pos) + text + taval.slice(pos)
     },
     resizeIt () {
-      const cols = this.cols
-
       let linecount = 0
       this.dataRaw.split('\n').forEach(function (l) {
-        if (l.length === 0) {
-          linecount += 1
-          return
-        }
-        linecount += Math.ceil(l.length / (cols - 1)) // Take into account long lines
+        linecount += 1
       })
       this.rows = Math.max(this.rowsMin, linecount + 1)
     },
@@ -236,9 +253,9 @@ export default {
         this.loadDR = true
       })
     axios.get('/course/' + this.$route.params.id + '/data/image')
-    .then(res => {
-      this.images = res.data
-    })
+      .then(res => {
+        this.images = res.data
+      })
   },
   beforeRouteEnter: (to, from, next) => {
     next(store.getters.authHasPermission('save_course_data'))
@@ -251,30 +268,157 @@ export default {
 @import 'src/assets/css/variables.scss';
 
 #course-data-edit {
-  width: 1600px;
-
-  margin: 120px auto auto auto;
-  color: $text-color;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
+  max-width: 1400px;
+  width: calc(100% - 40px);
+  margin: 100px auto 20px auto;
 
-  button{
-    width: 140px;
+  .section {
+    position: relative;
+    background-color: $box-bg-color1;
+    box-shadow: $box-shadow1;
+    padding: 30px;
+  }
+
+  .title-container {
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+      font-family: $font2;
+      color: $text-color2;
+      font-size: 20px;
+    }
+
+    .buttons {
+      display: flex;
+    }
+
+    button + button {
+      margin-left: 10px;
+    }
+  }
+
+  .section + .section {
+    margin-top: 20px;
+  }
+
+  button {
+    color: $highlight-color;
+    border-color: $highlight-color;
     height: 30px;
-    color: $save-color;
-    border-color: $save-color;
-  }
-  button:hover{
-    color: $header-bg-color;
-    background-color: $save-color;
+
+    &.remove {
+      color: $unfollow-color;
+      border-color: $delete-color;
+    }
   }
 
-  .controls{
+  button:hover {
+    color: $box-bg-color1;
+    background-color: $highlight-color;
 
-    button+button{
-      margin-left:10px;
+    &.remove {
+      color: $box-bg-color1;
+      background-color: $delete-color;
+    }
+  }
+
+  input{
+    height: 30px;
+    color: $input-color;
+    border: 0;
+    border-bottom: 1px solid $input-color;
+    background-color: transparent;
+  }
+  input::placeholder{
+    color: $input-placeholder-color;
+  }
+  input:focus, input:active, input:hover{
+    border: 0;
+    border-bottom: 1px solid $highlight-color;
+    outline: 0;
+  }
+
+  .input-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    .hover{
+      position: absolute;
+      cursor: pointer;
+      bottom: 2.5px;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      &:hover .file-button{
+        color: $box-bg-color1;
+        background-color: $highlight-color;
+      }
+    }
+    .file-button{
+      z-index: 1;
+      cursor: pointer;
+      position: absolute;
+      bottom: 5.5px;
+      font-family: $font2;
+      font-size: 11px;
+      border-radius: 10px;
+      padding: 2.5px 30px;
+      right: 10px;
+      color: $highlight-color;
+      border: 1px solid $highlight-color;
+    }
+    input[type=file]{
+      z-index: 2;
+      opacity: 0;
+      margin: 0 5px;
+      max-width: 135px;
+      cursor: pointer;
+    }
+    input[type=file]::-webkit-file-upload-button{
+      visibility: hidden;
+    }
+  }
+
+  label {
+    font-family: $font2;
+    padding: 0;
+    margin: 0;
+    cursor: default;
+  }
+  .image-settings{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+  .image-container{
+    display: flex;
+    flex-direction: column;
+    .bottom-section{
+      margin-top: 20px;
+      display: grid;
+      grid-column-gap: 20px;
+      grid-template-columns: 2fr 4fr 3fr;
+    }
+    .bottom-section + .bottom-section{
+      margin-top: 10px;
+    }
+  }
+
+  .new-image{
+    padding: 0;
+    display: grid;
+    grid-column-gap: 20px;
+    grid-template-columns: 2fr 4fr 3fr;
+    margin: 20px 0 0;
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      max-width: 100px;
     }
   }
 
@@ -285,32 +429,29 @@ export default {
     border-color: $save-color;
   }
   .insert:hover{
-    color: $header-bg-color;
+    color: $box-bg-color1;
     background-color: $save-color;
   }
 
-  .section{
-    background-color: $header-bg-color;
-    padding: 30px;
-    border-radius: 5px;
+  .edit-container{
+    margin-top: 20px;
+    display: grid;
+    grid-column-gap: 20px;
+    grid-template-columns: 3fr 2fr;
+  }
 
-    &>div{
-      padding:10px;
+  .editor{
+    display: flex;
+    flex-direction: column;
+    .error {
+      color: $error-color;
+      margin: 5px 0 -15px;
     }
   }
-  .section+.section{
-    margin-top: 10px;
-  }
 
-  .edit-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .buttons{
+  .multimedia{
     display: flex;
     flex-direction: row;
-    margin-bottom: 20px;
     justify-content: center;
 
     button+button{
@@ -327,10 +468,14 @@ export default {
     outline: 0;
 
     font-family: 'JetBrains Mono';
-
-    background-color: rgba($secondary-color, 0.4);
+    width: 100%;
+    background-color: $box-bg-color2;
     border: 0;
     color: $text-color;
+    overflow-x: scroll;
+    white-space: nowrap;
+    word-break: keep-all;
+    overflow-wrap: unset;
   }
 
   .editor-text{
@@ -339,16 +484,19 @@ export default {
     display: flex;
     flex-direction: row;
     .left{
+      background-color: $box-bg-color3;
       display: flex;
       flex-direction: column;
       width: 1.7em;
       padding: 2px 0.1em;
       .rowCell{
-        background-color: #fff;
+
       }
       .error-row{
-        background-color: red!important;
+        background-color: $error-color!important;
         margin-left: -10px;
+        margin-right: -0.1em;
+
       }
     }
   }
@@ -356,9 +504,7 @@ export default {
   .editor-text-container{
     display: flex;
     flex-direction: column;
-    .error {
-      color: red;
-    }
+    margin-top: 20px;
   }
 }
 </style>

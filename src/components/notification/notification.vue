@@ -107,6 +107,7 @@ export default {
   //}
   .notification{
     display: flex;
+    text-shadow: none;
     margin: 0 12px;
     align-content: center;
   }

@@ -259,8 +259,8 @@ export default {
       overflow: hidden;
       margin-left: 10px;
       &:hover select, select:focus {
-        color: $box-bg-color1;
-        background-color: $header-bg-color;
+        color: $highlight-color;
+        background-color: $box-bg-color3;
         option {
           color: $text-color;
           background: $box-bg-color1;
@@ -297,23 +297,6 @@ export default {
     }
   }
 
-  button{
-    color: $highlight-color;
-    border-color: $highlight-color;
-    height: 30px;
-    &.unfollow{
-      color: $unfollow-color;
-      border-color: $unfollow-color;
-    }
-  }
-  button:hover{
-    color: $box-bg-color1;
-    background-color: $highlight-color;
-    &.unfollow{
-      color: $box-bg-color1;
-      background-color: $unfollow-color;
-    }
-  }
   button+button{
     margin-left: 10px;
   }

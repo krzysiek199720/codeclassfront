@@ -219,7 +219,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: #FFFFFF;
+    background-color: $box-bg-color1;
     box-shadow: $box-shadow1;
     padding: 30px;
     margin-bottom: 20px;

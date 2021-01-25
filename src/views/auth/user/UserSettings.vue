@@ -30,7 +30,7 @@
         <router-link tag="button" :to="{name: 'courseGroupSave', params:{id: null}}" v-if="$store.getters.authHasPermission('save_course_group')">Create course group</router-link>
       </div>
       <div class="groups">
-        <router-link tag="span" class="course-group" v-for="cg in courseGroups" :key="cg.id" :to="{name: 'courseGroup', params:{id: cg.id}}">
+        <router-link tag="a" class="course-group" v-for="cg in courseGroups" :key="cg.id" :to="{name: 'courseGroup', params:{id: cg.id}}">
           <div class="course-group-name">{{cg.name}}</div>
         </router-link>
       </div>
