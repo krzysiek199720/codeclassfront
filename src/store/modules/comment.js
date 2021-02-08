@@ -34,7 +34,12 @@ const mutations = {
     if (payload.rootId === null) {
       state.rootComments.push(payload)
     } else {
-      state.commentMap.get(payload.rootId).push(payload)
+      let com = state.commentMap.get(payload.rootId)
+      if(com)
+        com.push(payload)
+      else
+        state.commentMap.set(payload.rootId, [payload])
+
     }
     eventBus.$emit('force-comment-update')
   }
