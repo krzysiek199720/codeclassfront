@@ -1,15 +1,21 @@
 <template>
   <div class="filler">
-    <div class="element" @mouseover.stop.self="onHover" @mouseleave.stop.self="hovering = false" :class="{hovered: hovering}">
+    <div class="element" @mouseover.stop.self="onHover"
+         @mouseleave.stop.self="hovering = false"
+         :class="{hovered: hovering}">
       <div class="desc-tooltip" v-if="elem.description !== null">
         <div class="shadow">
           {{elem.description}}
         </div>
       </div>
       <template>{{elem.data}}</template>
-      <dataElement v-if="deepeerElem !== null" :data="deepeerElem.list" @hov="hovering = false"></dataElement>
+      <dataElement v-if="deepeerElem !== null"
+                   :data="deepeerElem.list"
+                   @hov="hovering = false"></dataElement>
     </div>
-    <dataElement v-for="elem in list" :data="elem.list" :key="elem.order" @hov="hovering = false"></dataElement>
+    <dataElement v-for="elem in list" :data="elem.list"
+                 :key="elem.order"
+                 @hov="hovering = false"></dataElement>
   </div>
 </template>
 

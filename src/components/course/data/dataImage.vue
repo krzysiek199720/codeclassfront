@@ -36,24 +36,9 @@ export default {
       "transition": false,
       "fullscreen": false,
       "keyboard": false
-      }
-    }
-  },
-  computed: {
-    // viewerOptions () {
-    //   let options = this.startingOptions
-    //   options.url = axios.defaults.baseURL + '/course/' + this.$route.params.id + '/data/image/' + data.courseDataLineList[0].courseDataElementList[0].data
-    //   return options
-    // }
-    imageSrc () {
-      let result = []
-      console.log('sadasdas')
-      console.log(axios.defaults.baseURL)
-      console.log(this.$route.params.id)
-      console.log(this.data.courseDataLineList[0].courseDataElementList[0].data)
-      const src = axios.defaults.baseURL + '/course/' + this.$route.params.id + '/data/image/' + this.data.courseDataLineList[0].courseDataElementList[0].data
-      result.push(src)
-      return result
+      },
+      imageSrc: [],
+      tempSrc: ''
     }
   },
   methods: {
@@ -63,6 +48,14 @@ export default {
     show () {
       this.$viewer.show()
     }
+  },
+  created () {
+    const src = axios.defaults.baseURL + '/course/' + this.$route.params.id + '/data/image/' + this.data.courseDataLineList[0].courseDataElementList[0].data
+    axios.get(src, {responseType: 'blob'})
+      .then(response => {
+        let imgUrl = URL.createObjectURL(response.data)
+        this.imageSrc.push(imgUrl)
+      })
   }
 }
 </script>
