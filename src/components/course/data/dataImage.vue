@@ -71,7 +71,7 @@ export default {
     width: 80%;
     transition-duration: 100ms;
     img{
-      height: 100px;
+      max-height: 100px;
       object-fit: COVER;
       object-position: 40% 20%;
     }
